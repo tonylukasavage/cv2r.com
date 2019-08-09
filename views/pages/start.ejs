@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+  <script>
+    var state = {};
+    $(document).ready(function() {
+      $('#rom')[0].addEventListener('change', function() {
+        state = {};
+        console.log(this.files[0]);
+        var file = this.files[0];
+        $('#romFile')[0].value = file.name;
+
+        var reader = new FileReader();
+        reader.onload = function() {
+          state.rom = new Uint8Array(this.result);
+        }
+        reader.readAsArrayBuffer(file);
+      }, false);
+
+      $('#seed')[0].addEventListener('click', function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/seed', true);
+        xhr.onload = function () {
+          console.log(this);
+          $('#seedString')[0].value = this.response;
+        };
+        xhr.send(null);
+      }, false);
+
+      $('#patch')[0].addEventListener('click', function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/patch', true);
+        xhr.onreadystatechange = function() {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            const { patch, spoiler } = JSON.parse(this.response);
+            console.log(spoiler);
+            const { rom } = state;
+            patch.forEach(entry => {
+              Object.keys(entry).forEach(offset => {
+                rom.set(entry[offset], parseInt(offset));
+              });
+            });
+            const blob = new Blob([rom]);
+            const fileName = 'cv2r.nes';
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        };
+        xhr.send(null);
+      }, false);
+    });
+  </script>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+<div class="jumbotron text-center">
+  <div class="container" style="width:50%">
+    <p>
+      Just follow the steps below and you'll be ready to guide Simon through an entirely new quest. You'll be cursing about Dead River and laurels in no time!
+    </p>
+    <form>
+      <div class="form-group">
+        <!-- <div class="custom-file">
+          <input type="file" class="custom-file-input" id="rom">
+          <label class="custom-file-label" for="rom">Choose file</label>
+        </div> -->
+
+        <h4 style="text-align:left;">Step 1: Upload the Castlevania II: Simon's Quest ROM</h4>
+        <div class="input-group">
+          <input type="text" id="romFile" class="form-control" readonly="">
+          <label class="input-group-btn">
+            <span class="btn btn-dark">Browse… 
+              <input type="file" id="rom" style="display: none;" multiple="">
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <h4 style="text-align:left;">Step 2: Enter a seed (any alphabetic string) for randomizing or let us generate one for you</h4>
+        <div class="input-group">
+          <input type="text" id="seedString" class="form-control" readonly="">
+          <label class="input-group-btn">
+            <span class="btn btn-dark">Generate Seed 
+              <input type="button" id="seed" style="display: none;" multiple="">
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <h4 style="text-align:left;">Step 3: Select your randomizer options</h4>
+        <div class="input-group">
+          <input type="text" id="seedString" class="form-control" readonly="">
+          <label class="input-group-btn">
+            <span class="btn btn-dark">Generate Seed 
+              <input type="button" id="seed" style="display: none;" multiple="">
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <select class="form-control">
+        <option value="+47">Norge (+47)</option>
+        <option value="+46">Sverige (+46)</option>
+        <option value="+45">Danmark (+45)</option>
+      </select>
+
+        <!-- <label for="rom">rom file</label>
+        <input type="file" id="rom">
+        <input type="text" id="seed">
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"> -->
+        <a type="button" id="patch" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-flash"></span> Get a randomized game</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

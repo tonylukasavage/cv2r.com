@@ -1,23 +1,18 @@
-<nav class="navbar navbar-default navbar-static-top navbar-inverse">
-  <div class="container">
-    <ul class="nav navbar-nav">
-      <li class="active">
-        <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
-      </li>
-      <li>
-        <a href="/doc"><span class="glyphicon glyphicon-book"></span> Documentation</a>
-      </li>
-      <li>
-        <a href="/dev"><span class="glyphicon glyphicon-wrench"></span> Develop</a>
-      </li>
-      <li>
-        <a href="/credits"><span class="glyphicon glyphicon-user"></span> Credits</a>
-      </li>
-    </ul>
-    <!-- <ul class="nav navbar-nav navbar-right">
-      <li class="navbar-right">
-        <a href="https://devcenter.heroku.com"><span class="glyphicon glyphicon-book"></span> Heroku Dev Center</a>
-      </li>
-    </ul> -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="height:46px">
+  <a class="navbar-brand" href="/"><img src="/cv2-logo-thin.png" style="height:40px;"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="/start">Start Playing</a>
+      <a class="nav-item nav-link" href="/doc">Documentation</a>
+      <a class="nav-item nav-link" href="/dev">Develop</a>
+      <a class="nav-item nav-link" href="/credits">Credits</a>
+    </div>
   </div>
 </nav>
+
+<script>
+  $("a[href$='" + window.location.pathname + "'].nav-link").addClass('active');
+</script>

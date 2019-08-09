@@ -17,7 +17,10 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-  .get('/start', (req, res) => res.render('pages/start'))
+	.get('/start', (req, res) => res.render('pages/start'))
+	.get('/dev', (req, res) => res.render('pages/dev'))
+	.get('/doc', (req, res) => res.render('pages/doc'))
+	.get('/credits', (req, res) => res.render('pages/credits'))
   .post('/patch', (req, res) => {
   	exec('./node_modules/.bin/cv2-rando --json', function(err, stdout, stderr) {
   		if (err) {

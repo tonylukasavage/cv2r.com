@@ -4,57 +4,6 @@
   <% include ../partials/header.ejs %>
   <script>
     var state = {};
-    $(document).ready(function () {
-  var navListItems = $('div.setup-panel div a'),
-          allWells = $('.setup-content'),
-          allNextBtn = $('.nextBtn'),
-  		  allPrevBtn = $('.prevBtn');
-
-  allWells.hide();
-
-  navListItems.click(function (e) {
-      e.preventDefault();
-      var $target = $($(this).attr('href')),
-              $item = $(this);
-
-      if (!$item.hasClass('disabled')) {
-          navListItems.removeClass('btn-primary').addClass('btn-default');
-          $item.addClass('btn-primary');
-          allWells.hide();
-          $target.show();
-          $target.find('input:eq(0)').focus();
-      }
-  });
-  
-  allPrevBtn.click(function(){
-      var curStep = $(this).closest(".setup-content"),
-          curStepBtn = curStep.attr("id"),
-          prevStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a");
-
-          prevStepWizard.removeAttr('disabled').trigger('click');
-  });
-
-  allNextBtn.click(function(){
-      var curStep = $(this).closest(".setup-content"),
-          curStepBtn = curStep.attr("id"),
-          nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-          curInputs = curStep.find("input[type='text'],input[type='url']"),
-          isValid = true;
-
-      $(".form-group").removeClass("has-error");
-      for(var i=0; i<curInputs.length; i++){
-          if (!curInputs[i].validity.valid){
-              isValid = false;
-              $(curInputs[i]).closest(".form-group").addClass("has-error");
-          }
-      }
-
-      if (isValid)
-          nextStepWizard.removeAttr('disabled').trigger('click');
-  });
-
-  $('div.setup-panel div a.btn-primary').trigger('click');
-});
 
     $(document).ready(function() {
       $('#rom')[0].addEventListener('change', function() {
@@ -116,135 +65,59 @@
   <% include ../partials/nav.ejs %>
 
 <div class="jumbotron text-center">
-  <div class="container" style="width:50%">
-    <!-- <div class="container">
-   -->
-      <div class="stepwizard col-md-offset-3">
-          <div class="stepwizard-row setup-panel">
-            <div class="stepwizard-step">
-              <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
-              <p>Upload ROM</p>
-            </div>
-            <div class="stepwizard-step">
-              <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-              <p>Seed</p>
-            </div>
-            <div class="stepwizard-step">
-              <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-              <p>Game Options</p>
-            </div>
-          </div>
-        </div>
-        
-        <form role="form" action="" method="post">
-          <div class="row setup-content" id="step-1">
-            <div class="col-xs-6 col-md-offset-3">
-              <div class="col-md-12">
-                <h3> Step 1</h3>
-                <div class="form-group">
-                  <label class="control-label">First Name</label>
-                  <input maxlength="100" type="text" required="required" class="form-control" placeholder="Enter First Name">
-                </div>
-                <div class="form-group">
-                  <label class="control-label">Last Name</label>
-                  <input maxlength="100" type="text" required="required" class="form-control" placeholder="Enter Last Name">
-                </div>
-                <div class="form-group">
-                  <label class="control-label">Address</label>
-                  <textarea required="required" class="form-control" placeholder="Enter your address"></textarea>
-                </div>
-                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
-              </div>
-            </div>
-          </div>
-          <div class="row setup-content" id="step-2">
-            <div class="col-xs-6 col-md-offset-3">
-              <div class="col-md-12">
-                <h3> Step 2</h3>
-                <div class="form-group">
-                  <label class="control-label">Company Name</label>
-                  <input maxlength="200" type="text" required="required" class="form-control" placeholder="Enter Company Name">
-                </div>
-                <div class="form-group">
-                  <label class="control-label">Company Address</label>
-                  <input maxlength="200" type="text" required="required" class="form-control" placeholder="Enter Company Address">
-                </div>
-                <button class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
-                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
-              </div>
-            </div>
-          </div>
-          <div class="row setup-content" id="step-3">
-            <div class="col-xs-6 col-md-offset-3">
-              <div class="col-md-12">
-                <h3> Step 3</h3>
-                <button class="btn btn-danger prevBtn btn-lg pull-left" type="button">Previous</button>
-                <button class="btn btn-success btn-lg pull-right" type="submit">Submit</button>
-              </div>
-            </div>
-          </div>
-        </form>
-        
-      </div>
-
+  <div class="container">
 
     <form>
-      <div class="form-group">
-        <!-- <div class="custom-file">
-          <input type="file" class="custom-file-input" id="rom">
-          <label class="custom-file-label" for="rom">Choose file</label>
-        </div> -->
-
-        <h4 style="text-align:left;">Step 1: Upload the Castlevania II: Simon's Quest ROM</h4>
-        <div class="input-group">
-          <input type="text" id="romFile" class="form-control" readonly="">
-          <label class="input-group-btn">
-            <span class="btn btn-dark">Browse… 
-              <input type="file" id="rom" style="display: none;" multiple="">
-            </span>
-          </label>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="rom">Upload Castlevania 2 ROM</label>
+            <div class="input-group">
+                <input type="text" id="romFile" class="form-control" readonly="">
+                <label class="input-group-btn">
+                  <span class="btn btn-dark">Browse… 
+                    <input type="file" id="rom" style="display: none;" multiple="">
+                  </span>
+                </label>
+              </div>
+            <small class="form-text text-muted">This should be "Castlevania II - Simon's Quest (USA).nes" ROM file</small>
+          </div>
+          <div class="form-group">
+            <label for="seed">Randomizer Seed</label>
+            <div class="input-group">
+                <input type="text" id="seedString" class="form-control">
+                <label class="input-group-btn">
+                  <span class="btn btn-dark">Generate Seed 
+                    <input type="button" id="seed" style="display: none;" multiple="">
+                  </span>
+                </label>
+              </div>
+            <small class="form-text text-muted">Use this seed, generate a new one, or create your own alphanumeric seed</small>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="difficulty">Game Difficulty</label>
+            <select class="form-control" id="difficulty">
+              <option value="easy">Easy</option>
+              <option value="standard" selected="selected">Standard</option>
+              <option value="hard">Hard</option>
+            </select>
+            <small class="form-text text-muted">Difficulty determines which patches are applied to the randomized game. Displaying a list of each patch a given difficulty applies in on my TODO list.</small>
+          </div>
+          <div class="form-group">
+            <label for="palette">Color Palette</label>
+            <select class="form-control" id="palette">
+              <option value="classic" selected="selected">Classic</option>
+              <option value="rondo-of-burb">Rondo of Burb</option>
+            </select>
+            <small class="form-text text-muted">Choose from a selection of color palettes for the game. "Classic" is the standard Simon's Quest color palette. All other palettes are user submitted patches to change colors throughout the game. Previews of the palettes is on my TODO list.</small>
+          </div>
         </div>
       </div>
-
-      <div class="form-group">
-        <h4 style="text-align:left;">Step 2: Enter a seed (any alphabetic string) for randomizing or let us generate one for you</h4>
-        <div class="input-group">
-          <input type="text" id="seedString" class="form-control" readonly="">
-          <label class="input-group-btn">
-            <span class="btn btn-dark">Generate Seed 
-              <input type="button" id="seed" style="display: none;" multiple="">
-            </span>
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <h4 style="text-align:left;">Step 3: Select your randomizer options</h4>
-        <div class="input-group">
-          <input type="text" id="seedString" class="form-control" readonly="">
-          <label class="input-group-btn">
-            <span class="btn btn-dark">Generate Seed 
-              <input type="button" id="seed" style="display: none;" multiple="">
-            </span>
-          </label>
-        </div>
-      </div>
-
-      <select class="form-control">
-        <option value="+47">Norge (+47)</option>
-        <option value="+46">Sverige (+46)</option>
-        <option value="+45">Danmark (+45)</option>
-      </select>
-
-        <!-- <label for="rom">rom file</label>
-        <input type="file" id="rom">
-        <input type="text" id="seed">
-        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"> -->
-        <a type="button" id="patch" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-flash"></span> Get a randomized game</a>
-      </div>
-
     </form>
-  <!-- </div> -->
+
+    <a type="button" id="patch" class="btn btn-lg btn-danger">RANDOMIZE!</a>
 </div>
 
 </body>

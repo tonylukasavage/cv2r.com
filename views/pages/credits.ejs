@@ -9,8 +9,29 @@
   <% include ../partials/nav.ejs %>
 
 <div class="jumbotron text-center">
-  <div class="container">credits</div>
-    
+  <!-- Page Content -->
+  <div class="container">
+    <img src="/img/crew.png">
+    <hr>
+    <div class="row">
+      <% crew.forEach(function(c) { %>
+      <!-- Team Member 1 -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card shadow border-dark">
+          <img src="<%= c.image %>" class="card-img-top" alt="...">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0"><%= c.name %></h5>
+            <div class="card-text text-black-50"><%= c.role %></div>
+            <div class="card-text text-black-50 social">
+              <% c.social && c.social.forEach(function(s) { %>
+              <a href="<%= s.link %>"><img src="/img/social/<%= s.name %>.png"></a>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }); %>
+  </div>
 </div>
 
 </body>

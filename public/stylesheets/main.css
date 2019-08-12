@@ -1,7 +1,11 @@
+body {
+  background: #213b59;
+}
+
 .jumbotron {
   background: #213b59; 
   color: white;
-  padding-bottom: 80px; 
+  padding-bottom: 0px; 
 }
 .jumbotron p {
   color: #d9ccee;
@@ -121,4 +125,16 @@ form {
 
 .input-group-btn {
   margin: 0;
+}
+
+hr {
+  background: #566d88;
+}
+
+.container.index-info {
+  margin-bottom: 20px;
+  border: solid 2px;
+  -webkit-border-radius: 16px;
+     -moz-border-radius: 16px;
+          border-radius: 16px;
 }

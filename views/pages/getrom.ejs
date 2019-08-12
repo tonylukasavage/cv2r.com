@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+  <script>
+    var state = {};
+
+    function getSeed() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/seed', true);
+      xhr.onload = function () {
+        var dom = $('#seed');
+        dom[0].value = this.response;
+        dom.removeClass('is-invalid');
+        dom.addClass('is-valid');
+      };
+      xhr.send(null);
+    }
+
+    function isValidSeed(seed) {
+      return seed && /^[a-zA-Z0-9]{8,}$/.test(seed);
+    }
+
+    function setValidity(elem, bool) {
+      elem
+        .removeClass(bool ? 'is-invalid' : 'is-valid')
+        .addClass(bool ? 'is-valid' : 'is-invalid'); 
+      return !!bool;
+    }
+
+    $(document).ready(function() {
+      getSeed();
+
+      $('#romFile')[0].addEventListener('change', function() {
+        state = {};
+        
+        var file = this.files[0];
+        $('#rom')[0].value = file.name;
+
+        var reader = new FileReader();
+        reader.onload = function() {
+          state.rom = new Uint8Array(this.result);
+          // TODO: add a header check
+          setValidity($('#rom'), true);
+        }
+        reader.readAsArrayBuffer(file);
+      }, false);
+
+      $('#seedButton')[0].addEventListener('click', getSeed, false);
+
+      $('#seed')[0].addEventListener('keyup', function(evt) {
+        setValidity($('#seed'), isValidSeed(this.value));
+      });
+
+      $('#randomizeButton')[0].addEventListener('click', function() {
+        var data = {};
+        [ 'rom', 'seed', 'difficulty', 'palette' ].forEach(function(item) {
+          data[item] = {
+            dom: $('#' + item),
+            value: $('#' + item)[0].value
+          };
+        });
+
+        var valids = [];
+        valids.push(setValidity(data.rom.dom, data.rom.value));
+        valids.push(setValidity(data.seed.dom, isValidSeed(data.seed.value)));
+        valids.push(setValidity(data.difficulty.dom, data.difficulty.value));
+        valids.push(setValidity(data.palette.dom, data.palette.value));
+        if (valids.includes(false)) {
+          return;
+        }
+
+        var seed = data.seed.value;
+        var difficulty = data.difficulty.value;
+        var palette = data.palette.value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/genrom', true);
+        xhr.onreadystatechange = function() {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            const { patch, spoiler, version } = JSON.parse(this.response);
+            const { rom } = state;
+            patch.forEach(entry => {
+              Object.keys(entry).forEach(offset => {
+                rom.set(entry[offset], parseInt(offset));
+              });
+            });
+            const blob = new Blob([rom]);
+            const fileName = 'cv2r-' + version + '-' + seed + '.nes';
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        };
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify({ seed, difficulty, palette }));
+      }, false);
+    });
+  </script>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+<div class="jumbotron text-center">
+  <div class="container">
+
+    <form class="needs-validation" novalidate>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="rom">Upload Castlevania 2 ROM</label>
+            <div class="input-group">
+              <input type="text" id="rom" class="form-control" readonly="">
+              <label class="input-group-btn">
+                <span class="btn btn-dark">Browse… 
+                  <input type="file" id="romFile" style="display: none;">
+                </span>
+              </label>
+              <div class="invalid-feedback">Must upload a valid ROM</div>
+            </div>
+            <small class="form-text text-muted">This should be "Castlevania II - Simon's Quest (USA).nes" ROM file</small>
+          </div>
+          <div class="form-group">
+            <label for="seed">Randomizer Seed</label>
+            <div class="input-group">
+              <input type="text" id="seed" class="form-control">
+              <label class="input-group-btn">
+                <span class="btn btn-dark">Generate Seed 
+                  <input type="button" id="seedButton" style="display: none;">
+                </span>
+              </label>
+              <div class="invalid-feedback">Must provide 8+ character seed consisting of uppercase letters, lowercase letters, and/or numbers</div>
+            </div>
+            <small class="form-text text-muted">Use this seed, generate a new one, or create your own alphanumeric seed. Some of my personal favorites have been "MyCatLovesWhiskey" and "SathdreshMadeMeDoIt".</small>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="difficulty">Game Difficulty</label>
+            <select class="form-control custom-select is-valid" id="difficulty">
+              <option value="easy">Easy</option>
+              <option value="standard" selected="selected">Standard</option>
+              <option value="hard">Hard</option>
+            </select>
+            <small class="form-text text-muted">Difficulty determines which patches are applied to the randomized game. Displaying a list of each patch a given difficulty applies in on my TODO list.</small>
+          </div>
+          <div class="form-group">
+            <label for="palette">Color Palette</label>
+            <select class="form-control custom-select is-valid" id="palette">
+              <option value="simons-quest" selected="selected">Simon's Quest (default)</option>
+              <option value="rondo-of-burb">Rondo of Burb</option>
+            </select>
+            <small class="form-text text-muted">Choose from a selection of color palettes for the game. "Classic" is the standard Simon's Quest color palette. All other palettes are user submitted patches to change colors throughout the game. Previews of the palettes is on my TODO list.</small>
+          </div>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <button id="randomizeButton" class="btn btn-danger btn-xlarge">RANDOMIZE!</button>
+  </div>
+</div>
+</body>
+</html>

@@ -137,9 +137,14 @@ hr {
   background: #566d88;
 }
 
-.container.index-info {
+.container.info-box {
+  color: #000;
+  text-align: left;
   margin-bottom: 20px;
   border: solid 2px;
+  background:white; 
+  padding:15px; 
+  padding-bottom: 2px;
   -webkit-border-radius: 16px;
      -moz-border-radius: 16px;
           border-radius: 16px;

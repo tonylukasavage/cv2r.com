@@ -11,7 +11,7 @@
     "test": "node test.js"
   },
   "dependencies": {
-    "cv2-rando": "github:bloodsweatandcode/cv2-rando#master",
+    "cv2-rando": "github:bloodsweatandcode/cv2-rando",
     "ejs": "^2.5.6",
     "express": "^4.15.2"
   },

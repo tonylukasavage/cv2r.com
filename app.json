@@ -1,8 +1,8 @@
 {
-  "name": "Start on Heroku: Node.js",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-getting-started",
-  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
-  "keywords": ["node", "express", "heroku"],
+  "name": "Castlevania II: Simon's Quest Randomizer",
+  "description": "Simon's Quest with itemizer, enemizer, and lots of other treats!",
+  "repository": "https://github.com/BloodSweatAndCode/cv2r.com",
+  "logo": "https://cdn.rawgit.com/BloodSweatAndCode/cv2r.com/master/web/public/img/simon.png",
+  "keywords": ["retro","simons quest","castlevania","gaming","speedrun"],
   "image": "heroku/nodejs"
 }

@@ -6,15 +6,15 @@ const PORT = process.env.PORT || 5000;
 // setup basic express middleware and view handling
 const app = express();
 app
-  .use(express.static(path.join(__dirname, '..','public')))
-  .set('views', path.join(__dirname, '..', 'views'))
+  .use(express.static(path.join(__dirname, 'web','public')))
+  .set('views', path.join(__dirname, 'web', 'views'))
   .set('view engine', 'ejs')
 	.use(express.json()) 
 	.use(express.urlencoded({ extended: true }));
 	
 // load all pages
-fs.readdirSync(path.join(__dirname, 'pages')).forEach(pageFile => {
-	require(path.join(__dirname, 'pages', pageFile))(app);
+fs.readdirSync(path.join(__dirname, 'server', 'pages')).forEach(pageFile => {
+	require(path.join(__dirname, 'server', 'pages', pageFile))(app);
 });
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))

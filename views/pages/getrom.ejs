@@ -53,40 +53,40 @@
       });
 
       $('#randomizeButton')[0].addEventListener('click', function() {
-        var data = {};
-        [ 'rom', 'seed', 'difficulty', 'palette' ].forEach(function(item) {
-          data[item] = {
-            dom: $('#' + item),
-            value: $('#' + item)[0].value
-          };
+        var fields = [ 'rom', 'seed', 'difficulty', 'palette' ];
+        var values = {};
+        var invalid = [];
+
+        // validate all fields and set their values
+        fields.forEach(function(field) {
+          var $elem = $('#' + field);
+          var value = $elem[0].value;
+          setValidity($elem, field === 'seed' ? isValidSeed(value) : value) || invalid.push($elem);
+          values[field] = value;
         });
 
-        var valids = [];
-        valids.push(setValidity(data.rom.dom, data.rom.value));
-        valids.push(setValidity(data.seed.dom, isValidSeed(data.seed.value)));
-        valids.push(setValidity(data.difficulty.dom, data.difficulty.value));
-        valids.push(setValidity(data.palette.dom, data.palette.value));
-        if (valids.includes(false)) {
+        // if any fields are invalid, abort rom generation and scroll to first invalid field
+        if (invalid.length) {
+          $('html, body').animate({
+            scrollTop: invalid[0].offset().top - 50
+          }, 500);
           return;
         }
-
-        var seed = data.seed.value;
-        var difficulty = data.difficulty.value;
-        var palette = data.palette.value;
+        delete values.rom;
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/genrom', true);
         xhr.onreadystatechange = function() {
           if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            const { patch, spoiler, version } = JSON.parse(this.response);
-            const { rom } = state;
-            patch.forEach(entry => {
+            var resp = JSON.parse(this.response);
+            console.log(resp.spoiler);
+            resp.patch.forEach(entry => {
               Object.keys(entry).forEach(offset => {
-                rom.set(entry[offset], parseInt(offset));
+                state.rom.set(entry[offset], parseInt(offset));
               });
             });
-            const blob = new Blob([rom]);
-            const fileName = 'cv2r-' + version + '-' + seed + '.nes';
+            const blob = new Blob([state.rom]);
+            const fileName = 'cv2r-' + resp.version + '-' + values.seed + '.nes';
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
             link.setAttribute('href', url);
@@ -98,7 +98,7 @@
           }
         };
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(JSON.stringify({ seed, difficulty, palette }));
+        xhr.send(JSON.stringify(values));
       }, false);
     });
   </script>

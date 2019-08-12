@@ -31,7 +31,6 @@ module.exports = function(app) {
       }
       res.send(seed);
     });
-    
 };
 
 const words = readFileSync(path.resolve(__dirname, '..', 'data', 'words.txt'), 'utf8')

@@ -9,7 +9,8 @@ module.exports = function(app) {
     .post('/genrom', (req, res) => {
       let { seed, palette, difficulty } = req.body; 
       
-      const bin = path.join(__dirname, '..', '..', 'node_modules', '.bin', 'cv2-rando');
+      const binName = process.env.CV2R_BIN || 'cv2rando';
+      const bin = path.join(__dirname, '..', '..', 'node_modules', '.bin', binName);
       exec(`${bin} --json --seed ${seed} --palette ${palette} --difficulty ${difficulty}`, function(err, stdout, stderr) {
         if (err) {
           console.error(err, stdout, stderr);

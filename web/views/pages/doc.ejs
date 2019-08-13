@@ -27,8 +27,8 @@
       <tbody>
         <% items.forEach(function(item) { %>
         <tr>
-          <td class="actor" style="background-color:#000;">
-            <img src="<%= item.image %>" style="<%= item.name === 'crystals' ? 'max-height: 48px;' : '' %>">
+          <td class="item" style="background-color:#000; vertical-align:middle;">
+            <img src="<%= item.image %>" style="<%= ['crystals','whips'].includes(item.name) ? 'max-height: 48px;' : '' %>">
           </td>
           <td style="width: 20%"><%= item.name %></td>
           <td style="width: 5%; text-align: center;"><%= item.count %></td>
@@ -39,7 +39,7 @@
     </table>
 
     <h3>Checks</h3>
-  	<p>The items in the randomizer can be retrieved, purchased, or battled for from the following "checks". The term "check" refers to any person, place, or thing from which you can get a randomized item. The complete list of all checks and their location can be found below.</p>
+  	<p>The items in the randomizer can be retrieved, purchased, or battled for from the following "checks". The term "check" refers to any person, place, or thing from which you can get a randomized item. The complete list of all checks and their location can be found below, along with a list of the items that are required to be able to reach the check at that location.</p>
   	<table class="table table-striped table-secondary">
   		<thead class="thead-dark">
   			<tr>

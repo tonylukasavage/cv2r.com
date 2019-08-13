@@ -163,6 +163,13 @@ td.actor {
   text-align: center;
 }
 
+td.item {
+  padding-right: 4px;
+  padding-left: 4px;
+  width: 2.5em;
+  text-align: center;
+}
+
 td.requirements {
   background-color: #000;
 }
@@ -172,7 +179,8 @@ td.requirements img {
 }
 
 td.requirements img,
-td.actor img {
+td.actor img,
+td.item img {
   max-height: 32px;
   min-height: 16px;
 }

@@ -10,7 +10,7 @@ body {
 .jumbotron p {
   color: #d9ccee;
   max-width: 75%;
-  margin: 1em auto 2em; 
+  margin: 1em auto 1em; 
 }
 .navbar {
   padding-top: 0;
@@ -154,4 +154,9 @@ hr {
   color: #000;
   text-align: left;
   max-width: 100%;
+}
+
+.actor-icon {
+  max-height: 32px;
+  min-height: 16px;
 }

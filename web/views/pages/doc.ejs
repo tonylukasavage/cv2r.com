@@ -11,9 +11,9 @@
 <div class="jumbotron text-center">
   <div class="container info-box shadow">
   	<h3>Actors</h3>
-  	Actors refer to all the people and things you can get items from in the randomizer. Any item in the game will be relocated to these actors based on the randomization logic. Actors include the following:
+  	<p>Actors refer to all the people and things you can get items from in the randomizer. Any item in the game will be relocated to these actors based on the randomization logic. Actors include the following:</p>
   	<ul>
-  		<li>Sale merchants</li>
+  		<li>Merchants</li>
   		<li>Blue and red crystal dudes</li>
   		<li>Free laurels dude</li>
   		<li>Death and Camilla boss drops</li>
@@ -24,56 +24,22 @@
   		<li>Sacred flame</li>
   	</ul>
   	<h3>Item Locations</h3>
-  	The items in the randomizer can be retrieved, purchased, or battled for in the following locations:
-  	<table>
-  		<thead>
+  	<p>The items in the randomizer can be retrieved, purchased, or battled for in the following locations:</p>
+  	<table class="table table-striped table-bordered">
+  		<thead class="thead-dark">
   			<tr>
-  				<td>actor</td>
-  				<td>location</td>
+          <th></th>
+  				<th>actor</th>
+  				<th>location</th>
   			</tr>
   		</thead>
   		<tbody>
-  			
+        <% itemLocations.forEach(function(item) { %>
+        <tr>
+          <td><img src="<%= item.image %>" class="actor-icon"></td><td><%= item.actor %></td><td><%= item.location %></td>
+        </tr>
+        <% }); %>
   		</tbody>
-"ring","merchant","Jova"
-"dagger","crystal dude","Aljiba"
-"garlic","crystal dude","Alba"
-"blue crystal","merchant","Jova - Thorn Whip Room"
-"oak stake","merchant","Jova - Holy Water Room"
-"silk bag","merchant","Veros - Dagger Room"
-"magic cross","merchant","Veros - Chain Whip Room"
-"garlic","merchant","Aljiba - Garlic Room"
-"morning star","merchant","Aljiba - Laurels Room"
-"oak stake","merchant","Alba - Garlic Room"
-"sacred flame","merchant","Alba - Laurels Room"
-"eyeball","merchant","Ondol - Morning Star Room"
-"rib","merchant","Ondol - Laurels Room"
-"laurels","merchant","Doina - Laurels Room"
-"oak stake","crystal dude","Laruba Mansion - Part 2"
-"laurels","merchant","Laruba Mansion - Part 2"
-"oak stake","Camilla","Laruba Mansion - Camilla Fight"
-"chain whip","orb","Laruba Mansion - Orb Room"
-"laurels","merchant","Berkeley Mansion - Part 2"
-"holy water","orb","Berkeley Mansion - Part 2"
-"diamond","merchant","Rover Mansion - Part 2"
-"silver knife","orb","Rover Mansion - Part 2"
-"laurels","merchant","Brahm Mansion - Part 1"
-"flame whip","Death","Brahm Mansion - Death Fight"
-"red crystal","orb","Brahm Mansion - Orb Room"
-"laurels","merchant","Bodley Mansion - Part 2"
-"thorn whip","orb","Bodley Mansion - Part 2"
-"golden knife","sacred flame","Dabi's Path - Part 2"
-"white crystal","secret merchant","Camilla Cemetery"
-"heart","secret merchant","Storigoi Graveyard (Blob Boost)"
-"nail","crystal dude","Debious Woods - Part 3"
-"oak stake","crystal dude","Vrad Mountain - Part 2 (Diamond Dude)"
-
-
-
-  		<tr>
-  		<% itemLocations.forEach(function(item) { %>
-  			<li></li>
-  		<% }); %>
   	</table>
     <h3>The Logic</h3>
     <p>When talking about CV2 Randomizer, as well as any other randomizers, we often refer to "the logic". The logic refers the order in which items are randomized in the game such that you're never stuck in an impossible situation from which you can't progress. For example, holy water would never be in a location that requires holy water to reach it. The logic ensures that every time you generate a randomized version of the game that it is possible to complete. That doesn't mean the logic will be kind! it may make you back track and take on extremely hard challenges at times, but if you can endure the pain of a tough seed, there's always light at the end of the tunnel.</p>

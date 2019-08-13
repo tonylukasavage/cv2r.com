@@ -156,7 +156,23 @@ hr {
   max-width: 100%;
 }
 
-.actor-icon {
+td.actor {
+  padding-right: 0;
+  padding-left: 0;
+  width: 2.5em;
+  text-align: center;
+}
+
+td.requirements {
+  background-color: #000;
+}
+
+td.requirements img {
+  padding-left: 1em;
+}
+
+td.requirements img,
+td.actor img {
   max-height: 32px;
   min-height: 16px;
 }

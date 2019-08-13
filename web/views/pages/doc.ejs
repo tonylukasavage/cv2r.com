@@ -10,42 +10,52 @@
 
 <div class="jumbotron text-center">
   <div class="container info-box shadow">
-  	<h3>Actors</h3>
-  	<p>Actors refer to all the people and things you can get items from in the randomizer. Any item in the game will be relocated to these actors based on the randomization logic. Actors include the following:</p>
-  	<ul>
-  		<li>Merchants</li>
-  		<li>Blue and red crystal dudes</li>
-  		<li>Free laurels dude</li>
-  		<li>Death and Camilla boss drops</li>
-  		<li>Mansion orbs</li>
-  		<li>Free diamond dude</li>
-  		<li>Flame whip dude</li>
-  		<li>Secret merchants summoned with garlic</li>
-  		<li>Sacred flame</li>
-  	</ul>
-  	<h3>Item Locations</h3>
-  	<p>The items in the randomizer can be retrieved, purchased, or battled for in the following locations:</p>
-  	<table class="table table-striped table-bordered">
+    <h3>The Logic</h3>
+    <p>When talking about CV2 Randomizer, as well as any other randomizers, we often refer to "the logic". The logic refers the order in which items are randomized in the game such that you're never stuck in an impossible situation from which you can't progress. For example, holy water would never be in a location that requires holy water to reach it. The logic ensures that every time you generate a randomized version of the game that it is possible to complete. That doesn't mean the logic will be kind! It may make you backtrack and take on extremely hard challenges at times, but if you can endure the pain of a tough seed, there's always light at the end of the tunnel.</p>
+
+  	<p>The items in the randomizer can be retrieved, purchased, or battled for from the following "checks". The term "check" refers to any person, place, or thing from which you can get a randomized item. The complete list of all checks and their location can be found below.</p>
+  	<table class="table table-striped table-secondary">
   		<thead class="thead-dark">
   			<tr>
-          <th></th>
-  				<th>actor</th>
-  				<th>location</th>
+          <th style="width:24px"></th>
+  				<th>check</th>
+          <th>location</th>
+          <th>requirements</th>
   			</tr>
   		</thead>
   		<tbody>
-        <% itemLocations.forEach(function(item) { %>
+        <% checks.forEach(function(check) { %>
         <tr>
-          <td><img src="<%= item.image %>" class="actor-icon"></td><td><%= item.actor %></td><td><%= item.location %></td>
+          <td class="actor"><img src="<%= check.image %>"></td>
+          <td><%= check.actor %></td>
+          <td><%= check.location %></td>
+          <td class="requirements">
+            <% check.requirements.forEach(function(req) { %>
+            <img src="<%= req.image %>" title="<%= req.name %>" alt="<%= req.name %>">
+            <% }); %>
+          </td>
         </tr>
         <% }); %>
+        <tr>
+          <td colspan="4" style="background-color:#fff">Beating Dracula ends the game, so he <b>DOES NOT</b> hold any items. For the sake of completeness, though, here's the requirements to reach the Lord of the Undead himself.</td>
+        </tr>
+        <tr>
+          <td class="actor"><img src="/img/sprites/dracula.png"></td>
+          <td>Dracula</td>
+          <td>Castlevania - Dracula Fight</td>
+          <td class="requirements">
+            <img src="/img/sprites/magic-cross.png" title="magic cross" alt="magic cross">
+            <img src="/img/sprites/red-crystal.png" title="red crystal" alt="red crystal">
+            <img src="/img/sprites/rib.png" title="rib" alt="rib">
+            <img src="/img/sprites/heart.png" title="heart" alt="heart">
+            <img src="/img/sprites/eyeball.png" title="eyeball" alt="eyeball">
+            <img src="/img/sprites/nail.png" title="nail" alt="nail">
+            <img src="/img/sprites/ring.png" title="ring" alt="ring">
+          </td>
+        </tr>
   		</tbody>
   	</table>
-    <h3>The Logic</h3>
-    <p>When talking about CV2 Randomizer, as well as any other randomizers, we often refer to "the logic". The logic refers the order in which items are randomized in the game such that you're never stuck in an impossible situation from which you can't progress. For example, holy water would never be in a location that requires holy water to reach it. The logic ensures that every time you generate a randomized version of the game that it is possible to complete. That doesn't mean the logic will be kind! it may make you back track and take on extremely hard challenges at times, but if you can endure the pain of a tough seed, there's always light at the end of the tunnel.</p>
-    <ul>
-      <li>The Camilla Cemetery 3 block jump </li>
-    </ul>
+    
   </div>
     
 </div>

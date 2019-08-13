@@ -143,7 +143,9 @@ hr {
   margin-bottom: 20px;
   border: solid 2px;
   background:white; 
-  padding:15px; 
+  padding-top:15px; 
+  padding-left: 2em;
+  padding-right: 2em;
   padding-bottom: 2px;
   -webkit-border-radius: 16px;
      -moz-border-radius: 16px;

@@ -9,7 +9,7 @@
   <% include ../partials/nav.ejs %>
 
 <div class="jumbotron text-center">
-  <div class="container info-box shadow">
+  <div class="container info-box shadow doc-container">
     <h3>The Logic</h3>
     <p>When talking about CV2 Randomizer, as well as any other randomizers, we often refer to "the logic". The logic refers the order in which items are randomized in the game such that you're never stuck in an impossible situation from which you can't progress. For example, holy water would never be in a location that requires holy water to reach it. The logic ensures that every time you generate a randomized version of the game that it is possible to complete. That doesn't mean the logic will be kind! It may make you backtrack and take on extremely hard challenges at times, but if you can endure the pain of a tough seed, there's always light at the end of the tunnel.</p>
 
@@ -70,6 +70,7 @@
           <td>Dracula</td>
           <td>Castlevania - Dracula Fight</td>
           <td class="requirements">
+            <img src="/img/sprites/holy-water.png" title="holy water" alt="holy water">
             <img src="/img/sprites/magic-cross.png" title="magic cross" alt="magic cross">
             <img src="/img/sprites/red-crystal.png" title="red crystal" alt="red crystal">
             <img src="/img/sprites/rib.png" title="rib" alt="rib">
@@ -80,9 +81,19 @@
           </td>
         </tr>
   		</tbody>
-  	</table>
+    </table>
     
+    <h4>Things NOT in logic</h4>
+    The requirements for the checks above are based on certain assumptions about being able to move through the game. Over the years, speedrunners have developed many ways to move faster through the game. These methods often involve unintended game mechanics and high-skilled, RNG-heavy strats that I didn't want to define the game. These can still be used, but they are outside of the logic, and therefore <b>NOT</b> expected of the player to complete the randomizer. 
+    <br><br>
+    <ul>
+      <li>The 3-block jump over the water in Camilla's Cemetery</li>
+      <li>The "blob boost" in Storigoi Graveyard</li>
+      <li>While it's possible to traverse the marshes around Laruba Mansion without laurels, for the sake of players' sanity, I make sure laurels are in logic before you are required to go there. Belasco Marsh (left of Jovah) on the other hand does <b>NOT</b> require laurels. You can handle it.</li>
+    </ul>
   </div>
+
+  
     
 </div>
 

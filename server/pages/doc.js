@@ -39,7 +39,7 @@ module.exports = function(app) {
     loc.actors.filter(a => a.holdsItem).forEach(actor => {
       // deal with the fact that the name "crystal dude" and "secret merchant"
       // are used to represent multiple types of actors in the core lib in cv2-rando
-      const location = loc.name;
+      const location = loc.name.replace(/\([^\)]+\)/, '');
       let name = actor.name;
       if (name === 'crystal dude') {
         if (/Laruba/.test(location)) { name = 'laurels dude'; } 
@@ -72,8 +72,6 @@ module.exports = function(app) {
       checks.push({ actor: name, location, image, requirements });
     });
   });
-
-
 
   app.get('/doc', (req, res) => res.render('pages/doc', { checks, items }));
 };

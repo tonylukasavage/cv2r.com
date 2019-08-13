@@ -9,15 +9,13 @@
   <% include ../partials/nav.ejs %>
 
 <div class="jumbotron text-center">
-  <!-- Page Content -->
   <div class="container">
     <img src="/img/crew.png">
     <hr>
     <div class="row">
       <% crew.forEach(function(c) { %>
-      <!-- Team Member 1 -->
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card shadow border-dark">
+        <div class="card shadow " style="border: solid 3px black">
           <img src="<%= c.image %>" class="card-img-top" alt="...">
           <div class="card-body text-center">
             <h5 class="card-title mb-0"><%= c.name %></h5>

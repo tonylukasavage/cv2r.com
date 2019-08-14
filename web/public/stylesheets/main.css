@@ -187,6 +187,19 @@ td.item img {
   min-height: 16px;
 }
 
+.toc {
+  list-style: none;
+}
+
+.toc li::before {
+  content: "\2022";
+  color: #000;
+  display: inline-block;
+  font-weight: bold;
+  width: 1em;
+  margin-left: -1em;
+}
+
 .toc li {
   color: #007bff;
 }
@@ -195,4 +208,12 @@ td.item img {
   color: #0056b3;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.dropdown-menu {
+  background-color: #ddd
+}
+
+.link-list {
+  padding-left: 1em;
 }

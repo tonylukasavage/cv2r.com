@@ -2,6 +2,10 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+        });
+      });
+    });
+  </script>
 </head>
 
 <body>
@@ -10,6 +14,14 @@
 
 <div class="jumbotron text-center">
   <div class="container info-box shadow doc-container">
+    <ul class="toc">
+      <li>The Logic</li>
+      <li>Items</li>
+      <li>Checks</li>
+      <li>Things NOT in logic</li>
+      <li>New Stuff (must read for new players)</li>
+    </ul>
+
     <h3>The Logic</h3>
     <p>When talking about CV2 Randomizer, as well as any other randomizers, we often refer to "the logic". The logic refers the order in which items are randomized in the game such that you're never stuck in an impossible situation from which you can't progress. For example, holy water would never be in a location that requires holy water to reach it. The logic ensures that every time you generate a randomized version of the game that it is possible to complete. That doesn't mean the logic will be kind! It may make you backtrack and take on extremely hard challenges at times, but if you can endure the pain of a tough seed, there's always light at the end of the tunnel.</p>
 
@@ -93,10 +105,30 @@
       <li>The "blob boost" in Storigoi Graveyard</li>
       <li>While it's possible to traverse the marshes around Laruba Mansion without laurels, for the sake of players' sanity, I make sure laurels are in logic before you are required to go there. Belasco Marsh (left of Jovah) on the other hand does <b>NOT</b> require laurels. You can handle it.</li>
     </ul>
-  </div>
 
-  
-    
+    <h3>New Stuff (must read for new players)</h3>
+    <table class="table table-striped table-secondary">
+      <thead class="thead-dark">
+        <tr>
+          <th>name</th>
+          <th>description</th>
+          <th>how to do it</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width:20%"><b>Jovah Warp</b><br>AKA Up+A</td>
+          <td style="width:60%">Teleports you back to your original starting point in Jovah from any location in the game. This can be used if you get stuck in a particularly tough situation you can't seem to escape, to speed up routing, or to compensate for any logic errors I may have made.</td>
+          <td style="width:20%">Press <b>SELECT</b>, then press <b>UP+A+B</b> simultaneously</td>
+        </tr>
+        <tr>
+            <td style="width:20%"><b>Inventory Deselect</td>
+            <td style="width:60%">In vanilla Simon's Quest, you can't deselect items in your inventory. This allows you to deselect quest items (Dracula parts and crystals). This is critical in one particular case. If the one and only quest item you've found is Dracula's heart and you've selected it, you can never get the ferry man at Dead River to take you anywhere other than Brahm's Mansion until you find another quest item. With inventory deselect you can avoid this and get him to take you to Alba as well.</td>
+            <td style="width:20%">When in your inventory, activate the cursor hovering over your quest items (Dracula parts and crystals), then press <b>B</b>.</td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 </body>

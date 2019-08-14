@@ -186,3 +186,13 @@ td.item img {
   max-height: 32px;
   min-height: 16px;
 }
+
+.toc li {
+  color: #007bff;
+}
+
+.toc li:hover {
+  color: #0056b3;
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-const core = require('cv2-rando/lib/core');
+const core = require('cv2r/lib/core');
 
 const items = [
   { name: 'whips', count: 4, notes: 'Whips are upgraded progressively. This means that any whip you obtain will always give you the next most powerful whip. For example, if you have the leather whip, the next whip check you obtain will give you the thorn whip.' },
@@ -38,7 +38,7 @@ module.exports = function(app) {
   core.filter(c => c.actors && c.actors.length).forEach(loc => {
     loc.actors.filter(a => a.holdsItem).forEach(actor => {
       // deal with the fact that the name "crystal dude" and "secret merchant"
-      // are used to represent multiple types of actors in the core lib in cv2-rando
+      // are used to represent multiple types of actors in the core lib in cv2r
       const location = loc.name.replace(/\([^\)]+\)/, '');
       let name = actor.name;
       if (name === 'crystal dude') {

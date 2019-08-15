@@ -1,7 +1,7 @@
 const path = require('path');
 const { exec } = require('child_process');
 const { readFileSync } = require('fs');
-const { version } = require('cv2-rando/package.json');
+const { version } = require('cv2r/package.json');
 
 module.exports = function(app) {
   app
@@ -9,9 +9,9 @@ module.exports = function(app) {
     .post('/genrom', (req, res) => {
       let { seed, palette, difficulty } = req.body; 
       
-      let bin = path.join(__dirname, '..', '..', 'node_modules', 'cv2-rando', 'bin', 'cv2rando');
+      let bin = path.join(__dirname, '..', '..', 'node_modules', 'cv2r', 'bin', 'cv2r');
       if (process.platform === 'win32') {
-        bin = path.join(__dirname, '..', '..', 'node_modules', '.bin', 'cv2rando');
+        bin = path.join(__dirname, '..', '..', 'node_modules', '.bin', 'cv2r');
       }
       exec(`${bin} --json --seed ${seed} --palette ${palette} --difficulty ${difficulty}`, function(err, stdout, stderr) {
         if (err) {

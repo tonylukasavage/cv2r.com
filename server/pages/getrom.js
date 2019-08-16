@@ -1,11 +1,34 @@
+const _ = require('lodash');
 const path = require('path');
 const { exec } = require('child_process');
 const { readFileSync } = require('fs');
+const difficulty = require('cv2r/config/difficulty.json');
 const { version } = require('cv2r/package.json');
+
+const patches = [];
+Object.keys(difficulty).forEach(diff => {
+  difficulty[diff].patches.forEach(patch => {
+    const existing = patches.find(p => p.key === patch);
+    if (existing) {
+      existing.difficulty.push(diff);
+    } else {
+      const mod = _.pick(require(`cv2r/lib/patch/${patch}`), [ 'name', 'description' ]);
+      patches.push({
+        key: patch,
+        name: mod.name,
+        description: mod.description,
+        difficulty: [ diff ]
+      });
+    }
+  });
+});
+patches.sort((a,b) => a.name > b.name);
 
 module.exports = function(app) {
   app
-    .get('/getrom', (req, res) => res.render('pages/getrom'))
+    .get('/getrom', (req, res) => {
+      res.render('pages/getrom', { patches });
+    })
     .post('/genrom', (req, res) => {
       let { seed, palette, difficulty } = req.body; 
       

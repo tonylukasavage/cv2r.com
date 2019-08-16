@@ -217,3 +217,28 @@ td.item img {
 .link-list {
   padding-left: 1em;
 }
+
+.patch-row {
+  padding-right: 1em;
+  padding-bottom: 1em;
+}
+
+.patch-list a {
+  font-size: 1em;
+  padding: 0.25em 0.75em;
+  border: 1px solid rgba(0,0,0,0.5)
+}
+
+.patch-description {
+  background-color: #fff; 
+  color: #000;
+  padding: 0.5em 1em;
+}
+
+
+
+.patch-disabled,
+.patch-disabled:hover {
+  text-decoration: line-through;
+  color: #aaa;
+}

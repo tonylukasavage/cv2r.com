@@ -40,9 +40,26 @@
       });
     }
 
+    function showPalettePreviews() {
+      var currentPalette = $('#palette').val();
+      $('.palette-preview img').each(function(index) {
+        $(this).attr('src', '/img/palette/' + currentPalette + '/' + (index + 1) + '.png');
+      });
+    }
+
     $(document).ready(function() {
       getSeed();
       togglePatchList();
+      showPalettePreviews();
+
+      $('#palettePreviewModal').on('show.bs.modal', function (event) {
+        var image = $(event.relatedTarget);
+        var imageSrc = image.attr('src');
+        var modal = $(this)
+        modal.find('#palettePreviewImage').attr('src', imageSrc);
+      });
+
+      $('#palette').change(showPalettePreviews);
 
       $('#difficulty').change(togglePatchList);
 
@@ -155,14 +172,6 @@
             </div>
             <small class="form-text text-muted">Use this seed, generate a new one, or create your own alphanumeric seed. Some of my personal favorites have been "MyCatLovesWhiskey" and "SathdreshMadeMeDoIt".</small>
           </div>
-          <div class="form-group">
-            <label for="palette">Color Palette</label>
-            <select class="form-control custom-select is-valid" id="palette">
-              <option value="simons-quest" selected="selected">Simon's Quest (default)</option>
-              <option value="rondo-of-burb">Rondo of Burb</option>
-            </select>
-            <small class="form-text text-muted">Choose from a selection of color palettes for the game. "Classic" is the standard Simon's Quest color palette. All other palettes are user submitted patches to change colors throughout the game. Previews of the palettes is on my TODO list.</small>
-          </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
@@ -191,10 +200,44 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="palette">Color Palette</label>
+            <select class="form-control custom-select is-valid" id="palette">
+              <% Object.keys(palettes).forEach(function(key) { %>
+                <option value="<%= key %>" <%= key === 'simons-quest' ? 'selected="selected"' : '' %></option><%= palettes[key].name %></option>
+              <% }); %>
+            </select>
+            <small class="form-text text-muted">Choose from a selection of color palettes for the game. "Classic" is the standard Simon's Quest color palette. All other palettes are user submitted patches to change colors throughout the game.</small>
+          </div>
+        </div>
+        <div class="col-lg-6 palette-preview">
+          <img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
+          <img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
+          <img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
+          <img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
+          <img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
+          <img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
+          <img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
+          <img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
+        </div>
+      </div>
     </form>
     <hr>
     <button id="randomizeButton" class="btn btn-danger btn-xlarge">RANDOMIZE!</button>
   </div>
 </div>
+
+<div class="modal fade" id="palettePreviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0">
+        <img id="palettePreviewImage" src="" style="width:500px;"/>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

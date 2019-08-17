@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 const { readFileSync } = require('fs');
@@ -24,10 +25,17 @@ Object.keys(difficulty).forEach(diff => {
 });
 patches.sort((a,b) => a.name > b.name);
 
+const palettes = {};
+const paletteDir = path.join(__dirname, '..', '..', 'node_modules', 'cv2r', 'lib', 'palette');
+fs.readdirSync(paletteDir).forEach(file => {
+    const mod = require(path.join(paletteDir, file));
+    palettes[file.replace(/\.js$/, '')] = _.pick(mod, [ 'name', 'description' ]);
+});
+
 module.exports = function(app) {
   app
     .get('/getrom', (req, res) => {
-      res.render('pages/getrom', { patches });
+      res.render('pages/getrom', { patches, palettes });
     })
     .post('/genrom', (req, res) => {
       let { seed, palette, difficulty } = req.body; 

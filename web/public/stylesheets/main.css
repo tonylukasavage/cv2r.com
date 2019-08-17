@@ -235,10 +235,17 @@ td.item img {
   padding: 0.5em 1em;
 }
 
-
-
 .patch-disabled,
 .patch-disabled:hover {
   text-decoration: line-through;
   color: #aaa;
+}
+
+.palette-preview img {
+  width: 23%;
+  margin-right: 1%;
+  margin-bottom: 1%;
+  border-radius: 8px;
+  border: 1px solid black;
+  cursor: pointer;
 }

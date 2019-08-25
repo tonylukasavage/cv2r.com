@@ -1,4 +1,4 @@
-const DiscordBot = require('./server/DiscordBot');
+// const DiscordBot = require('./server/DiscordBot');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -14,7 +14,7 @@ app
 	.use(express.urlencoded({ extended: true }));
 
 // configure discord bot
-const discord = new DiscordBot(app);
+// const discord = new DiscordBot(app);
 	
 // load all pages
 fs.readdirSync(path.join(__dirname, 'server', 'pages')).forEach(pageFile => {
@@ -23,5 +23,5 @@ fs.readdirSync(path.join(__dirname, 'server', 'pages')).forEach(pageFile => {
 
 app.listen(PORT, async () => {
 	console.log(`Listening on ${ PORT }`);
-	await discord.login(process.env.CV2R_DISCORD_BOT_TOKEN);
+	// await discord.login(process.env.CV2R_DISCORD_BOT_TOKEN);
 });

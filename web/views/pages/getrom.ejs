@@ -59,6 +59,12 @@
       togglePatchList();
       showPalettePreviews();
 
+			var generateRomRef;
+			$('#confirmModal .btn-primary').click(function(e) {
+				generateRomRef();
+				$('#confirmModal').modal('hide');
+			});
+
 			$('#confirmModal').on('show.bs.modal', function(e) {
 				var modal = $(this);
 				modal.find('.modal-title').text('No Custom Patches');
@@ -98,6 +104,8 @@
       });
 
       $('#randomizeButton')[0].addEventListener('click', function() {
+				generateRomRef = generateRom;
+
         var fields = [ 'rom', 'seed', 'palette', 'difficulty' ];
         var values = {};
         var invalid = [];
@@ -130,7 +138,6 @@
 					values.patch = patches.join(',');
 					if (!patches.length) {
 						$('#confirmModal').modal('show');
-						$('#confirmModal .button-primary').click(generateRom);
 					}
 				}
 
@@ -170,6 +177,7 @@
 	        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	        xhr.send(JSON.stringify(values));
 				}
+				generateRomRef = generateRom;
 			}, false);
     });
   </script>

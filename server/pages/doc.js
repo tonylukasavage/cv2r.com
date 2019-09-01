@@ -1,4 +1,4 @@
-const core = require('cv2r/lib/core');
+const { core } = require('cv2r');
 
 const items = [
   { name: 'whips', count: 4, notes: 'Whips are upgraded progressively. This means that any whip you obtain will always give you the next most powerful whip. For example, if you have the leather whip, the next whip check you obtain will give you the thorn whip.' },
@@ -42,7 +42,7 @@ module.exports = function(app) {
       const location = loc.name.replace(/\([^\)]+\)/, '');
       let name = actor.name;
       if (name === 'crystal dude') {
-        if (/Laruba/.test(location)) { name = 'laurels dude'; } 
+        if (/Laruba/.test(location)) { name = 'laurels dude'; }
         else if (/Debious/.test(location)) { name = 'flame whip dude'; }
         else if (/Vrad/.test(location)) { name = 'diamond dude'; }
       } else if (name === 'secret merchant') {

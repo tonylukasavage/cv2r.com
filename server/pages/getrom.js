@@ -3,8 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 const { readFileSync } = require('fs');
-const difficulty = require('cv2r/config/difficulty.json');
-const { version } = require('cv2r/package.json');
+const { difficulty, dir, version } = require('cv2r');
 
 const patches = [];
 Object.keys(difficulty).forEach(diff => {
@@ -13,7 +12,7 @@ Object.keys(difficulty).forEach(diff => {
     if (existing) {
       existing.difficulty.push(diff);
     } else {
-      const mod = _.pick(require(`cv2r/lib/patch/${patch}`), [ 'name', 'description' ]);
+      const mod = _.pick(require(`${dir.patch}/${patch}`), [ 'name', 'description' ]);
       patches.push({
         key: patch,
         name: mod.name,
@@ -26,9 +25,8 @@ Object.keys(difficulty).forEach(diff => {
 patches.sort((a,b) => a.name > b.name);
 
 const palettes = {};
-const paletteDir = path.join(__dirname, '..', '..', 'node_modules', 'cv2r', 'lib', 'palette');
-fs.readdirSync(paletteDir).forEach(file => {
-    const mod = require(path.join(paletteDir, file));
+fs.readdirSync(dir.palette).forEach(file => {
+    const mod = require(path.join(dir.palette, file));
     palettes[file.replace(/\.js$/, '')] = _.pick(mod, [ 'name', 'description' ]);
 });
 
@@ -38,13 +36,29 @@ module.exports = function(app) {
       res.render('pages/getrom', { patches, palettes });
     })
     .post('/genrom', (req, res) => {
-      let { seed, palette, difficulty } = req.body; 
-      
+      //let { seed, palette, difficulty, patch } = req.body;
+
+			// get platform-specific bin path
       let bin = path.join(__dirname, '..', '..', 'node_modules', 'cv2r', 'bin', 'cv2r');
       if (process.platform === 'win32') {
         bin = path.join(__dirname, '..', '..', 'node_modules', '.bin', 'cv2r');
       }
-      exec(`${bin} --json --seed ${seed} --palette ${palette} --difficulty ${difficulty}`, function(err, stdout, stderr) {
+
+			// determine whether this is a pre-defined difficulty or custom patch list
+			const { difficulty, patch } = req.body;
+			const reqArgs = [ 'seed', 'palette' ];
+			if (!difficulty) {
+				if (patch) {
+					reqArgs.push('patch');
+				}
+			} else {
+				reqArgs.push('difficulty');
+			}
+
+			// execute cv2r
+			const args = reqArgs.reduce((a,c) => a + `--${c} "${req.body[c]}" `, '');
+			console.log(`${bin} --json ${args}`);
+      exec(`${bin} --json ${args}`, function(err, stdout, stderr) {
         if (err) {
           console.error(err, stdout, stderr);
           res.status(500).send(err.stack);

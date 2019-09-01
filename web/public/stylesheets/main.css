@@ -3,14 +3,14 @@ body {
 }
 
 .jumbotron {
-  background: #213b59; 
+  background: #213b59;
   color: white;
-  padding-bottom: 0px; 
+  padding-bottom: 0px;
 }
 .jumbotron p {
   color: #d9ccee;
   max-width: 75%;
-  margin: 1em auto 1em; 
+  margin: 1em auto 1em;
 }
 .navbar {
   padding-top: 0;
@@ -19,7 +19,7 @@ body {
   border-top: solid 1px rgb(42, 42, 42);
 }
 .navbar + .jumbotron {
-  margin-top: -20px; 
+  margin-top: -20px;
 }
 .jumbotron .lang-logo {
   display: block;
@@ -29,16 +29,16 @@ body {
   width: 100px;
   height: 100px;
   margin: auto;
-  border: 2px solid white; 
+  border: 2px solid white;
 }
 .jumbotron .lang-logo img {
-  max-width: 100%; 
+  max-width: 100%;
 }
 .jumbotron .btn-dark {
   background-color: #222;
 }
 .jumbotron .btn-dark:hover {
-  background: #aaa; 
+  background: #aaa;
 }
 
 
@@ -85,7 +85,7 @@ body {
 
 .btn-xlarge {
   padding: 10px 28px;
-  font-size: 32px; 
+  font-size: 32px;
   line-height: normal;
   border: solid 2px black;
   -webkit-border-radius: 12px;
@@ -142,8 +142,8 @@ hr {
   text-align: left;
   margin-bottom: 20px;
   border: solid 2px;
-  background:white; 
-  padding-top:15px; 
+  background:white;
+  padding-top:15px;
   padding-left: 2em;
   padding-right: 2em;
   padding-bottom: 2px;
@@ -230,7 +230,7 @@ td.item img {
 }
 
 .patch-description {
-  background-color: #fff; 
+  background-color: #fff;
   color: #000;
   padding: 0.5em 1em;
 }
@@ -248,4 +248,31 @@ td.item img {
   border-radius: 8px;
   border: 1px solid black;
   cursor: pointer;
+}
+
+#patch-list {
+	padding-bottom: 1em;
+}
+
+#patch-list .list-group-item {
+	color: #000;
+	padding-left: 3em;
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+}
+
+#patch-list .list-group-item .custom-control-label.not-custom-difficulty::before {
+	display: none;
+}
+
+#patch-list .custom-switch .custom-control-label.not-custom-difficulty::after {
+	display: none;
+}
+
+#patch-list .list-group-item label {
+	font-weight: bold;
+}
+
+#patch-list small {
+	color: gray;
 }

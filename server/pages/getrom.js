@@ -6,28 +6,26 @@ const { readFileSync } = require('fs');
 const { difficulty, dir, version } = require('cv2r');
 
 const patches = [];
-Object.keys(difficulty).forEach(diff => {
-  difficulty[diff].patches.forEach(patch => {
-    const existing = patches.find(p => p.key === patch);
-    if (existing) {
-      existing.difficulty.push(diff);
-    } else {
-      const mod = _.pick(require(`${dir.patch}/${patch}`), [ 'name', 'description' ]);
-      patches.push({
-        key: patch,
-        name: mod.name,
-        description: mod.description,
-        difficulty: [ diff ]
-      });
-    }
-  });
+fs.readdirSync(dir.patch).forEach(file => {
+  const mod = require(path.join(dir.patch, file));
+  const modObj = _.pick(mod, [ 'id', 'name', 'description' ]);
+  modObj.key = modObj.id;
+  modObj.difficulty = [];
+  patches.push(modObj);
 });
 patches.sort((a,b) => a.name > b.name);
 
+Object.keys(difficulty).forEach(diff => {
+  difficulty[diff].patches.forEach(patch => {
+    const existing = patches.find(p => p.key === patch);
+    existing.difficulty.push(diff);
+  });
+});
+
 const palettes = {};
 fs.readdirSync(dir.palette).forEach(file => {
-    const mod = require(path.join(dir.palette, file));
-    palettes[file.replace(/\.js$/, '')] = _.pick(mod, [ 'name', 'description' ]);
+  const mod = require(path.join(dir.palette, file));
+  palettes[file.replace(/\.js$/, '')] = _.pick(mod, [ 'name', 'description' ]);
 });
 
 module.exports = function(app) {

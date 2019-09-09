@@ -157,11 +157,20 @@
 						if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
 							var resp = JSON.parse(this.response);
 							console.log(resp.spoiler);
+
 							resp.patch.forEach(entry => {
 								Object.keys(entry).forEach(offset => {
-									state.rom.set(entry[offset], parseInt(offset));
+									var bytes = entry[offset];
+									if (bytes[0] === 'copy') {
+										var len = bytes[1];
+										var dstOffset = bytes[2];
+										state.rom.copyWithin(dstOffset, offset, offset + len);
+									} else {
+										state.rom.set(entry[offset], parseInt(offset));
+									}
 								});
 							});
+
 							const blob = new Blob([state.rom]);
 							const fileName = 'cv2r-' + resp.version + '-' + values.seed + '-' + difficulty + '.nes';
 							const link = document.createElement('a');

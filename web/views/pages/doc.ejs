@@ -76,9 +76,19 @@
           <td><%= check.actor %></td>
           <td><%= check.location %></td>
           <td class="requirements">
-            <% check.requirements.forEach(function(req) { %>
+            <% check.requirements.forEach(function(req) {
+                if (Array.isArray(req)) {
+                  req.forEach((r,index) => {
+                    var prefix = index === 0 ? '<span style="color:white; font-weight:bold; padding-left:16px;">(</span>' : '';
+                    var suffix = index < req.length - 1 ? '<span style="color:white; font-weight:bold; padding-left:8px;">OR</span>' : '<span style="color:white; font-weight:bold; padding-left:8px;">)</span>';
+            %>
+            <%- prefix %><img style="padding-left:8px" src="<%= r.image %>" title="<%= r.name %>" alt="<%= r.name %>"><%- suffix %>
+            <%    });
+                } else { %>
             <img src="<%= req.image %>" title="<%= req.name %>" alt="<%= req.name %>">
-            <% }); %>
+            <%  }
+              });
+            %>
           </td>
         </tr>
         <% }); %>
@@ -102,9 +112,9 @@
         </tr>
   		</tbody>
     </table>
-    
+
     <h3>Things NOT in logic</h3>
-    The requirements for the checks above are based on certain assumptions about being able to move through the game. Over the years, speedrunners have developed many ways to move faster through the game. These methods often involve unintended game mechanics and high-skilled, RNG-heavy strats that I didn't want to define the game. These can still be used, but they are outside of the logic, and therefore <b>NOT</b> expected of the player to complete the randomizer. 
+    The requirements for the checks above are based on certain assumptions about being able to move through the game. Over the years, speedrunners have developed many ways to move faster through the game. These methods often involve unintended game mechanics and high-skilled, RNG-heavy strats that I didn't want to define the game. These can still be used, but they are outside of the logic, and therefore <b>NOT</b> expected of the player to complete the randomizer.
     <br><br>
     <ul>
       <li>Any progression that requires a floor drop</li>

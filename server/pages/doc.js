@@ -59,10 +59,19 @@ module.exports = function(app) {
         actor.requirements.forEach(req => {
           if (hasRed && [ 'blue crystal', 'white crystal' ].includes(req)) { return; }
           if (hasBlue && 'white crystal' === req) { return; }
-          requirements.push({
-            name: req,
-            image: `/img/sprites/${req.replace(/\s+/, '-')}.png`
-          });
+          if (Array.isArray(req)) {
+            requirements.push(req.map(r => {
+              return {
+                name: r,
+                image: `/img/sprites/${r.replace(/\s+/, '-')}.png`
+              };
+            }));
+          } else {
+            requirements.push({
+              name: req,
+              image: `/img/sprites/${req.replace(/\s+/, '-')}.png`
+            });
+          }
         });
       }
       requirements.sort((a,b) => {

@@ -157,6 +157,7 @@
 						if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
 							var resp = JSON.parse(this.response);
 							console.log(resp.spoiler);
+							var finalRom = state.rom.slice();
 
 							resp.patch.forEach(entry => {
 								Object.keys(entry).forEach(offset => {
@@ -164,14 +165,14 @@
 									if (bytes[0] === 'copy') {
 										var len = bytes[1];
 										var dstOffset = bytes[2];
-										state.rom.copyWithin(dstOffset, offset, offset + len);
+										finalRom.copyWithin(dstOffset, offset, offset + len);
 									} else {
-										state.rom.set(entry[offset], parseInt(offset));
+										finalRom.set(entry[offset], parseInt(offset));
 									}
 								});
 							});
 
-							const blob = new Blob([state.rom]);
+							const blob = new Blob([finalRom]);
 							const fileName = 'cv2r-' + resp.version + '-' + values.seed + '-' + difficulty + '.nes';
 							const link = document.createElement('a');
 							const url = URL.createObjectURL(blob);

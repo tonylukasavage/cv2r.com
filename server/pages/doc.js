@@ -1,4 +1,4 @@
-const { core } = require('cv2r');
+const { core, logic, utils: { parseLogic } } = require('cv2r');
 
 const items = [
   { name: 'whips', count: 4, notes: 'Whips are upgraded progressively. This means that any whip you obtain will always give you the next most powerful whip. For example, if you have the leather whip, the next whip check you obtain will give you the thorn whip.' },
@@ -22,17 +22,6 @@ const items = [
 ];
 items.forEach(i => i.image = `/img/sprites/${i.name.replace(/\s+/g, '-')}.png`);
 
-const reqOrder = [
-  'holy water',
-  'white crystal',
-  'blue crystal',
-  'red crystal',
-  'heart',
-  'oak stake',
-  'laurels',
-  'garlic'
-];
-
 module.exports = function(app) {
   const checks = [];
   core.filter(c => c.actors && c.actors.length).forEach(loc => {
@@ -52,30 +41,30 @@ module.exports = function(app) {
       const image = `/img/sprites/${name.replace(/\s+/g, '-')}.png`;
 
       // send back image links for item requirements
-      let requirements = [];
-      if (actor.requirements && actor.requirements.length) {
-        const hasRed = actor.requirements.includes('red crystal');
-        const hasBlue = actor.requirements.includes('blue crystal');
-        actor.requirements.forEach(req => {
-          if (hasRed && [ 'blue crystal', 'white crystal' ].includes(req)) { return; }
-          if (hasBlue && 'white crystal' === req) { return; }
-          if (Array.isArray(req)) {
-            requirements.push(req.map(r => {
-              return {
-                name: r,
-                image: `/img/sprites/${r.replace(/\s+/, '-')}.png`
-              };
-            }));
-          } else {
-            requirements.push({
-              name: req,
-              image: `/img/sprites/${req.replace(/\s+/, '-')}.png`
-            });
-          }
-        });
-      }
-      requirements.sort((a,b) => {
-        return reqOrder.indexOf(a.name) - reqOrder.indexOf(b.name);
+      let requirements = {};
+
+      logic.forEach(logicType => {
+        requirements[logicType] = [];
+        if (actor.requirements && actor.requirements[logicType].length) {
+          const parsed = parseLogic(actor.requirements[logicType]);
+          const hasRed = parsed.includes('red crystal');
+          const hasBlue = parsed.includes('blue crystal');
+          parsed.forEach(req => {
+            if (hasRed && [ 'blue crystal', 'white crystal' ].includes(req)) { return; }
+            if (hasBlue && 'white crystal' === req) { return; }
+            if ([ '(', ')', 'OR' ].includes(req)) {
+              requirements[logicType].push({
+                name: req,
+                image: null
+              });
+            } else {
+              requirements[logicType].push({
+                name: req,
+                image: `/img/sprites/${req.replace(/\s+/, '-')}.png`
+              });
+            }
+          });
+        }
       });
 
       checks.push({ actor: name, location, image, requirements });

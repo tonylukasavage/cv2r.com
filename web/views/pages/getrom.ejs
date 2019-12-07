@@ -82,6 +82,17 @@
 
 			$('#difficulty').change(togglePatchList);
 
+			$('#logic').change(function() {
+				var selectedLogic = $(this).children('option:selected').val();
+				$('.logic-text').each(function() {
+          if ((new RegExp(selectedLogic + '$').test($(this).attr('id')))) {
+            $(this).removeClass('d-none');
+          } else {
+            $(this).addClass('d-none');
+          }
+        });
+			});
+
 			$('#romFile')[0].addEventListener('change', function() {
 				state = {};
 
@@ -106,7 +117,7 @@
 			$('#randomizeButton')[0].addEventListener('click', function() {
 				generateRomRef = generateRom;
 
-				var fields = [ 'rom', 'seed', 'palette', 'difficulty' ];
+				var fields = [ 'logic', 'rom', 'seed', 'palette', 'difficulty' ];
 				var values = {};
 				var invalid = [];
 
@@ -254,6 +265,18 @@
 					</div>
 				</div>
 				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="logic">Randomization Logic</label>
+						<select class="form-control custom-select is-valid" id="logic">
+							<% logic.forEach(function(lt) { %>
+							<option value="<%= lt %>" <%= lt === 'standard' ? 'selected' : '' %>><%= lt %></option>
+							<% }); %>
+						</select>
+						<% Object.keys(logicText).forEach(function(key) { %>
+						<small id="logic-text-<%= key %>" class="form-text text-muted logic-text <%= key === 'standard' ? '' : 'd-none' %>"><%- logicText[key] %></small>
+						<% }); %>
+					</div>
+
 					<div class="form-group">
 						<label for="difficulty">Game Difficulty</label>
 						<select class="form-control custom-select is-valid" id="difficulty">

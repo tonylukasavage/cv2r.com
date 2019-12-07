@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 const { readFileSync } = require('fs');
-const { difficulty, dir, version } = require('cv2r');
+const { difficulty, dir, logic, version } = require('cv2r');
 
 const patches = [];
 fs.readdirSync(dir.patch).forEach(file => {
@@ -31,11 +31,13 @@ fs.readdirSync(dir.palette).forEach(file => {
 module.exports = function(app) {
   app
     .get('/getrom', (req, res) => {
-      res.render('pages/getrom', { patches, palettes });
+      const logicText = {
+        standard: 'Standard logic requires no glitches or tricks to progress. Progression is driven entirely from the order of items you acquire. See the <a href="http://localhost:5000/doc">Checks section</a> for a full list of all requirements for every item location.',
+        glitch: 'Glitch logic requires all the CV2 knowledge you can muster. The Camilla Cemetery 3 block jump and blob boost are in logic, so no more waiting for red crystal before diving into Laruba, Bodley, and Doina. Stock up on those laurels! See the <a href="http://localhost:5000/doc">Checks section</a> for a full list of all requirements for every item location.'
+      };
+      res.render('pages/getrom', { logic, logicText, patches, palettes });
     })
     .post('/genrom', (req, res) => {
-      //let { seed, palette, difficulty, patch } = req.body;
-
 			// get platform-specific bin path
       let bin = path.join(__dirname, '..', '..', 'node_modules', 'cv2r', 'bin', 'cv2r');
       if (process.platform === 'win32') {
@@ -44,7 +46,7 @@ module.exports = function(app) {
 
 			// determine whether this is a pre-defined difficulty or custom patch list
 			const { difficulty, patch } = req.body;
-			const reqArgs = [ 'seed', 'palette' ];
+			const reqArgs = [ 'seed', 'logic', 'palette' ];
 			if (!difficulty) {
 				if (patch) {
 					reqArgs.push('patch');

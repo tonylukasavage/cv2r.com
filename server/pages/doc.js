@@ -43,27 +43,49 @@ module.exports = function(app) {
       // send back image links for item requirements
       let requirements = {};
 
-      logic.forEach(logicType => {
-        requirements[logicType] = [];
-        if (actor.requirements && actor.requirements[logicType].length) {
-          const parsed = parseLogic(actor.requirements[logicType]);
+      logic.forEach(lt => {
+        requirements[lt] = [];
+        if (actor.requirements && actor.requirements[lt].length) {
+          const parsed = parseLogic(actor.requirements[lt]);
           const hasRed = parsed.includes('red crystal');
           const hasBlue = parsed.includes('blue crystal');
           parsed.forEach(req => {
+            // reduce crystals to highest required
             if (hasRed && [ 'blue crystal', 'white crystal' ].includes(req)) { return; }
             if (hasBlue && 'white crystal' === req) { return; }
+
+            // store parsed symbols
             if ([ '(', ')', 'OR' ].includes(req)) {
-              requirements[logicType].push({
+              requirements[lt].push({
                 name: req,
                 image: null
               });
             } else {
-              requirements[logicType].push({
+              requirements[lt].push({
                 name: req,
                 image: `/img/sprites/${req.replace(/\s+/, '-')}.png`
               });
             }
           });
+        }
+
+        // remove redundant parens
+        const cleaned = [];
+        for (let i = 0; i < requirements[lt].length; i++) {
+          const req = requirements[lt][i];
+          const req2 = requirements[lt][i + 2] || {};
+          if (req.name === '(' && req2.name === ')') {
+            requirements[lt].splice(i + 2, 1);
+          } else {
+            cleaned.push(req);
+          }
+        }
+        requirements[lt] = cleaned;
+
+        // wrap any hanging OR statements in parens
+        if (requirements[lt].length === 3 && requirements[lt][1].name === 'OR') {
+          requirements[lt].push({ name: ')', image: null });
+          requirements[lt].unshift({ name: '(', image: null });
         }
       });
 
@@ -71,5 +93,5 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/doc', (req, res) => res.render('pages/doc', { checks, items }));
+  app.get('/doc', (req, res) => res.render('pages/doc', { checks, items, logic }));
 };

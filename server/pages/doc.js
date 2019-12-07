@@ -93,5 +93,8 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/doc', (req, res) => res.render('pages/doc', { checks, items, logic }));
+  app.get('/doc', (req, res) => {
+    const reqLogic = req.query.logic || 'standard';
+    res.render('pages/doc', { checks, items, logic, reqLogic })
+  });
 };

@@ -3,9 +3,13 @@
 <head>
   <% include ../partials/header.ejs %>
   <script>
-    var selectedLogic = 'standard';
-
     $(document).ready(function() {
+      if (window.location.search && window.location.search.indexOf('logic') !== -1) {
+        $('html, body').animate({
+          scrollTop: $("h3:contains('Checks')").offset().top - 50
+        });
+      }
+
       $('.toc li').each(function($li) {
         var title = $(this).text();
         this.addEventListener('click', function() {
@@ -16,7 +20,7 @@
       });
 
       $('#logicPicker').change(function() {
-        selectedLogic = $(this).children('option:selected').val();
+        var selectedLogic = $(this).children('option:selected').val();
         $('.checks-table').each(function() {
           if ((new RegExp(selectedLogic + '$').test($(this).attr('id')))) {
             $(this).removeClass('d-none');
@@ -73,15 +77,16 @@
 
     <h3>Checks</h3>
   	<p>The items in the randomizer can be retrieved, purchased, or battled for from the following "checks". The term "check" refers to any person, place, or thing from which you can get a randomized item. The complete list of all checks and their location can be found below, along with a list of the items that are required to be able to reach the check at that location.</p>
+
     <span style="font-weight:bold;">Logic:</span>&nbsp;&nbsp;<select id="logicPicker">
       <% logic.forEach(function(lt) { %>
-      <option value="<%= lt %>" <%= lt === 'standard' ? 'selected' : '' %>><%= lt %></option>
+      <option value="<%= lt %>" <%= lt === reqLogic ? 'selected' : '' %>><%= lt %></option>
       <% }); %>
     </select>
     <br><br>
 
     <% logic.forEach(function(lt) { %>
-    <table id="checks-table-<%= lt %>" class="checks-table table table-striped table-secondary <%= lt === 'standard' ? '' : 'd-none' %>">
+    <table id="checks-table-<%= lt %>" class="checks-table table table-striped table-secondary <%= lt === reqLogic ? '' : 'd-none' %>">
   		<thead class="thead-dark">
   			<tr>
           <th style="width:24px"></th>

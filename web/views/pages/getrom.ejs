@@ -269,7 +269,7 @@
 						<label for="logic">Randomization Logic</label>
 						<select class="form-control custom-select is-valid" id="logic">
 							<% logic.forEach(function(lt) { %>
-							<option value="<%= lt %>" <%= lt === 'standard' ? 'selected' : '' %>><%= lt %></option>
+							<option value="<%= lt %>" <%= lt === 'standard' ? 'selected' : '' %>><%= lt.charAt(0).toUpperCase() + lt.slice(1) + ' Logic' %></option>
 							<% }); %>
 						</select>
 						<% Object.keys(logicText).forEach(function(key) { %>

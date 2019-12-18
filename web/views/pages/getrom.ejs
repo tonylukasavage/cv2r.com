@@ -252,8 +252,8 @@
 						<small class="form-text text-muted">Use this seed, generate a new one, or create your own alphanumeric seed. Some of my personal favorites have been "MyCatLovesWhiskey" and "SathdreshMadeMeDoIt".</small>
 					</div>
 					<div class="form-group">
-						<div>
-							<div class="form-group">
+						<div class="row">
+							<div class="form-group col-lg-6">
 								<label for="simon">Simon's Sprite</label>
 								<select class="form-control custom-select is-valid" id="simon">
 									<% Object.keys(simon).forEach(function(key) { %>
@@ -262,22 +262,20 @@
 								</select>
 								<small class="form-text text-muted simon-small">Choose a sprite to use for Simon.</small>
 							</div>
-						</div>
-						<div class="simon-preview">
-							<img src=""/>
+							<div class="simon-preview col-lg-6" style="text-align:center;">
+								<img src=""/>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<div>
-							<div class="form-group">
-								<label for="palette">Color Palette</label>
-								<select class="form-control custom-select is-valid" id="palette">
-									<% Object.keys(palettes).forEach(function(key) { %>
-										<option value="<%= key %>" <%= key === 'simons-quest' ? 'selected="selected"' : '' %></option><%= palettes[key].name %></option>
-									<% }); %>
-								</select>
-								<small class="form-text text-muted palette-small">Choose from a selection of color palettes for the game.</small>
-							</div>
+						<div class="form-group">
+							<label for="palette">Color Palette</label>
+							<select class="form-control custom-select is-valid" id="palette">
+								<% Object.keys(palettes).forEach(function(key) { %>
+									<option value="<%= key %>" <%= key === 'simons-quest' ? 'selected="selected"' : '' %></option><%= palettes[key].name %></option>
+								<% }); %>
+							</select>
+							<small class="form-text text-muted palette-small">Choose from a selection of color palettes for the game.</small>
 						</div>
 						<div class="palette-preview">
 							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>

@@ -28,6 +28,12 @@ fs.readdirSync(dir.palette).forEach(file => {
   palettes[file.replace(/\.js$/, '')] = _.pick(mod, [ 'name', 'description' ]);
 });
 
+const simon = {};
+fs.readdirSync(dir.simon).forEach(file => {
+  const mod = require(path.join(dir.simon, file));
+  simon[file.replace(/\.js$/, '')] = _.pick(mod, [ 'name', 'description' ]);
+});
+
 module.exports = function(app) {
   app
     .get('/getrom', (req, res) => {
@@ -35,7 +41,7 @@ module.exports = function(app) {
         standard: 'Standard Logic requires no glitches or tricks to progress. Progression is driven entirely from the order of items you acquire. See the <a href="http://localhost:5000/doc?logic=standard">Checks section</a> for a full list of all requirements for every item location.',
         glitch: 'Glitch Logic requires all the CV2 knowledge you can muster. The Camilla Cemetery 3 block jump and blob boost are in logic, so no more waiting for red crystal before diving into Laruba, Bodley, and Doina. Stock up on those laurels! See the <a href="http://localhost:5000/doc?logic=glitch">Checks section</a> for a full list of all requirements for every item location.'
       };
-      res.render('pages/getrom', { logic, logicText, patches, palettes });
+      res.render('pages/getrom', { logic, logicText, patches, palettes, simon });
     })
     .post('/genrom', (req, res) => {
 			// get platform-specific bin path
@@ -46,7 +52,7 @@ module.exports = function(app) {
 
 			// determine whether this is a pre-defined difficulty or custom patch list
 			const { difficulty, patch } = req.body;
-			const reqArgs = [ 'seed', 'logic', 'palette' ];
+			const reqArgs = [ 'seed', 'logic', 'palette', 'simon' ];
 			if (!difficulty) {
 				if (patch) {
 					reqArgs.push('patch');

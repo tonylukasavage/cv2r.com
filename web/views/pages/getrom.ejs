@@ -54,10 +54,18 @@
 			});
 		}
 
+		function showSimonPreviews() {
+			var currentSimon = $('#simon').val();
+			$('.simon-preview img').each(function(index) {
+				$(this).attr('src', '/img/simon/' + currentSimon + '.png');
+			});
+		}
+
 		$(document).ready(function() {
 			getSeed();
 			togglePatchList();
 			showPalettePreviews();
+			showSimonPreviews();
 
 			var generateRomRef;
 			$('#confirmModal .btn-primary').click(function(e) {
@@ -79,6 +87,8 @@
 			});
 
 			$('#palette').change(showPalettePreviews);
+
+			$('#simon').change(showSimonPreviews);
 
 			$('#difficulty').change(togglePatchList);
 
@@ -118,7 +128,7 @@
 			$('#randomizeButton')[0].addEventListener('click', function() {
 				generateRomRef = generateRom;
 
-				var fields = [ 'logic', 'rom', 'seed', 'palette', 'difficulty' ];
+				var fields = [ 'logic', 'rom', 'seed', 'palette', 'difficulty', 'simon' ];
 				var values = {};
 				var invalid = [];
 
@@ -244,13 +254,29 @@
 					<div class="form-group">
 						<div>
 							<div class="form-group">
+								<label for="simon">Simon's Sprite</label>
+								<select class="form-control custom-select is-valid" id="simon">
+									<% Object.keys(simon).forEach(function(key) { %>
+										<option value="<%= key %>" <%= key === 'simon-default' ? 'selected="selected"' : '' %></option><%= simon[key].name %></option>
+									<% }); %>
+								</select>
+								<small class="form-text text-muted simon-small">Choose a sprite to use for Simon.</small>
+							</div>
+						</div>
+						<div class="simon-preview">
+							<img src=""/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div>
+							<div class="form-group">
 								<label for="palette">Color Palette</label>
 								<select class="form-control custom-select is-valid" id="palette">
 									<% Object.keys(palettes).forEach(function(key) { %>
 										<option value="<%= key %>" <%= key === 'simons-quest' ? 'selected="selected"' : '' %></option><%= palettes[key].name %></option>
 									<% }); %>
 								</select>
-								<small class="form-text text-muted">Choose from a selection of color palettes for the game. "Classic" is the standard Simon's Quest color palette. All other palettes are user submitted patches to change colors throughout the game.</small>
+								<small class="form-text text-muted palette-small">Choose from a selection of color palettes for the game.</small>
 							</div>
 						</div>
 						<div class="palette-preview">

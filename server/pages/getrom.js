@@ -39,7 +39,8 @@ module.exports = function(app) {
     .get('/getrom', (req, res) => {
       const logicText = {
         standard: 'Standard Logic requires no glitches or tricks to progress. Progression is driven entirely from the order of items you acquire. See the <a href="http://cv2r.herokuapp.com/doc?logic=standard">Checks section</a> for a full list of all requirements for every item location.',
-        glitch: 'Glitch Logic requires all the CV2 knowledge you can muster. The Camilla Cemetery 3 block jump and blob boost are in logic, so no more waiting for red crystal before diving into Laruba, Bodley, and Doina. Stock up on those laurels! See the <a href="http://cv2r.herokuapp.com/doc?logic=glitch">Checks section</a> for a full list of all requirements for every item location.'
+        glitch: 'Glitch Logic requires all the CV2 knowledge you can muster. The Camilla Cemetery 3 block jump and blob boost are in logic, so no more waiting for red crystal before diving into Laruba, Bodley, and Doina. Stock up on those laurels! See the <a href="http://cv2r.herokuapp.com/doc?logic=glitch">Checks section</a> for a full list of all requirements for every item location.',
+        diamondWarp: '<b>IMPORTANT:</b> This logic can be used with any difficulty, but may require glitches if not used with Diamond Warp difficulty.<br><br>Diamond Warp Logic is the same as standard logic, with one exception. If you acquire the magic cross and diamond, Doina is considered in logic, and Bodley is as well if you have the other items necessary to traverse it. See the <a href="http://cv2r.herokuapp.com/doc?logic=diamondWarp">Checks section</a> for a full list of all requirements for every item location.'
       };
       res.render('pages/getrom', { logic, logicText, patches, palettes, simon });
     })

@@ -101,6 +101,10 @@
             $(this).addClass('d-none');
           }
         });
+        if (selectedLogic === 'diamondWarp') {
+        	$('#difficulty').val(selectedLogic);
+        	togglePatchList();
+        }
 			});
 			$('#logic').trigger('change');
 
@@ -309,6 +313,7 @@
 							<option value="standard" selected="selected">Standard</option>
 							<option value="hard">Hard</option>
 							<option value="elite">Elite</option>
+							<option value="diamondWarp">Diamond Warp</option>
 							<option value="custom">Custom</option>
 						</select>
 						<small class="form-text text-muted">Choose a pre-defined difficulty setting, or choose "Custom" to select whatever patches you want.</small>

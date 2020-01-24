@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+  <script>
+    var HEIGHT = 32;
+    var WIDTH = 16;
+    var MULT = 8;
+    var mousedown = false;
+    var canvas, ctx, i;
+
+    var nesPalette = [
+      { hex: '7C7C7C', rgb: [ 124, 124, 124 ] },
+      { hex: '0000FC', rgb: [ 0, 0, 252 ] },
+      { hex: '0000BC', rgb: [ 0, 0, 188 ] },
+      { hex: '4428BC', rgb: [ 68, 40, 188 ] },
+      { hex: '940084', rgb: [ 148, 0, 132 ] },
+      { hex: 'A80020', rgb: [ 168, 0, 32 ] },
+      { hex: 'A81000', rgb: [ 168, 16, 0 ] },
+      { hex: '881400', rgb: [ 136, 20, 0 ] },
+      { hex: '503000', rgb: [ 80, 48, 0 ] },
+      { hex: '007800', rgb: [ 0, 120, 0 ] },
+      { hex: '006800', rgb: [ 0, 104, 0 ] },
+      { hex: '005800', rgb: [ 0, 88, 0 ] },
+      { hex: '004058', rgb: [ 0, 64, 88 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: 'BCBCBC', rgb: [ 188, 188, 188 ] },
+      { hex: '0078F8', rgb: [ 0, 120, 248 ] },
+      { hex: '0058F8', rgb: [ 0, 88, 248 ] },
+      { hex: '6844FC', rgb: [ 104, 68, 252 ] },
+      { hex: 'D800CC', rgb: [ 216, 0, 204 ] },
+      { hex: 'E40058', rgb: [ 228, 0, 88 ] },
+      { hex: 'F83800', rgb: [ 248, 56, 0 ] },
+      { hex: 'E45C10', rgb: [ 228, 92, 16 ] },
+      { hex: 'AC7C00', rgb: [ 172, 124, 0 ] },
+      { hex: '00B800', rgb: [ 0, 184, 0 ] },
+      { hex: '00A800', rgb: [ 0, 168, 0 ] },
+      { hex: '00A844', rgb: [ 0, 168, 68 ] },
+      { hex: '008888', rgb: [ 0, 136, 136 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: 'F8F8F8', rgb: [ 248, 248, 248 ] },
+      { hex: '3CBCFC', rgb: [ 60, 188, 252 ] },
+      { hex: '6888FC', rgb: [ 104, 136, 252 ] },
+      { hex: '9878F8', rgb: [ 152, 120, 248 ] },
+      { hex: 'F878F8', rgb: [ 248, 120, 248 ] },
+      { hex: 'F85898', rgb: [ 248, 88, 152 ] },
+      { hex: 'F87858', rgb: [ 248, 120, 88 ] },
+      { hex: 'FCA044', rgb: [ 252, 160, 68 ] },
+      { hex: 'F8B800', rgb: [ 248, 184, 0 ] },
+      { hex: 'B8F818', rgb: [ 184, 248, 24 ] },
+      { hex: '58D854', rgb: [ 88, 216, 84 ] },
+      { hex: '58F898', rgb: [ 88, 248, 152 ] },
+      { hex: '00E8D8', rgb: [ 0, 232, 216 ] },
+      { hex: '787878', rgb: [ 120, 120, 120 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: 'FCFCFC', rgb: [ 252, 252, 252 ] },
+      { hex: 'A4E4FC', rgb: [ 164, 228, 252 ] },
+      { hex: 'B8B8F8', rgb: [ 184, 184, 248 ] },
+      { hex: 'D8B8F8', rgb: [ 216, 184, 248 ] },
+      { hex: 'F8B8F8', rgb: [ 248, 184, 248 ] },
+      { hex: 'F8A4C0', rgb: [ 248, 164, 192 ] },
+      { hex: 'F0D0B0', rgb: [ 240, 208, 176 ] },
+      { hex: 'FCE0A8', rgb: [ 252, 224, 168 ] },
+      { hex: 'F8D878', rgb: [ 248, 216, 120 ] },
+      { hex: 'D8F878', rgb: [ 216, 248, 120 ] },
+      { hex: 'B8F8B8', rgb: [ 184, 248, 184 ] },
+      { hex: 'B8F8D8', rgb: [ 184, 248, 216 ] },
+      { hex: '00FCFC', rgb: [ 0, 252, 252 ] },
+      { hex: 'D8D8D8', rgb: [ 216, 216, 216 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] },
+      { hex: '000000', rgb: [ 0, 0, 0 ] }
+    ];
+
+    var pixels = new Array(WIDTH * HEIGHT);
+    pixels.fill({});
+    pixels = pixels.map((p, index) => {
+      return {
+        x: (index % 16) * MULT,
+        y: (Math.floor(index / 16)) * MULT,
+        color: 'black'
+      };
+    });
+
+    var grid = [];
+    grid.style = 'rgba(255,255,255,0.25)';
+    for (i = 0; i < WIDTH + 1; i++) {
+      grid.push({ type: 'x', index: i });
+    }
+    for (i = 0; i < HEIGHT + 1; i++) {
+      grid.push({ type: 'y', index: i });
+    }
+
+    function init() {
+      canvas = $('#simon')[0];
+      ctx = canvas.getContext('2d');
+      draw();
+      canvas.addEventListener('click', drawPixel, false);
+      canvas.addEventListener('mousedown', () => mousedown = true);
+      canvas.addEventListener('mouseup', () => mousedown = false);
+      canvas.addEventListener('mousemove', function(ev) {
+        if (mousedown) {
+          drawPixel();
+        }
+      });
+    }
+
+    function drawPixel(ev) {
+      var x = event.pageX - canvas.offsetLeft;
+      var y = event.pageY - canvas.offsetTop;
+      var index = (Math.floor(y / MULT) * 16) + Math.floor(x / MULT);
+      pixels[index].color = 'red';
+      draw();
+    }
+
+    function drawSprite() {
+      pixels.forEach(p => {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, MULT, MULT);
+      });
+    }
+
+    function drawGrid() {
+      ctx.strokeStyle = grid.style;
+      grid.forEach(line => {
+        if (line.type === 'x') {
+          ctx.beginPath();
+          ctx.moveTo(line.index * MULT, 0);
+          ctx.lineTo(line.index * MULT, HEIGHT * MULT);
+          ctx.stroke();
+        } else if (line.type === 'y') {
+          ctx.beginPath();
+          ctx.moveTo(0, line.index * MULT);
+          ctx.lineTo(WIDTH * MULT, line.index * MULT);
+          ctx.stroke();
+        }
+      });
+    }
+
+    function drawDivider() {
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.beginPath();
+      ctx.moveTo(0, HEIGHT * MULT / 2);
+      ctx.lineTo(WIDTH * MULT, HEIGHT * MULT / 2);
+      ctx.stroke();
+    }
+
+    function draw() {
+      drawSprite();
+      drawGrid();
+      drawDivider();
+    }
+
+
+  </script>
+</head>
+
+<body onload="init();">
+
+  <% include ../partials/nav.ejs %>
+
+  <div class="jumbotron text-center">
+    <div class="container info-box shadow doc-container">
+      <h3>Sprite Maker</h3>
+      <p>You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted as a pull request to the cv2r project.</p>
+    </div>
+    <canvas id="simon" height="256" width="128" style="height:256px; width:128px; background-color:white;"></canvas>
+  </div>
+
+</body>
+</html>

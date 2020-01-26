@@ -7,7 +7,7 @@
     var WIDTH = 16;
     var MULT = 8;
     var mousedown = false;
-    var canvas, ctx, i;
+    var canvas, picker, ctx, i, html;
 
     var nesPalette = [
       { hex: '7C7C7C', rgb: [ 124, 124, 124 ] },
@@ -76,6 +76,13 @@
       { hex: '000000', rgb: [ 0, 0, 0 ] }
     ];
 
+    var palette = [
+      { hex: '000000', index: 0x0F },
+      { hex: 'A81000', index: 0x06 },
+      { hex: 'FCFCFC', index: 0x30 },
+      { hex: '000000', index: 0x0F }
+    ];
+
     var pixels = new Array(WIDTH * HEIGHT);
     pixels.fill({});
     pixels = pixels.map((p, index) => {
@@ -97,23 +104,57 @@
 
     function init() {
       canvas = $('#simon')[0];
+      picker = $('#picker').first();
       ctx = canvas.getContext('2d');
       draw();
       canvas.addEventListener('click', drawPixel, false);
-      canvas.addEventListener('mousedown', () => mousedown = true);
+      canvas.addEventListener('mousedown', ev => {
+        mousedown = true;
+        drawPixel(ev);
+      });
       canvas.addEventListener('mouseup', () => mousedown = false);
       canvas.addEventListener('mousemove', function(ev) {
         if (mousedown) {
-          drawPixel();
+          drawPixel(ev);
         }
+      });
+
+      html = '';
+      nesPalette.forEach(function(color, index) {
+        var offset = Math.floor(index / 16);
+        if (index % 16 === 0) {
+          html += '<div class="row">';
+        }
+        html += '<button class="picker-button" style="background-color:#' + color.hex + '"></button>';
+        if (index % (15 * (offset+1) + offset) === 0 && index !== 0) {
+          html += '</div>';
+        }
+      });
+      picker.append(html);
+
+      $('.picker-button').click(function() {
+        console.log($(this).css('background-color'));
+        $('.palette-button').first().css('background-color', $(this).css('background-color'));
+      });
+
+      $('.palette-button').click(function() {
+        var self = this;
+        $('.palette-button').each(function() {
+          if (this === self) {
+            $(this).addClass('palette-button-selected');
+          } else {
+            $(this).removeClass('palette-button-selected');
+          }
+        });
       });
     }
 
     function drawPixel(ev) {
-      var x = event.pageX - canvas.offsetLeft;
-      var y = event.pageY - canvas.offsetTop;
+      var rect = canvas.getBoundingClientRect();
+      var x = ev.clientX - rect.left;
+      var y = ev.clientY - rect.top;
       var index = (Math.floor(y / MULT) * 16) + Math.floor(x / MULT);
-      pixels[index].color = 'red';
+      pixels[index].color = $('.palette-button-selected').first().css('background-color');
       draw();
     }
 
@@ -164,11 +205,27 @@
   <% include ../partials/nav.ejs %>
 
   <div class="jumbotron text-center">
-    <div class="container info-box shadow doc-container">
-      <h3>Sprite Maker</h3>
-      <p>You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted as a pull request to the cv2r project.</p>
+    <div class="container info-box shadow">
+      <div class="row">
+        <h3>Sprite Maker</h3>
+        <p>You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted as a pull request to the cv2r project.</p>
+        </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <canvas id="simon" height="256" width="128" style="height:256px; width:128px; background-color:white;"></canvas>
+        </div>
+        <div class="col-md-9">
+          <div>Palette</div>
+          <button class="palette-button palette-button-selected" style="background-color:#000;"></button>
+          <button class="palette-button" style="background-color:#f00;"></button>
+          <button class="palette-button" style="background-color:#fff;"></button>
+          <button class="palette-button" style="background-color:#000;"></button>
+
+          <div>Color Picker</div>
+          <div id="picker" style="margin-left:14px; width:640px;"></div>
+        </div>
+      </div>
     </div>
-    <canvas id="simon" height="256" width="128" style="height:256px; width:128px; background-color:white;"></canvas>
   </div>
 
 </body>

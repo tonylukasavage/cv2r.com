@@ -3,10 +3,11 @@
 <head>
   <% include ../partials/header.ejs %>
   <script src="/js/sprite-maker/NES.js"></script>
+  <script src="/js/sprite-maker/Sprites.js"></script>
+  <script src="/js/sprite-maker/SpriteMaker.js"></script>
   <script>
-    var HEIGHT = 32;
-    var WIDTH = 16;
-    var MULT = 8;
+    SpriteMaker.init($('#simon'), { height: 16, width: 16 }, 8);
+
     var mousedown = false;
     var canvas, picker, ctx, i, html;
 

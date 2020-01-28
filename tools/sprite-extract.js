@@ -130,7 +130,6 @@ const sprites = [
 	},
 ];
 
-const output = [];
 sprites.forEach(sprite => {
 	const sprite8x8 = [];
 	sprite.layout.forEach((offset, index) => {
@@ -142,35 +141,7 @@ sprites.forEach(sprite => {
 			}
 		}
 	});
-	output.push(sprite8x8);
+	sprite.data = sprite8x8;
 });
 
-// console.log(output);
-
-console.log(_.flattenDeep(output).join('').match(/.{8}/g));
-// const pairs = [
-// 	[ 0, 2 ],
-// 	[ 1, 3 ]
-// ];
-// const final = [];
-// pairs.forEach(pair => {
-// 	const combos = [];
-// 	pair.forEach((offset, index) => {
-// 		for (let i = 0; i < SIZE/2; i++) {
-// 			const bin1 = toBinaryArray(buf.readUInt8(BASE + (offset * SIZE) + i));
-// 			const bin2 = toBinaryArray(buf.readUInt8(BASE + (offset * SIZE) + i + 8));
-// 			const combo = [];
-// 			for (let i = 0; i < 8; i++) {
-// 				combo.push(bin1[i] + (bin2[i] * 2));
-// 			}
-// 			if (index === 1) {
-// 				combos[i] = combos[i].concat(combo);
-// 			} else {
-// 				combos.push(combo);
-// 			}
-// 		}
-// 	});
-// 	final.push(combos);
-// });
-
-//console.log(_.flattenDeep(output).join('').match(/.{16}/g));
+console.log(JSON.stringify(sprites, null, 2));

@@ -15,10 +15,10 @@ var SpriteMaker = {};
 
 		// set default palette (Simon default)
 		palette = [
+			{ hex: '0000FF', index: 0x0F },
 			{ hex: '000000', index: 0x0F },
-			{ hex: 'A81000', index: 0x06 },
-			{ hex: 'FCFCFC', index: 0x30 },
-			{ hex: '000000', index: 0x0F }
+			{ hex: 'A81000', index: 0x16 },
+			{ hex: 'FCFCFC', index: 0x20 }
 		];
 
 		// create pixel grid
@@ -49,11 +49,18 @@ var SpriteMaker = {};
 	SpriteMaker.loadSprite = function() {
 		pixels = [];
 		sprite.data.forEach((paletteIndex, index) => {
+			const layoutIndex = Math.floor(index / 64);
+			const layout = sprite.layout[layoutIndex];
 			pixels.push({
-				x: (index % sprite.width) * zoom,
-				y: (Math.floor(index / sprite.height)) * zoom,
+				x: ((index % 8) + (layout >= 2 ? 8 : 0)) * zoom,
+				y: ((Math.floor((index % 64) / 8)) + (layout % 2 === 1 ? 8 : 0)) * zoom,
 				paletteIndex
 			});
+			// pixels.push({
+			// 	x: (index % sprite.width) * zoom,
+			// 	y: (Math.floor(index / sprite.height)) * zoom,
+			// 	paletteIndex
+			// });
 		});
 	};
 

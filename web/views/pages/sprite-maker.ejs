@@ -2,15 +2,15 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
-  <script src="/js/sprite-maker/sprites.js"></script>
-  <script src="/js/sprite-maker/SpriteMaker.js"></script>
+  <script src="/js/sprite-maker/sprite-maker.js"></script>
   <script>
     var canvas;
+    var sprites = <%- JSON.stringify(sprites) %>;
     var mousedown = false;
 
     function init() {
       canvas = $('#simon')[0];
-      SpriteMaker.init($(canvas), Sprites[0], 8);
+      SpriteMaker.init($(canvas), sprites[0], 8);
       SpriteMaker.draw();
 
       canvas.addEventListener('click', SpriteMaker.drawPixel.bind(SpriteMaker), false);

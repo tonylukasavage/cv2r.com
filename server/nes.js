@@ -1,4 +1,4 @@
-exports.nesPalette = [
+exports.colors = [
 	{ hex: '7C7C7C', rgb: [ 124, 124, 124 ] },
 	{ hex: '0000FC', rgb: [ 0, 0, 252 ] },
 	{ hex: '0000BC', rgb: [ 0, 0, 188 ] },

@@ -2,70 +2,35 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
-  <script src="/js/sprite-maker/NES.js"></script>
-  <script src="/js/sprite-maker/Sprites.js"></script>
+  <script src="/js/sprite-maker/sprites.js"></script>
   <script src="/js/sprite-maker/SpriteMaker.js"></script>
   <script>
-    SpriteMaker.init($('#simon'), { height: 16, width: 16 }, 8);
-
+    var canvas;
     var mousedown = false;
-    var canvas, picker, ctx, i, html;
-
-    var pixels = new Array(WIDTH * HEIGHT);
-    pixels.fill({});
-    pixels = pixels.map((p, index) => {
-      return {
-        x: (index % 16) * MULT,
-        y: (Math.floor(index / 16)) * MULT,
-        paletteIndex: 0
-      };
-    });
-
-    var grid = [];
-    grid.style = 'rgba(255,255,255,0.25)';
-    for (i = 0; i < WIDTH + 1; i++) {
-      grid.push({ type: 'x', index: i });
-    }
-    for (i = 0; i < HEIGHT + 1; i++) {
-      grid.push({ type: 'y', index: i });
-    }
 
     function init() {
       canvas = $('#simon')[0];
-      picker = $('#picker').first();
-      ctx = canvas.getContext('2d');
-      draw();
-      canvas.addEventListener('click', drawPixel, false);
+      SpriteMaker.init($(canvas), Sprites[0], 8);
+      SpriteMaker.draw();
+
+      canvas.addEventListener('click', SpriteMaker.drawPixel.bind(SpriteMaker), false);
+      canvas.addEventListener('mouseup', () => mousedown = false);
       canvas.addEventListener('mousedown', ev => {
         mousedown = true;
-        drawPixel(ev);
+        SpriteMaker.drawPixel(ev);
       });
-      canvas.addEventListener('mouseup', () => mousedown = false);
       canvas.addEventListener('mousemove', function(ev) {
         if (mousedown) {
-          drawPixel(ev);
+          SpriteMaker.drawPixel(ev);
         }
       });
-
-      html = '';
-      NES.colors.forEach(function(color, index) {
-        var offset = Math.floor(index / 16);
-        if (index % 16 === 0) {
-          html += '<div class="row">';
-        }
-        html += '<button class="picker-button" style="background-color:#' + color.hex + '"></button>';
-        if (index % (15 * (offset+1) + offset) === 0 && index !== 0) {
-          html += '</div>';
-        }
-      });
-      picker.append(html);
 
       $('.picker-button').click(function() {
         var pb = $('.palette-button-selected').first();
         var bgc = $(this).css('background-color');
         pb.css('background-color', bgc);
         palette[parseInt(pb.attr('data-pi'), 10)].hex = bgc;
-        draw();
+        SpriteMaker.draw();
       });
 
       $('.palette-button').click(function() {
@@ -79,55 +44,6 @@
         });
       });
     }
-
-    function drawPixel(ev) {
-      var rect = canvas.getBoundingClientRect();
-      var x = ev.clientX - rect.left;
-      var y = ev.clientY - rect.top;
-      var index = (Math.floor(y / MULT) * 16) + Math.floor(x / MULT);
-      pixels[index].paletteIndex = parseInt($('.palette-button-selected').first().attr('data-pi'), 10);
-      draw();
-    }
-
-    function drawSprite() {
-      pixels.forEach(p => {
-        //console.log(palette[p.paletteIndex], palette[p.paletteIndex].hex);
-        ctx.fillStyle = palette[p.paletteIndex].hex;  //p.color;
-        ctx.fillRect(p.x, p.y, MULT, MULT);
-      });
-    }
-
-    function drawGrid() {
-      ctx.strokeStyle = grid.style;
-      grid.forEach(line => {
-        if (line.type === 'x') {
-          ctx.beginPath();
-          ctx.moveTo(line.index * MULT, 0);
-          ctx.lineTo(line.index * MULT, HEIGHT * MULT);
-          ctx.stroke();
-        } else if (line.type === 'y') {
-          ctx.beginPath();
-          ctx.moveTo(0, line.index * MULT);
-          ctx.lineTo(WIDTH * MULT, line.index * MULT);
-          ctx.stroke();
-        }
-      });
-    }
-
-    function drawDivider() {
-      ctx.strokeStyle = 'rgba(255,255,255,0.65)';
-      ctx.beginPath();
-      ctx.moveTo(0, HEIGHT * MULT / 2);
-      ctx.lineTo(WIDTH * MULT, HEIGHT * MULT / 2);
-      ctx.stroke();
-    }
-
-    function draw() {
-      drawSprite();
-      drawGrid();
-      drawDivider();
-    }
-
 
   </script>
 </head>
@@ -154,7 +70,19 @@
           <button class="palette-button" data-pi="3" style="background-color:#000;"></button>
 
           <div>Color Picker</div>
-          <div id="picker" style="margin-left:14px; width:640px;"></div>
+          <div style="margin-left:14px; width:640px;">
+            <% colors.forEach(function(color, index) {
+                 var offset = Math.floor(index / 16);
+                 if (index % 16 === 0) {
+            %>
+            <div class="row">
+            <%   } %>
+              <button class="picker-button" style="background-color:#<%= color.hex %>"></button>
+            <%   if (index % (15 * (offset+1) + offset) === 0 && index !== 0) { %>
+            </div>
+            <%   }
+               }); %>
+          </div>
 
           <div>Simon's Sprites</div>
           <canvas height="64" width="64" style="height:64px; width:64px; background-color:#0ff;"></canvas>

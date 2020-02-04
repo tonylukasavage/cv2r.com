@@ -1,25 +1,18 @@
 var SpriteMaker = {};
 
 (function() {
-	var $canvas, ctx, pixels, zoom, sprite, grid;
+	var $canvas, ctx, pixels, zoom, sprite, palette, grid;
 
 	function getPaletteIndex() {
 		return parseInt($('.palette-button-selected').first().attr('data-pi'), 10);
 	}
 
-	SpriteMaker.init = function(canvas, _sprite, _zoom) {
+	SpriteMaker.init = function(canvas, _sprite, _palette, _zoom) {
 		$canvas = canvas;
 		ctx = $canvas[0].getContext('2d');
 		zoom = _zoom;
 		sprite = _sprite;
-
-		// set default palette (Simon default)
-		palette = [
-			{ hex: '0000FF', index: 0x0F },
-			{ hex: '000000', index: 0x0F },
-			{ hex: 'A81000', index: 0x16 },
-			{ hex: 'FCFCFC', index: 0x20 }
-		];
+		palette = _palette;
 
 		// create pixel grid
 		var i;
@@ -54,6 +47,7 @@ var SpriteMaker = {};
 			pixels.push({
 				x: ((index % 8) + (layout >= 2 ? 8 : 0)) * zoom,
 				y: ((Math.floor((index % 64) / 8)) + (layout % 2 === 1 ? 8 : 0)) * zoom,
+				//x2: ((index % 8)  ),
 				paletteIndex
 			});
 			// pixels.push({
@@ -74,7 +68,25 @@ var SpriteMaker = {};
 		var rect = $canvas[0].getBoundingClientRect();
 		var x = ev.clientX - rect.left;
 		var y = ev.clientY - rect.top;
-		var index = (Math.floor(y / zoom) * 16) + Math.floor(x / zoom);
+		var xScale = Math.floor(x / zoom);
+		var yScale = Math.floor(y / zoom);
+		var index;
+
+		if (sprite.width > 8) {
+			if (xScale < sprite.width / 2) {
+				if (yScale < sprite.height / 2) {
+					index = yScale * 8 + xScale;
+				} else {
+					index = 64 + yScale * 8 + xScale;
+				}
+			} else {
+				if (yScale < sprite.height / 2) {
+					index = 64 + yScale * 8 + (xScale % 8);
+				} else {
+					index = 128 + yScale * 8 + (xScale % 8);
+				}
+			}
+		}
 		pixels[index].paletteIndex = getPaletteIndex();
 		this.draw();
 	};
@@ -108,6 +120,11 @@ var SpriteMaker = {};
 		ctx.beginPath();
 		ctx.moveTo(0, sprite.height * zoom / 2);
 		ctx.lineTo(sprite.width * zoom, sprite.height * zoom / 2);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(sprite.width * zoom / 2, 0);
+		ctx.lineTo(sprite.width * zoom / 2, sprite.height * zoom);
 		ctx.stroke();
 	}
 

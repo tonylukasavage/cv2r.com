@@ -6,11 +6,12 @@
   <script>
     var canvas;
     var sprites = <%- JSON.stringify(sprites) %>;
+    var palette = <%- JSON.stringify(palette) %>;
     var mousedown = false;
 
     function init() {
       canvas = $('#simon')[0];
-      SpriteMaker.init($(canvas), sprites[0], 8);
+      SpriteMaker.init($(canvas), sprites[0], palette, 8);
       SpriteMaker.draw();
 
       canvas.addEventListener('click', SpriteMaker.drawPixel.bind(SpriteMaker), false);
@@ -28,8 +29,10 @@
       $('.picker-button').click(function() {
         var pb = $('.palette-button-selected').first();
         var bgc = $(this).css('background-color');
+        var paletteIndex = parseInt(pb.attr('data-pi'), 10);
         pb.css('background-color', bgc);
-        palette[parseInt(pb.attr('data-pi'), 10)].hex = bgc;
+        palette[paletteIndex].hex = bgc;
+        palette[paletteIndex].index = parseIint($(this).attr('data-pi'), 10);
         SpriteMaker.draw();
       });
 
@@ -64,10 +67,9 @@
         </div>
         <div class="col-md-9">
           <div>Palette</div>
-          <button class="palette-button palette-button-selected" data-pi="0" style="background-color:#000;"></button>
-          <button class="palette-button" data-pi="1" style="background-color:#f00;"></button>
-          <button class="palette-button" data-pi="2" style="background-color:#fff;"></button>
-          <button class="palette-button" data-pi="3" style="background-color:#000;"></button>
+          <% palette.forEach(function(p, index) { %>
+            <button class="palette-button <%= index === 0 ? 'palette-button-selected' : '' %>" data-pi="<%= index %>" style="background-color:#<%= p.hex %>;"></button>
+          <% }); %>
 
           <div>Color Picker</div>
           <div style="margin-left:14px; width:640px;">
@@ -77,7 +79,7 @@
             %>
             <div class="row">
             <%   } %>
-              <button class="picker-button" style="background-color:#<%= color.hex %>"></button>
+              <button class="picker-button" data-pi="<%= index %>" style="background-color:#<%= color.hex %>"></button>
             <%   if (index % (15 * (offset+1) + offset) === 0 && index !== 0) { %>
             </div>
             <%   }

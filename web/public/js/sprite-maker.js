@@ -70,22 +70,13 @@ var SpriteMaker = {};
 		var y = ev.clientY - rect.top;
 		var xScale = Math.floor(x / zoom);
 		var yScale = Math.floor(y / zoom);
-		var index;
+		var index = (yScale * sprite.width) + xScale;
 
 		if (sprite.width > 8) {
-			if (xScale < sprite.width / 2) {
-				if (yScale < sprite.height / 2) {
-					index = yScale * 8 + xScale;
-				} else {
-					index = 64 + yScale * 8 + xScale;
-				}
-			} else {
-				if (yScale < sprite.height / 2) {
-					index = 64 + yScale * 8 + (xScale % 8);
-				} else {
-					index = 128 + yScale * 8 + (xScale % 8);
-				}
-			}
+			var offset = 0;
+			if (xScale >= sprite.width / 2) { offset++; }
+			if (yScale >= sprite.height / 2) { offset++; }
+			index = (64 * offset) + (yScale * 8) + (xScale % 8);
 		}
 		pixels[index].paletteIndex = getPaletteIndex();
 		this.draw();

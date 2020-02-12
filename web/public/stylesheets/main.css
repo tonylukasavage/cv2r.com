@@ -299,8 +299,9 @@ td.item img {
   outline: 0;
 }
 
-.sprite-canvas {
+.tile-canvas {
   height: 64px;
   width: 64px;
   background-color: #0f0;
+  margin-right: 10px;
 }

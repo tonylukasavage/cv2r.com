@@ -6,7 +6,7 @@ var SpriteMaker = {};
 		ctx: null,
 		spriteIndex: 0,
 		pixels: [],
-		zoom: 8,
+		zoom: 16,
 
 		divider: {
 			style: 'rgba(255,255,255,0.65)',
@@ -74,35 +74,36 @@ var SpriteMaker = {};
 			this.zoom = zoom;
 
 			var sprite = sprites[this.spriteIndex];
-			this.resize(sprite, zoom);
+			loadSprite(sprite, this.pixels, zoom);
+			resizeSprite.call(this, $canvas, sprite, zoom);
 			this.grid.init(this, sprite)
 		},
 
-		resize: function(sprite, zoom) {
-			var width = sprite.width;
-			var height = sprite.height;
-			this.zoom = zoom;
-			this.$canvas.attr('height', height * zoom);
-			this.$canvas.attr('width', width * zoom);
-			this.$canvas.css({
-				width: width * zoom,
-				height: height * zoom
-			});
-			this.loadSprite(sprite);
-		},
+		// resize: function(sprite, zoom) {
+		// 	var width = sprite.width;
+		// 	var height = sprite.height;
+		// 	this.zoom = zoom;
+		// 	this.$canvas.attr('height', height * zoom);
+		// 	this.$canvas.attr('width', width * zoom);
+		// 	this.$canvas.css({
+		// 		width: width * zoom,
+		// 		height: height * zoom
+		// 	});
+		// 	loadSprite(sprite, this.pixels, this.zoom);
+		// },
 
-		loadSprite: function(sprite) {
-			this.pixels = [];
-			sprite.data.forEach((paletteIndex, index) => {
-				const layoutIndex = Math.floor(index / 64);
-				const layout = sprite.layout[layoutIndex];
-				this.pixels.push({
-					x: ((index % 8) + (layout >= 2 ? 8 : 0)) * this.zoom,
-					y: ((Math.floor((index % 64) / 8)) + (layout % 2 === 1 ? 8 : 0)) * this.zoom,
-					paletteIndex
-				});
-			});
-		},
+		// loadSprite: function(sprite) {
+		// 	this.pixels = [];
+		// 	sprite.data.forEach((paletteIndex, index) => {
+		// 		const layoutIndex = Math.floor(index / 64);
+		// 		const layout = sprite.layout[layoutIndex];
+		// 		this.pixels.push({
+		// 			x: ((index % 8) + (layout >= 2 ? 8 : 0)) * this.zoom,
+		// 			y: ((Math.floor((index % 64) / 8)) + (layout % 2 === 1 ? 8 : 0)) * this.zoom,
+		// 			paletteIndex
+		// 		});
+		// 	});
+		// },
 
 		drawPixel: function(ev) {
 			var sprite = sprites[this.spriteIndex];
@@ -132,6 +133,40 @@ var SpriteMaker = {};
 			this.divider.draw(this);
 		}
 	};
+
+	var tiles = {
+		pixels: [],
+		zoom: 4,
+
+		init: function() {
+			sprites.forEach((sprite, index) => {
+				var canvas = document.createElement('canvas');
+				canvas.className = 'tile-canvas';
+				canvas.id = 'tile' + index;
+				$('#tiles').append(canvas);
+
+				var pixels = [];
+				loadSprite(sprite, pixels, this.zoom);
+				this.pixels.push(pixels);
+
+				pixels.canvas = canvas;
+				pixels.ctx = canvas.getContext('2d');
+				resizeSprite.call(this, $(canvas), sprite, this.zoom);
+			});
+
+			this.draw();
+		},
+
+		draw: function() {
+			this.pixels.forEach(pixels => {
+				pixels.forEach(p => {
+					pixels.ctx.fillStyle = '#' + palette[p.paletteIndex].hex;
+					pixels.ctx.fillRect(p.x, p.y, this.zoom, this.zoom);
+				});
+			});
+		}
+	};
+
 	var sprites;
 	var palette;
 
@@ -139,6 +174,7 @@ var SpriteMaker = {};
 		sprites = _sprites;
 		palette = _palette;
 		editor.init($canvas, zoom);
+		tiles.init();
 	};
 
 	SpriteMaker.draw = function() {
@@ -148,6 +184,32 @@ var SpriteMaker = {};
 	SpriteMaker.drawPixel = function(ev) {
 		editor.drawPixel(ev);
 	};
+
+	function resizeSprite($canvas, sprite, zoom) {
+		var width = sprite.width;
+		var height = sprite.height;
+		this.zoom = zoom;
+		console.log(width, height, zoom);
+		$canvas.attr('height', height * zoom);
+		$canvas.attr('width', width * zoom);
+		$canvas.css({
+			width: width * zoom,
+			height: height * zoom
+		});
+	}
+
+	function loadSprite(sprite, pixels, zoom) {
+		pixels.length = 0;
+		sprite.data.forEach((paletteIndex, index) => {
+			const layoutIndex = Math.floor(index / 64);
+			const layout = sprite.layout[layoutIndex];
+			pixels.push({
+				x: ((index % 8) + (layout >= 2 ? 8 : 0)) * zoom,
+				y: ((Math.floor((index % 64) / 8)) + (layout % 2 === 1 ? 8 : 0)) * zoom,
+				paletteIndex
+			});
+		});
+	}
 
 	function getPaletteIndex() {
 		return parseInt($('.palette-button-selected').first().attr('data-pi'), 10);

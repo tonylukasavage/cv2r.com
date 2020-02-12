@@ -11,7 +11,7 @@
 
     function init() {
       canvas = $('#simon')[0];
-      SpriteMaker.init($(canvas), sprites[0], palette, 8);
+      SpriteMaker.init($(canvas), sprites, palette, 8);
       SpriteMaker.draw();
 
       canvas.addEventListener('click', SpriteMaker.drawPixel.bind(SpriteMaker), false);
@@ -63,7 +63,7 @@
         </div>
       <div class="row">
         <div class="col-sm-3">
-          <canvas id="simon" height="256" width="128" style="height:256px; width:128px; background-color:white;"></canvas>
+          <canvas id="simon" height="256" width="128" style="height:256px; width:128px; background-color:gray;"></canvas>
         </div>
         <div class="col-md-9">
           <div>Palette</div>
@@ -87,7 +87,9 @@
           </div>
 
           <div>Simon's Sprites</div>
-          <canvas height="64" width="64" style="height:64px; width:64px; background-color:#0ff;"></canvas>
+          <% sprites.forEach(function(sprite, index) { %>
+            <canvas height="64" width="64" class="sprite-canvas" data-si="<%= index %>"></canvas>
+          <% }); %>
 
           <div>Simon's Animations</div>
           <canvas height="128" width="64" style="height:128px; width:64px; background-color:#f00;"></canvas>

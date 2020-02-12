@@ -298,3 +298,9 @@ td.item img {
 .picker-button:focus {
   outline: 0;
 }
+
+.sprite-canvas {
+  height: 64px;
+  width: 64px;
+  background-color: #0f0;
+}

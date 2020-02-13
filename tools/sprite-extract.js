@@ -53,7 +53,8 @@ const states = [
 		frames: [
 			[
 				{ id: 'simonIdleTop', x: 0, y: 0 },
-				{ id: 'simonCrouch', x: 0, y: 2 }
+				{ id: 'simonCrouchFrontLeg', x: 0, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 2, y: 2 },
 			]
 		]
 	},
@@ -62,7 +63,8 @@ const states = [
 		frames: [
 			[
 				{ id: 'simonIdleTop', x: 0, y: 0 },
-				{ id: 'simonStairsDamageLeg', x: 0, y: 1 }
+				{ id: 'simonStairsDamageLeg', x: 0, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 2, y: 2 } 
 			]
 		]
 	}
@@ -111,12 +113,26 @@ const sprites = [
 		offset: 0x21170,
 		layout: [ 0, 2, 1, 3 ]
 	},
+	// {
+	// 	name: 'simonCrouch',
+	// 	height: 16,
+	// 	width: 16,
+	// 	offset: 0x211B0,
+	// 	layout: [ 0, 2, 1, 3 ]
+	// },
 	{
-		name: 'simonCrouch',
-		height: 16,
-		width: 16,
+		name: 'simonCrouchFrontLeg',
+		height: 8,
+		width: 8,
 		offset: 0x211B0,
-		layout: [ 0, 2, 1, 3 ]
+		layout: [ 0 ]
+	},
+	{
+		name: 'simonCrouchBackLeg',
+		height: 8,
+		width: 8,
+		offset: 0x211D0,
+		layout: [ 0 ]
 	},
 	{
 		name: 'simonStairsDamageLeg',

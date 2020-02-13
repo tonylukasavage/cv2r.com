@@ -178,7 +178,12 @@ var SpriteMaker = {};
 				frame.forEach(part => {
 					part.pixels.forEach(p => {
 						ctx.fillStyle = '#' + palette[p.paletteIndex].hex;
-						ctx.fillRect(p.x, p.y + (part.y > 0 ? 16 * this.zoom : 0), this.zoom, this.zoom);
+						ctx.fillRect(
+							p.x + (part.x > 0 ? 8 * this.zoom : 0), 
+							p.y + (part.y > 0 ? 16 * this.zoom : 0), 
+							this.zoom, 
+							this.zoom
+						);
 					});
 				});
 				state.frameCount++;

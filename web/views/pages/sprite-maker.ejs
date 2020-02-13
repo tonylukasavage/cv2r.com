@@ -6,12 +6,13 @@
   <script>
     var canvas;
     var sprites = <%- JSON.stringify(sprites) %>;
+    var states = <%- JSON.stringify(states) %>;
     var palette = <%- JSON.stringify(palette) %>;
     var mousedown = false;
 
     function init() {
       canvas = $('#simon')[0];
-      SpriteMaker.init($(canvas), sprites, palette, 16);
+      SpriteMaker.init($(canvas), sprites, states, palette, 16);
       SpriteMaker.draw();
 
       canvas.addEventListener('click', SpriteMaker.drawPixel.bind(SpriteMaker), false);
@@ -29,10 +30,13 @@
       $('.picker-button').click(function() {
         var pb = $('.palette-button-selected').first();
         var bgc = $(this).css('background-color');
+        if (bgc.indexOf('rgb') === 0) {
+          bgc = rgb2hex(bgc);
+        }
         var paletteIndex = parseInt(pb.attr('data-pi'), 10);
-        pb.css('background-color', bgc);
+        pb.css('background-color', '#' + bgc);
         palette[paletteIndex].hex = bgc;
-        palette[paletteIndex].index = parseIint($(this).attr('data-pi'), 10);
+        palette[paletteIndex].index = parseInt($(this).attr('data-pi'), 10);
         SpriteMaker.draw();
       });
 
@@ -46,6 +50,13 @@
           }
         });
       });
+    }
+
+    function rgb2hex(rgb){
+      rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      return ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+        ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+        ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
     }
 
   </script>
@@ -62,10 +73,10 @@
         <p>You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted as a pull request to the cv2r project.</p>
         </div>
       <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-5">
           <canvas id="simon" height="256" width="128" style="height:256px; width:128px; background-color:gray;"></canvas>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-7">
           <div>Palette</div>
           <% palette.forEach(function(p, index) { %>
             <button class="palette-button <%= index === 0 ? 'palette-button-selected' : '' %>" data-pi="<%= index %>" style="background-color:#<%= p.hex %>;"></button>
@@ -90,8 +101,7 @@
           <div id="tiles"></div>
 
           <div>Simon's Animations</div>
-          <canvas height="128" width="64" style="height:128px; width:64px; background-color:#f00;"></canvas>
-          <canvas height="128" width="64" style="height:128px; width:64px; background-color:#0f0;"></canvas>
+          <div id="states"></div>
         </div>
       </div>
     </div>

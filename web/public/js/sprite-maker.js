@@ -76,34 +76,8 @@ var SpriteMaker = {};
 			var sprite = sprites[this.spriteIndex];
 			loadSprite(sprite, this.pixels, zoom);
 			resizeSprite.call(this, $canvas, sprite, zoom);
-			this.grid.init(this, sprite)
+			this.grid.init(this, sprite);
 		},
-
-		// resize: function(sprite, zoom) {
-		// 	var width = sprite.width;
-		// 	var height = sprite.height;
-		// 	this.zoom = zoom;
-		// 	this.$canvas.attr('height', height * zoom);
-		// 	this.$canvas.attr('width', width * zoom);
-		// 	this.$canvas.css({
-		// 		width: width * zoom,
-		// 		height: height * zoom
-		// 	});
-		// 	loadSprite(sprite, this.pixels, this.zoom);
-		// },
-
-		// loadSprite: function(sprite) {
-		// 	this.pixels = [];
-		// 	sprite.data.forEach((paletteIndex, index) => {
-		// 		const layoutIndex = Math.floor(index / 64);
-		// 		const layout = sprite.layout[layoutIndex];
-		// 		this.pixels.push({
-		// 			x: ((index % 8) + (layout >= 2 ? 8 : 0)) * this.zoom,
-		// 			y: ((Math.floor((index % 64) / 8)) + (layout % 2 === 1 ? 8 : 0)) * this.zoom,
-		// 			paletteIndex
-		// 		});
-		// 	});
-		// },
 
 		drawPixel: function(ev) {
 			var sprite = sprites[this.spriteIndex];
@@ -121,6 +95,7 @@ var SpriteMaker = {};
 				index = (64 * offset) + (yScale * 8) + (xScale % 8);
 			}
 			this.pixels[index].paletteIndex = getPaletteIndex();
+			tiles.pixels[this.spriteIndex][index].paletteIndex = getPaletteIndex();
 			this.draw();
 		},
 
@@ -131,12 +106,13 @@ var SpriteMaker = {};
 			});
 			this.grid.draw(this);
 			this.divider.draw(this);
+			tiles.draw();
 		}
 	};
 
 	var tiles = {
 		pixels: [],
-		zoom: 4,
+		zoom: 3,
 
 		init: function() {
 			sprites.forEach((sprite, index) => {
@@ -146,6 +122,7 @@ var SpriteMaker = {};
 				$('#tiles').append(canvas);
 
 				var pixels = [];
+				pixels.id = sprite.name;
 				loadSprite(sprite, pixels, this.zoom);
 				this.pixels.push(pixels);
 
@@ -167,14 +144,61 @@ var SpriteMaker = {};
 		}
 	};
 
+	var states = {
+		data: [],
+		animations: [],
+		zoom: 3,
+		fps: 5,
+
+		init: function() {
+			this.data.forEach((state, index) => {
+				var canvas = document.createElement('canvas');
+				canvas.className = 'state-canvas';
+				canvas.id = 'state' + index;
+				$('#states').append(canvas);
+				state.canvas = canvas;
+				state.ctx = canvas.getContext('2d');
+				state.frameCount = 0;
+
+				state.frames.forEach(frame => {
+					frame.forEach(part => {
+						part.pixels = tiles.pixels.find(pixels => pixels.id === part.id);
+					});
+				});
+				resizeSprite.call(this, $(canvas), { width: 16, height: 32 }, this.zoom);
+			});
+
+			setInterval(this.draw.bind(this), 1000 / this.fps);
+		},
+
+		draw: function() {
+			this.data.forEach(state => {
+				var ctx = state.ctx;
+				var frame = state.frames[state.frameCount];
+				frame.forEach(part => {
+					part.pixels.forEach(p => {
+						ctx.fillStyle = '#' + palette[p.paletteIndex].hex;
+						ctx.fillRect(p.x, p.y + (part.y > 0 ? 16 * this.zoom : 0), this.zoom, this.zoom);
+					});
+				});
+				state.frameCount++;
+				if (state.frameCount >= state.frames.length) {
+					state.frameCount = 0;
+				}
+			});
+		}
+	};
+
 	var sprites;
 	var palette;
 
-	SpriteMaker.init = function($canvas, _sprites, _palette, zoom) {
+	SpriteMaker.init = function($canvas, _sprites, _states, _palette, zoom) {
 		sprites = _sprites;
 		palette = _palette;
+		states.data = _states;
 		editor.init($canvas, zoom);
 		tiles.init();
+		states.init();
 	};
 
 	SpriteMaker.draw = function() {
@@ -189,7 +213,6 @@ var SpriteMaker = {};
 		var width = sprite.width;
 		var height = sprite.height;
 		this.zoom = zoom;
-		console.log(width, height, zoom);
 		$canvas.attr('height', height * zoom);
 		$canvas.attr('width', width * zoom);
 		$canvas.css({

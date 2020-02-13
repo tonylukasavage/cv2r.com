@@ -305,3 +305,10 @@ td.item img {
   background-color: #0f0;
   margin-right: 10px;
 }
+
+.state-canvas {
+  height: 128px;
+  width: 64px;
+  background-color: #888;
+  margin-right: 10px;
+}

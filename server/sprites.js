@@ -92,6 +92,16 @@ module.exports = {
     data: [0,1,1,1,1,1,1,2,1,3,3,1,1,1,1,1,1,3,3,3,1,1,1,1,1,3,3,3,1,1,1,3,0,1,3,3,1,1,3,1,0,0,1,3,3,1,1,1,0,1,3,3,3,1,1,1,1,3,3,3,3,3,1,1]
   },
   {
+    name: 'simonCrouchEmpty1',
+    height: 8,
+    width: 8,
+    offset: 135616,
+    layout: [
+      0
+    ],
+    data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+  },
+  {
     name: 'simonCrouchBackLeg',
     height: 8,
     width: 8,
@@ -100,6 +110,16 @@ module.exports = {
       0
     ],
     data: [2,2,2,2,2,1,0,0,2,2,2,2,2,1,0,0,1,2,2,2,2,1,1,0,1,1,2,2,1,3,3,1,1,1,1,1,3,3,3,1,1,1,3,3,3,1,3,1,1,3,1,1,1,1,3,1,1,1,0,1,1,3,3,1]
+  },
+  {
+    name: 'simonCrouchEmpty2',
+    height: 8,
+    width: 8,
+    offset: 135648,
+    layout: [
+      0
+    ],
+    data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
   },
   {
     name: 'simonStairsDamageLeg',
@@ -113,7 +133,7 @@ module.exports = {
     data: [0,0,0,0,0,1,1,2,0,0,0,0,1,3,1,1,0,0,0,1,3,1,1,1,0,0,0,1,3,1,1,1,0,0,1,3,1,1,1,1,0,0,1,1,1,1,1,3,0,0,1,1,1,1,0,1,0,1,1,1,1,0,0,0,0,1,3,3,3,1,0,0,0,1,3,3,3,1,0,0,0,1,3,3,3,1,0,0,0,0,1,3,3,1,0,0,0,0,1,3,3,1,0,0,0,0,1,3,3,3,1,0,0,1,3,3,3,1,1,0,1,3,3,3,1,0,0,0]
   },
   {
-    name: 'simonJumpWhipBottom',
+    name: 'simonStairWalkUpLegs',
     height: 16,
     width: 16,
     offset: 135696,
@@ -217,6 +237,8 @@ module.exports = {
 	states: [
   {
     "name": "idle",
+    "height": 32,
+    "width": 16,
     "frames": [
       [
         {
@@ -233,7 +255,43 @@ module.exports = {
     ]
   },
   {
+    "name": "crouch",
+    "height": 32,
+    "width": 16,
+    "frames": [
+      [
+        {
+          "id": "simonIdleTop",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "id": "simonCrouchFrontLeg",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchBackLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty1",
+          "x": 0,
+          "y": 3
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 2,
+          "y": 3
+        }
+      ]
+    ]
+  },
+  {
     "name": "walk",
+    "height": 32,
+    "width": 16,
     "frames": [
       [
         {
@@ -274,29 +332,9 @@ module.exports = {
     ]
   },
   {
-    "name": "crouch",
-    "frames": [
-      [
-        {
-          "id": "simonIdleTop",
-          "x": 0,
-          "y": 0
-        },
-        {
-          "id": "simonCrouchFrontLeg",
-          "x": 0,
-          "y": 2
-        },
-        {
-          "id": "simonCrouchBackLeg",
-          "x": 2,
-          "y": 2
-        }
-      ]
-    ]
-  },
-  {
     "name": "stairs - walk down",
+    "height": 32,
+    "width": 16,
     "frames": [
       [
         {
@@ -311,6 +349,150 @@ module.exports = {
         },
         {
           "id": "simonCrouchBackLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 2,
+          "y": 3
+        }
+      ],
+      [
+        {
+          "id": "simonWalk1Top",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "id": "simonWalk1Bottom",
+          "x": 0,
+          "y": 2
+        }
+      ]
+    ]
+  },
+  {
+    "name": "stairs - walk up",
+    "height": 32,
+    "width": 16,
+    "frames": [
+      [
+        {
+          "id": "simonIdleTop",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "id": "simonStairWalkUpLegs",
+          "x": 0,
+          "y": 2
+        }
+      ],
+      [
+        {
+          "id": "simonWalk1Top",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "id": "simonWalk1Bottom",
+          "x": 0,
+          "y": 2
+        }
+      ]
+    ]
+  },
+  {
+    "name": "dead",
+    "height": 16,
+    "width": 32,
+    "frames": [
+      [
+        {
+          "id": "simonDeadLeft",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "id": "simonDeadRight",
+          "x": 4,
+          "y": 0
+        }
+      ]
+    ]
+  },
+  {
+    "name": "hurt",
+    "height": 32,
+    "width": 16,
+    "frames": [
+      [
+        {
+          "id": "simonDamageTop",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "id": "simonStairsDamageLeg",
+          "x": 0,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchBackLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 2,
+          "y": 3
+        }
+      ]
+    ]
+  },
+  {
+    "name": "whip",
+    "height": 32,
+    "width": 32,
+    "frames": [
+      [
+        {
+          "id": "simonWhipTop1",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "id": "simonWalk2Bottom",
+          "x": 2,
+          "y": 2
+        }
+      ],
+      [
+        {
+          "id": "simonWhipTop2",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "id": "simonWalk2Bottom",
+          "x": 2,
+          "y": 2
+        }
+      ],
+      [
+        {
+          "id": "simonHand",
+          "x": 0,
+          "y": 1
+        },
+        {
+          "id": "simonWhipTop3",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "id": "simonWalk2Bottom",
           "x": 2,
           "y": 2
         }

@@ -148,7 +148,7 @@ var SpriteMaker = {};
 		data: [],
 		animations: [],
 		zoom: 3,
-		fps: 5,
+		fps: 3,
 
 		init: function() {
 			this.data.forEach((state, index) => {
@@ -165,7 +165,8 @@ var SpriteMaker = {};
 						part.pixels = tiles.pixels.find(pixels => pixels.id === part.id);
 					});
 				});
-				resizeSprite.call(this, $(canvas), { width: 16, height: 32 }, this.zoom);
+				console.log(state.width, state.height);
+				resizeSprite.call(this, $(canvas), { width: state.width, height: state.height }, this.zoom);
 			});
 
 			setInterval(this.draw.bind(this), 1000 / this.fps);
@@ -174,13 +175,15 @@ var SpriteMaker = {};
 		draw: function() {
 			this.data.forEach(state => {
 				var ctx = state.ctx;
+				ctx.clearRect(0, 0, state.width * this.zoom, state.height * this.zoom);
+
 				var frame = state.frames[state.frameCount];
 				frame.forEach(part => {
 					part.pixels.forEach(p => {
 						ctx.fillStyle = '#' + palette[p.paletteIndex].hex;
 						ctx.fillRect(
-							p.x + (part.x > 0 ? 8 * this.zoom : 0), 
-							p.y + (part.y > 0 ? 16 * this.zoom : 0), 
+							p.x + (part.x > 0 ? 4 * part.x * this.zoom : 0), 
+							p.y + (part.y > 0 ? 8 * part.y * this.zoom : 0), 
 							this.zoom, 
 							this.zoom
 						);

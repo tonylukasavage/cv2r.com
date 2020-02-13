@@ -24,6 +24,8 @@ function toBinaryArray(uint) {
 const states = [
 	{
 		name: 'idle',
+		height: 32,
+		width: 16,
 		frames: [
 			[
 				{ id: 'simonIdleTop', x: 0, y: 0 },
@@ -32,7 +34,23 @@ const states = [
 		]
 	},
 	{
+		name: 'crouch',
+		height: 32,
+		width: 16,
+		frames: [
+			[
+				{ id: 'simonIdleTop', x: 0, y: 0 },
+				{ id: 'simonCrouchFrontLeg', x: 0, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchEmpty1', x: 0, y: 3 },
+				{ id: 'simonCrouchEmpty2', x: 2, y: 3 } 
+			]
+		]
+	},
+	{
 		name: 'walk',
+		height: 32,
+		width: 16,
 		frames: [
 			[
 				{ id: 'simonIdleTop', x: 0, y: 0 },
@@ -49,22 +67,78 @@ const states = [
 		]
 	},
 	{
-		name: 'crouch',
-		frames: [
-			[
-				{ id: 'simonIdleTop', x: 0, y: 0 },
-				{ id: 'simonCrouchFrontLeg', x: 0, y: 2 },
-				{ id: 'simonCrouchBackLeg', x: 2, y: 2 },
-			]
-		]
-	},
-	{
 		name: 'stairs - walk down',
+		height: 32,
+		width: 16,
 		frames: [
 			[
 				{ id: 'simonIdleTop', x: 0, y: 0 },
 				{ id: 'simonStairsDamageLeg', x: 0, y: 2 },
-				{ id: 'simonCrouchBackLeg', x: 2, y: 2 } 
+				{ id: 'simonCrouchBackLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchEmpty2', x: 2, y: 3 } 
+			],
+			[
+				{ id: 'simonWalk1Top', x: 0, y: 0 },
+				{ id: 'simonWalk1Bottom', x: 0, y: 2 }
+			]
+		]
+	},
+	{
+		name: 'stairs - walk up',
+		height: 32,
+		width: 16,
+		frames: [
+			[
+				{ id: 'simonIdleTop', x: 0, y: 0 },
+				{ id: 'simonStairWalkUpLegs', x: 0, y: 2 }
+			],
+			[
+				{ id: 'simonWalk1Top', x: 0, y: 0 },
+				{ id: 'simonWalk1Bottom', x: 0, y: 2 }
+			]
+		]
+	},
+	{
+		name: 'dead',
+		height: 16,
+		width: 32,
+		frames: [
+			[
+				{ id: 'simonDeadLeft', x: 0, y: 0 },
+				{ id: 'simonDeadRight', x: 4, y: 0 }
+			]
+		]
+	},
+	{
+		name: 'hurt',
+		height: 32,
+		width: 16,
+		frames: [
+			[
+				{ id: 'simonDamageTop', x: 0, y: 0 },
+				{ id: 'simonStairsDamageLeg', x: 0, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchEmpty2', x: 2, y: 3 } 
+			]
+		]
+	},
+	{
+		name: 'whip',
+		height: 32,
+		width: 32,
+		frames: [
+			[
+				{ id: 'simonWhipTop1', x: 4, y: 0 },
+				{ id: 'simonWalk2Bottom', x: 2, y: 2 }
+			],
+			[
+				{ id: 'simonWhipTop2', x: 4, y: 0 },
+				{ id: 'simonWalk2Bottom', x: 2, y: 2 }
+			],
+			[
+				{ id: 'simonHand', x: 0, y: 1 },
+				{ id: 'simonWhipTop3', x: 2, y: 0 },
+				{ id: 'simonWalk2Bottom', x: 2, y: 2 }
 			]
 		]
 	}
@@ -113,18 +187,18 @@ const sprites = [
 		offset: 0x21170,
 		layout: [ 0, 2, 1, 3 ]
 	},
-	// {
-	// 	name: 'simonCrouch',
-	// 	height: 16,
-	// 	width: 16,
-	// 	offset: 0x211B0,
-	// 	layout: [ 0, 2, 1, 3 ]
-	// },
 	{
 		name: 'simonCrouchFrontLeg',
 		height: 8,
 		width: 8,
 		offset: 0x211B0,
+		layout: [ 0 ]
+	},
+	{
+		name: 'simonCrouchEmpty1',
+		height: 8,
+		width: 8,
+		offset: 0x211C0,
 		layout: [ 0 ]
 	},
 	{
@@ -135,6 +209,13 @@ const sprites = [
 		layout: [ 0 ]
 	},
 	{
+		name: 'simonCrouchEmpty2',
+		height: 8,
+		width: 8,
+		offset: 0x211E0,
+		layout: [ 0 ]
+	},
+	{
 		name: 'simonStairsDamageLeg',
 		height: 16,
 		width: 8,
@@ -142,7 +223,7 @@ const sprites = [
 		layout: [ 0, 1 ]
 	},
 	{
-		name: 'simonJumpWhipBottom',
+		name: 'simonStairWalkUpLegs',
 		height: 16,
 		width: 16,
 		offset: 0x21210,

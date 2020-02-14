@@ -4,7 +4,7 @@ const fs = require('fs');
 const BASE = 135216;
 const SPRITE_SIZE = 8;
 const SPRITE_BYTES = 16;
-const JS_PATH = './server/sprites.js'; //'./web/public/js/sprite-maker/sprites.js';
+const JS_PATH = './server/sprites.js';
 
 const rom = process.argv[2];
 if (!rom) {
@@ -63,11 +63,15 @@ const states = [
 			[
 				{ id: 'simonWalk2Top', x: 0, y: 0 },
 				{ id: 'simonWalk2Bottom', x: 0, y: 2 }
+			],
+			[
+				{ id: 'simonWalk1Top', x: 0, y: 0 },
+				{ id: 'simonWalk1Bottom', x: 0, y: 2 }
 			]
 		]
 	},
 	{
-		name: 'stairs - walk down',
+		name: 'walk (down stairs)',
 		height: 32,
 		width: 16,
 		frames: [
@@ -84,7 +88,7 @@ const states = [
 		]
 	},
 	{
-		name: 'stairs - walk up',
+		name: 'walk (up stairs)',
 		height: 32,
 		width: 16,
 		frames: [
@@ -129,16 +133,91 @@ const states = [
 		frames: [
 			[
 				{ id: 'simonWhipTop1', x: 4, y: 0 },
-				{ id: 'simonWalk2Bottom', x: 2, y: 2 }
+				{ id: 'simonIdleBottom', x: 2, y: 2 }
 			],
 			[
 				{ id: 'simonWhipTop2', x: 4, y: 0 },
-				{ id: 'simonWalk2Bottom', x: 2, y: 2 }
+				{ id: 'simonIdleBottom', x: 2, y: 2 }
 			],
 			[
 				{ id: 'simonHand', x: 0, y: 1 },
 				{ id: 'simonWhipTop3', x: 2, y: 0 },
-				{ id: 'simonWalk2Bottom', x: 2, y: 2 }
+				{ id: 'simonIdleBottom', x: 2, y: 2 }
+			]
+		]
+	},
+	{
+		name: 'whip (ducking)',
+		height: 32,
+		width: 32,
+		frames: [
+			[
+				{ id: 'simonWhipTop1', x: 4, y: 0 },
+				{ id: 'simonCrouchFrontLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 4, y: 2 },
+				{ id: 'simonCrouchEmpty1', x: 2, y: 3 },
+				{ id: 'simonCrouchEmpty2', x: 4, y: 3 } 
+			],
+			[
+				{ id: 'simonWhipTop2', x: 4, y: 0 },
+				{ id: 'simonCrouchFrontLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 4, y: 2 },
+				{ id: 'simonCrouchEmpty1', x: 2, y: 3 },
+				{ id: 'simonCrouchEmpty2', x: 4, y: 3 } 
+			],
+			[
+				{ id: 'simonHand', x: 0, y: 1 },
+				{ id: 'simonWhipTop3', x: 2, y: 0 },
+				{ id: 'simonCrouchFrontLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 4, y: 2 },
+				{ id: 'simonCrouchEmpty1', x: 2, y: 3 },
+				{ id: 'simonCrouchEmpty2', x: 4, y: 3 } 
+			]
+		]
+	},
+	{
+		name: 'whip (down stairs)',
+		height: 32,
+		width: 32,
+		frames: [
+			[
+				{ id: 'simonWhipTop1', x: 4, y: 0 },
+				{ id: 'simonStairsDamageLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 4, y: 2 },
+				{ id: 'simonCrouchEmpty2', x: 4, y: 3 } 
+			],
+			[
+				{ id: 'simonWhipTop2', x: 4, y: 0 },
+				{ id: 'simonStairsDamageLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 4, y: 2 },
+				{ id: 'simonCrouchEmpty2', x: 4, y: 3 } 
+			],
+			[
+				{ id: 'simonHand', x: 0, y: 1 },
+				{ id: 'simonWhipTop3', x: 2, y: 0 },
+				{ id: 'simonStairsDamageLeg', x: 2, y: 2 },
+				{ id: 'simonCrouchBackLeg', x: 4, y: 2 },
+				{ id: 'simonCrouchEmpty2', x: 4, y: 3 } 
+			]
+		]
+	},
+	{
+		name: 'whip (up stairs)',
+		height: 32,
+		width: 32,
+		frames: [
+			[
+				{ id: 'simonWhipTop1', x: 4, y: 0 },
+				{ id: 'simonStairWalkUpLegs', x: 2, y: 2 }
+			],
+			[
+				{ id: 'simonWhipTop2', x: 4, y: 0 },
+				{ id: 'simonStairWalkUpLegs', x: 2, y: 2 }
+			],
+			[
+				{ id: 'simonHand', x: 0, y: 1 },
+				{ id: 'simonWhipTop3', x: 2, y: 0 },
+				{ id: 'simonStairWalkUpLegs', x: 2, y: 2 }
 			]
 		]
 	}

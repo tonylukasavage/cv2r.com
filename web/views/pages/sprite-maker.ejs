@@ -12,7 +12,7 @@
 
     function init() {
       canvas = $('#simon')[0];
-      SpriteMaker.init($(canvas), sprites, states, palette, 16);
+      SpriteMaker.init(sprites, states, palette);
       SpriteMaker.draw();
 
       canvas.addEventListener('click', SpriteMaker.drawPixel.bind(SpriteMaker), false);
@@ -73,8 +73,8 @@
         <p>You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted as a pull request to the cv2r project.</p>
         </div>
       <div class="row">
-        <div class="col-sm-5">
-          <canvas id="simon" height="256" width="128" style="height:256px; width:128px; background-color:gray;"></canvas>
+        <div id="editor-container" class="col-sm-5">
+          <canvas id="simon" height="256" width="128"></canvas>
         </div>
         <div class="col-md-7">
           <div>Palette</div>
@@ -97,10 +97,10 @@
                }); %>
           </div>
 
-          <div>Simon's Sprites</div>
+          <div>Simon's Tiles</div>
           <div id="tiles"></div>
 
-          <div>Simon's Animations</div>
+          <div>Simon's Sprites & Animations</div>
           <div id="states"></div>
         </div>
       </div>

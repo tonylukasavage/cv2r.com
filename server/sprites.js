@@ -328,11 +328,23 @@ module.exports = {
           "x": 0,
           "y": 2
         }
+      ],
+      [
+        {
+          "id": "simonWalk1Top",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "id": "simonWalk1Bottom",
+          "x": 0,
+          "y": 2
+        }
       ]
     ]
   },
   {
-    "name": "stairs - walk down",
+    "name": "walk (down stairs)",
     "height": 32,
     "width": 16,
     "frames": [
@@ -373,7 +385,7 @@ module.exports = {
     ]
   },
   {
-    "name": "stairs - walk up",
+    "name": "walk (up stairs)",
     "height": 32,
     "width": 16,
     "frames": [
@@ -463,7 +475,7 @@ module.exports = {
           "y": 0
         },
         {
-          "id": "simonWalk2Bottom",
+          "id": "simonIdleBottom",
           "x": 2,
           "y": 2
         }
@@ -475,7 +487,7 @@ module.exports = {
           "y": 0
         },
         {
-          "id": "simonWalk2Bottom",
+          "id": "simonIdleBottom",
           "x": 2,
           "y": 2
         }
@@ -492,7 +504,226 @@ module.exports = {
           "y": 0
         },
         {
-          "id": "simonWalk2Bottom",
+          "id": "simonIdleBottom",
+          "x": 2,
+          "y": 2
+        }
+      ]
+    ]
+  },
+  {
+    "name": "whip (ducking)",
+    "height": 32,
+    "width": 32,
+    "frames": [
+      [
+        {
+          "id": "simonWhipTop1",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "id": "simonCrouchFrontLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchBackLeg",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty1",
+          "x": 2,
+          "y": 3
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 4,
+          "y": 3
+        }
+      ],
+      [
+        {
+          "id": "simonWhipTop2",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "id": "simonCrouchFrontLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchBackLeg",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty1",
+          "x": 2,
+          "y": 3
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 4,
+          "y": 3
+        }
+      ],
+      [
+        {
+          "id": "simonHand",
+          "x": 0,
+          "y": 1
+        },
+        {
+          "id": "simonWhipTop3",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "id": "simonCrouchFrontLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchBackLeg",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty1",
+          "x": 2,
+          "y": 3
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 4,
+          "y": 3
+        }
+      ]
+    ]
+  },
+  {
+    "name": "whip (down stairs)",
+    "height": 32,
+    "width": 32,
+    "frames": [
+      [
+        {
+          "id": "simonWhipTop1",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "id": "simonStairsDamageLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchBackLeg",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 4,
+          "y": 3
+        }
+      ],
+      [
+        {
+          "id": "simonWhipTop2",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "id": "simonStairsDamageLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchBackLeg",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 4,
+          "y": 3
+        }
+      ],
+      [
+        {
+          "id": "simonHand",
+          "x": 0,
+          "y": 1
+        },
+        {
+          "id": "simonWhipTop3",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "id": "simonStairsDamageLeg",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchBackLeg",
+          "x": 4,
+          "y": 2
+        },
+        {
+          "id": "simonCrouchEmpty2",
+          "x": 4,
+          "y": 3
+        }
+      ]
+    ]
+  },
+  {
+    "name": "whip (up stairs)",
+    "height": 32,
+    "width": 32,
+    "frames": [
+      [
+        {
+          "id": "simonWhipTop1",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "id": "simonStairWalkUpLegs",
+          "x": 2,
+          "y": 2
+        }
+      ],
+      [
+        {
+          "id": "simonWhipTop2",
+          "x": 4,
+          "y": 0
+        },
+        {
+          "id": "simonStairWalkUpLegs",
+          "x": 2,
+          "y": 2
+        }
+      ],
+      [
+        {
+          "id": "simonHand",
+          "x": 0,
+          "y": 1
+        },
+        {
+          "id": "simonWhipTop3",
+          "x": 2,
+          "y": 0
+        },
+        {
+          "id": "simonStairWalkUpLegs",
           "x": 2,
           "y": 2
         }

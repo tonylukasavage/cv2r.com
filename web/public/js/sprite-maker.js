@@ -2,8 +2,6 @@ var SpriteMaker = {};
 
 (function() {
 	var editor = {
-		$canvas: null,
-		ctx: null,
 		spriteIndex: 0,
 		pixels: [],
 		zoom: 16,
@@ -68,20 +66,23 @@ var SpriteMaker = {};
 			}
 		},
 
-		init: function($canvas, zoom) {
-			this.$canvas = $canvas;
-			this.ctx = $canvas[0].getContext('2d');
-			this.zoom = zoom;
+		init: function() {
+			var canvas = document.createElement('canvas');
+			canvas.className = 'editor-canvas';
+			canvas.id = 'editor-canvas';
+			$('#editor-container').append(canvas);
+			this.canvas = canvas;
+			this.ctx = canvas.getContext('2d');
 
 			var sprite = sprites[this.spriteIndex];
-			loadSprite(sprite, this.pixels, zoom);
-			resizeSprite.call(this, $canvas, sprite, zoom);
+			loadSprite(sprite, this.pixels, this.zoom);
+			resizeSprite.call(this, canvas, sprite, this.zoom);
 			this.grid.init(this, sprite);
 		},
 
 		drawPixel: function(ev) {
 			var sprite = sprites[this.spriteIndex];
-			var rect = this.$canvas[0].getBoundingClientRect();
+			var rect = this.canvas.getBoundingClientRect();
 			var x = ev.clientX - rect.left;
 			var y = ev.clientY - rect.top;
 			var xScale = Math.floor(x / this.zoom);
@@ -119,6 +120,9 @@ var SpriteMaker = {};
 				var canvas = document.createElement('canvas');
 				canvas.className = 'tile-canvas';
 				canvas.id = 'tile' + index;
+				$(canvas).click(function() {
+					
+				});
 				$('#tiles').append(canvas);
 
 				var pixels = [];
@@ -128,7 +132,7 @@ var SpriteMaker = {};
 
 				pixels.canvas = canvas;
 				pixels.ctx = canvas.getContext('2d');
-				resizeSprite.call(this, $(canvas), sprite, this.zoom);
+				resizeSprite.call(this, canvas, sprite, this.zoom);
 			});
 
 			this.draw();
@@ -166,7 +170,7 @@ var SpriteMaker = {};
 					});
 				});
 				console.log(state.width, state.height);
-				resizeSprite.call(this, $(canvas), { width: state.width, height: state.height }, this.zoom);
+				resizeSprite.call(this, canvas, { width: state.width, height: state.height }, this.zoom);
 			});
 
 			setInterval(this.draw.bind(this), 1000 / this.fps);
@@ -200,11 +204,11 @@ var SpriteMaker = {};
 	var sprites;
 	var palette;
 
-	SpriteMaker.init = function($canvas, _sprites, _states, _palette, zoom) {
+	SpriteMaker.init = function(_sprites, _states, _palette) {
 		sprites = _sprites;
 		palette = _palette;
 		states.data = _states;
-		editor.init($canvas, zoom);
+		editor.init();
 		tiles.init();
 		states.init();
 	};
@@ -217,7 +221,8 @@ var SpriteMaker = {};
 		editor.drawPixel(ev);
 	};
 
-	function resizeSprite($canvas, sprite, zoom) {
+	function resizeSprite(canvas, sprite, zoom) {
+		var $canvas= $(canvas);
 		var width = sprite.width;
 		var height = sprite.height;
 		this.zoom = zoom;

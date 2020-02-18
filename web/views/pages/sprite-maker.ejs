@@ -5,40 +5,15 @@
   <script src="/js/sprite-maker.js"></script>
   <script>
     var canvas;
+    var colors = <%- JSON.stringify(colors) %>;
     var sprites = <%- JSON.stringify(sprites) %>;
     var states = <%- JSON.stringify(states) %>;
     var palette = <%- JSON.stringify(palette) %>;
     var mousedown = false;
 
     function init() {
-      canvas = $('#simon')[0];
-      SpriteMaker.init(sprites, states, palette);
+      SpriteMaker.init(sprites, states, palette, colors);
       SpriteMaker.draw();
-
-      canvas.addEventListener('click', SpriteMaker.drawPixel.bind(SpriteMaker), false);
-      canvas.addEventListener('mouseup', () => mousedown = false);
-      canvas.addEventListener('mousedown', ev => {
-        mousedown = true;
-        SpriteMaker.drawPixel(ev);
-      });
-      canvas.addEventListener('mousemove', function(ev) {
-        if (mousedown) {
-          SpriteMaker.drawPixel(ev);
-        }
-      });
-
-      $('.picker-button').click(function() {
-        var pb = $('.palette-button-selected').first();
-        var bgc = $(this).css('background-color');
-        if (bgc.indexOf('rgb') === 0) {
-          bgc = rgb2hex(bgc);
-        }
-        var paletteIndex = parseInt(pb.attr('data-pi'), 10);
-        pb.css('background-color', '#' + bgc);
-        palette[paletteIndex].hex = bgc;
-        palette[paletteIndex].index = parseInt($(this).attr('data-pi'), 10);
-        SpriteMaker.draw();
-      });
 
       $('.palette-button').click(function() {
         var self = this;
@@ -50,13 +25,6 @@
           }
         });
       });
-    }
-
-    function rgb2hex(rgb){
-      rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-      return ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-        ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-        ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
     }
 
   </script>
@@ -83,18 +51,11 @@
           <% }); %>
 
           <div>Color Picker</div>
-          <div style="margin-left:14px; width:640px;">
-            <% colors.forEach(function(color, index) {
-                 var offset = Math.floor(index / 16);
-                 if (index % 16 === 0) {
-            %>
-            <div class="row">
-            <%   } %>
-              <button class="picker-button" data-pi="<%= index %>" style="background-color:#<%= color.hex %>"></button>
-            <%   if (index % (15 * (offset+1) + offset) === 0 && index !== 0) { %>
-            </div>
-            <%   }
-               }); %>
+          <div class="color-picker-container">
+            <div id="cp-row-1" class="row"></div>
+            <div id="cp-row-2" class="row"></div>
+            <div id="cp-row-3" class="row"></div>
+            <div id="cp-row-4" class="row"></div>
           </div>
 
           <div>Simon's Tiles</div>

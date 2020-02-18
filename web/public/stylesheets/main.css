@@ -318,3 +318,8 @@ td.item img {
   background-color: #88888800;
   margin-right: 10px;
 }
+
+.color-picker-container {
+  margin-left:14px; 
+  width:640px;
+}

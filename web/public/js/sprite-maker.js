@@ -5,6 +5,7 @@ var SpriteMaker = {};
 		spriteIndex: 0,
 		pixels: [],
 		zoom: 16,
+		mousedown: false,
 
 		divider: {
 			style: 'rgba(255,255,255,0.65)',
@@ -78,6 +79,18 @@ var SpriteMaker = {};
 			loadSprite(sprite, this.pixels, this.zoom);
 			resizeSprite.call(this, canvas, sprite, this.zoom);
 			this.grid.init(this, sprite);
+
+			canvas.addEventListener('click', this.drawPixel.bind(this), false);
+      canvas.addEventListener('mouseup', () => this.mousedown = false);
+      canvas.addEventListener('mousedown', ev => {
+        this.mousedown = true;
+        this.drawPixel(ev);
+      });
+      canvas.addEventListener('mousemove', ev => {
+        if (this.mousedown) {
+          this.drawPixel(ev);
+        }
+      });
 		},
 
 		drawPixel: function(ev) {
@@ -95,6 +108,7 @@ var SpriteMaker = {};
 				if (yScale >= sprite.height / 2) { offset++; }
 				index = (64 * offset) + (yScale * 8) + (xScale % 8);
 			}
+			console.log(getPaletteIndex());
 			this.pixels[index].paletteIndex = getPaletteIndex();
 			tiles.pixels[this.spriteIndex][index].paletteIndex = getPaletteIndex();
 			this.draw();
@@ -108,6 +122,32 @@ var SpriteMaker = {};
 			this.grid.draw(this);
 			this.divider.draw(this);
 			tiles.draw();
+		}
+	};
+
+	var colorPicker = {
+		init: function() {
+			colors.forEach(function(color, index) {
+				var rowIndex = Math.floor(index / 16);
+				var button = $(document.createElement('button'));
+				button.data('pi', index);
+				button.addClass('picker-button');
+				button.css('background-color', '#' + color.hex);
+				$('#cp-row-' + (rowIndex + 1)).append(button);
+
+				button.click(function() {
+					var paletteButton = $('.palette-button-selected').first();
+					var bgc = $(this).css('background-color');
+					if (bgc.indexOf('rgb') === 0) {
+						bgc = rgb2hex(bgc);
+					}
+					var paletteIndex = parseInt(paletteButton.attr('data-pi'), 10);
+					paletteButton.css('background-color', '#' + bgc);
+					palette[paletteIndex].hex = bgc;
+					palette[paletteIndex].index = parseInt($(this).attr('data-pi'), 10);
+					SpriteMaker.draw();
+				});
+			});
 		}
 	};
 
@@ -169,7 +209,6 @@ var SpriteMaker = {};
 						part.pixels = tiles.pixels.find(pixels => pixels.id === part.id);
 					});
 				});
-				console.log(state.width, state.height);
 				resizeSprite.call(this, canvas, { width: state.width, height: state.height }, this.zoom);
 			});
 
@@ -203,12 +242,15 @@ var SpriteMaker = {};
 
 	var sprites;
 	var palette;
+	var colors;
 
-	SpriteMaker.init = function(_sprites, _states, _palette) {
+	SpriteMaker.init = function(_sprites, _states, _palette, _colors) {
+		colors = _colors;
 		sprites = _sprites;
 		palette = _palette;
 		states.data = _states;
 		editor.init();
+		colorPicker.init();
 		tiles.init();
 		states.init();
 	};
@@ -249,6 +291,13 @@ var SpriteMaker = {};
 
 	function getPaletteIndex() {
 		return parseInt($('.palette-button-selected').first().attr('data-pi'), 10);
+	}
+
+	function rgb2hex(rgb){
+		rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		return ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+			("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+			("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
 	}
 
 })();

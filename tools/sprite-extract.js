@@ -4,7 +4,7 @@ const fs = require('fs');
 const BASE = 135216;
 const SPRITE_SIZE = 8;
 const SPRITE_BYTES = 16;
-const JS_PATH = './server/sprites.js';
+const JS_PATH = './server/data.js';
 
 const rom = process.argv[2];
 if (!rom) {

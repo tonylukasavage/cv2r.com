@@ -2,31 +2,12 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
-  <script src="/js/sprite-maker.js"></script>
+  <script src="/js/SpriteMaker.js"></script>
   <script>
-    var canvas;
-    var colors = <%- JSON.stringify(colors) %>;
-    var sprites = <%- JSON.stringify(sprites) %>;
-    var states = <%- JSON.stringify(states) %>;
-    var palette = <%- JSON.stringify(palette) %>;
-    var mousedown = false;
-
     function init() {
-      SpriteMaker.init(sprites, states, palette, colors);
-      SpriteMaker.draw();
-
-      $('.palette-button').click(function() {
-        var self = this;
-        $('.palette-button').each(function() {
-          if (this === self) {
-            $(this).addClass('palette-button-selected');
-          } else {
-            $(this).removeClass('palette-button-selected');
-          }
-        });
-      });
+      const spriteMaker = new SpriteMaker();
+      spriteMaker.draw();
     }
-
   </script>
 </head>
 
@@ -41,14 +22,11 @@
         <p>You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted as a pull request to the cv2r project.</p>
         </div>
       <div class="row">
-        <div id="editor-container" class="col-sm-5">
-          <canvas id="simon" height="256" width="128"></canvas>
-        </div>
+        <div id="editor-container" class="col-sm-5"></div>
         <div class="col-md-7">
+
           <div>Palette</div>
-          <% palette.forEach(function(p, index) { %>
-            <button class="palette-button <%= index === 0 ? 'palette-button-selected' : '' %>" data-pi="<%= index %>" style="background-color:#<%= p.hex %>;"></button>
-          <% }); %>
+          <div id="palette-container"></div>
 
           <div>Color Picker</div>
           <div class="color-picker-container">
@@ -63,6 +41,7 @@
 
           <div>Simon's Sprites & Animations</div>
           <div id="states"></div>
+
         </div>
       </div>
     </div>

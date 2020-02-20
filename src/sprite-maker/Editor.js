@@ -1,8 +1,10 @@
+const EventEmitter = require('events');
 const { CHR, palette } = require('./data');
 const { getPaletteIndex, loadChr, resizeCanvas } = require('./utils');
 
-class Editor {
+class Editor extends EventEmitter {
 	constructor() {
+		super();
 		this.chrIndex = 0;
 		this.zoom = 16;
 		this.mousedown = false;
@@ -29,13 +31,8 @@ class Editor {
 			}
 		});
 
-		// load chr data into editor canvas
-		const { width, height } = loadChr(this.chrIndex, this.pixels, this.zoom);
-		resizeCanvas.call(this, canvas, width, height, this.zoom);
-
-		// add grid and divider lines to editor
-		this.grid = new Grid(this);
-		this.dividers = new Dividers(this);
+		// load default CHR data into editor and draw
+		this.updateChr(this.chrIndex);
 	}
 
 	draw() {
@@ -49,24 +46,35 @@ class Editor {
 	}
 
 	drawPixel(ev) {
+		const { chrIndex } = this;
 		const chrData = CHR[this.chrIndex];
 		const rect = this.canvas.getBoundingClientRect();
 		const x = ev.clientX - rect.left;
 		const y = ev.clientY - rect.top;
 		const xScale = Math.floor(x / this.zoom);
 		const yScale = Math.floor(y / this.zoom);
-		let index = (yScale * chrData.width) + xScale;
+		let pixelIndex = (yScale * chrData.width) + xScale;
 
 		if (chrData.width > 8) {
 			let offset = 0;
 			if (xScale >= chrData.width / 2) { offset++; }
 			if (yScale >= chrData.height / 2) { offset++; }
-			index = (64 * offset) + (yScale * 8) + (xScale % 8);
+			pixelIndex = (64 * offset) + (yScale * 8) + (xScale % 8);
 		}
-		this.pixels[index].paletteIndex = getPaletteIndex();
-		this.tiles.pixels[this.chrIndex][index].paletteIndex = getPaletteIndex();
+
+		const paletteIndex = getPaletteIndex();
+		this.pixels[pixelIndex].paletteIndex = paletteIndex;
 		this.draw();
-		this.tiles.draw();
+		this.emit('pixel', { chrIndex, paletteIndex, pixelIndex });
+	}
+
+	updateChr(chrIndex) {
+		this.chrIndex = chrIndex;
+		const { width, height } = loadChr(chrIndex, this.pixels, this.zoom);
+		resizeCanvas.call(this, this.canvas, width, height, this.zoom);
+		this.grid = new Grid(this);
+		this.dividers = new Dividers(this);
+		this.draw();
 	}
 }
 

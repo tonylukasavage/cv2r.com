@@ -1,18 +1,20 @@
+const EventEmitter = require('events');
 const { CHR, palette } = require('./data');
 const { loadChr, resizeCanvas } = require('./utils');
 
-class Tiles {
-	constructor(editor) {
-		this.editor = editor;
+class Tiles extends EventEmitter {
+	constructor() {
+		super();
 		this.pixels = [];
 		this.zoom = 3;
 
+		const self = this;
 		CHR.forEach((chr, index) => {
 			const canvas = $('<canvas></canvas>');
 			canvas.addClass('tile-canvas');
 			canvas.data('tid', index);
 			canvas.click(() => {
-				// load into editor
+				self.emit('click', index);
 			});
 			$('#tiles').append(canvas);
 
@@ -26,6 +28,11 @@ class Tiles {
 			resizeCanvas.call(this, canvas[0], chr.width, chr.height, this.zoom);
 		});
 
+		this.draw();
+	}
+
+	updatePixel({ chrIndex, paletteIndex, pixelIndex }) {
+		this.pixels[chrIndex][pixelIndex].paletteIndex = paletteIndex;
 		this.draw();
 	}
 

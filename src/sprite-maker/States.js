@@ -6,8 +6,7 @@ class States {
 		Object.assign(this, {
 			animations: [],
 			zoom: 3,
-			fps: 3,
-			tiles
+			fps: 3
 		});
 
 		states.forEach((state, index) => {
@@ -21,7 +20,7 @@ class States {
 
 			state.frames.forEach(frame => {
 				frame.forEach(part => {
-					part.pixels = this.tiles.pixels.find(pixels => {
+					part.pixels = tiles.pixels.find(pixels => {
 						return pixels.name === part.name;
 					});
 				});

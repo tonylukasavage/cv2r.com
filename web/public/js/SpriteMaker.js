@@ -137,7 +137,6 @@ class Palette {
 			if (index === 0) {
 				button.addClass('palette-button-selected');
 			}
-			console.log(p);
 			button.css('background-color', '#' + p.hex);
 			button.data('pi', index);
 			$('#palette-container').append(button);
@@ -204,7 +203,10 @@ class States {
 
 			state.frames.forEach(frame => {
 				frame.forEach(part => {
-					part.pixels = this.tiles.pixels.find(pixels => pixels.id === part.id);
+					part.pixels = this.tiles.pixels.find(pixels => {
+						console.log(pixels.name, part.name);
+						return pixels.name === part.name;
+					});
 				});
 			});
 			resizeCanvas.call(this, canvas, state.width, state.height, this.zoom);

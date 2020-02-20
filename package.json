@@ -7,7 +7,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "extract": "node ./tools/sprite-extract.js ../cv2r/cv2.nes",
+    "browserify": "./node_modules/.bin/browserify ./src/sprite-maker/SpriteMaker.js -o ./web/public/js/SpriteMaker.js",
+    "build": "npm run extract && npm run browserify",
+    "start": "npm run build && heroku local web",
     "test": "node test.js"
   },
   "dependencies": {
@@ -18,6 +21,7 @@
     "request-promise": "^4.2.4"
   },
   "devDependencies": {
+    "browserify": "^16.5.0",
     "eslint": "^6.8.0",
     "lodash": "^4.17.15",
     "request": "^2.88.0",

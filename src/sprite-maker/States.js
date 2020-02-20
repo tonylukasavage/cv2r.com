@@ -21,7 +21,9 @@ class States {
 
 			state.frames.forEach(frame => {
 				frame.forEach(part => {
-					part.pixels = this.tiles.pixels.find(pixels => pixels.id === part.id);
+					part.pixels = this.tiles.pixels.find(pixels => {
+						return pixels.name === part.name;
+					});
 				});
 			});
 			resizeCanvas.call(this, canvas, state.width, state.height, this.zoom);

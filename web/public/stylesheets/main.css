@@ -310,6 +310,7 @@ td.item img {
   width: 64px;
   background-color: #888;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .state-canvas {

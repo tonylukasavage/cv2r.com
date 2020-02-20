@@ -66,6 +66,7 @@ class Editor {
 		this.pixels[index].paletteIndex = getPaletteIndex();
 		this.tiles.pixels[this.chrIndex][index].paletteIndex = getPaletteIndex();
 		this.draw();
+		this.tiles.draw();
 	}
 }
 

@@ -20,7 +20,7 @@ class ColorPicker extends EventEmitter {
 				if (bgc.indexOf('rgb') === 0) {
 					bgc = rgb2hex(bgc);
 				}
-				var paletteIndex = parseInt(paletteButton.attr('data-pi'), 10);
+				var paletteIndex = parseInt(paletteButton.data('pi'), 10);
 				paletteButton.css('background-color', '#' + bgc);
 				palette[paletteIndex].hex = bgc;
 				palette[paletteIndex].index = parseInt($(this).attr('data-pi'), 10);

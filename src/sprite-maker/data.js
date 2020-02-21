@@ -1247,8 +1247,8 @@ module.exports = {
 	],
 	palette: [
 		{
-			hex: '00FF00',
-			index: 15
+			hex: '00A800',
+			index: 26
 		},
 		{
 			hex: '000000',

@@ -424,7 +424,7 @@ const colors = [
 ];
 
 const palette = [
-	{ hex: '00FF00', index: 0x0F },
+	{ hex: '00A800', index: 0x1A },
 	{ hex: '000000', index: 0x0F },
 	{ hex: 'A81000', index: 0x06 },
 	{ hex: 'FCFCFC', index: 0x30 }

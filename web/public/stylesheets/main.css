@@ -302,13 +302,11 @@ td.item img {
 .editor-canvas {
   height: 256px;
   width: 128px;
-  background-color: #888;
 }
 
 .tile-canvas {
   height: 64px;
   width: 64px;
-  background-color: #888;
   margin-right: 10px;
   cursor: pointer;
 }
@@ -316,7 +314,6 @@ td.item img {
 .state-canvas {
   height: 128px;
   width: 64px;
-  background-color: #88888800;
   margin-right: 10px;
 }
 

@@ -81,7 +81,7 @@ class Editor extends EventEmitter {
 class Dividers {
 	constructor(editor) {
 		Object.assign(this, {
-			style: 'rgba(255,255,255,0.65)',
+			style: 'rgba(255,255,255,0.8)',
 			show: true,
 			editor
 		});
@@ -107,7 +107,7 @@ class Dividers {
 class Grid {
 	constructor(editor) {
 		Object.assign(this, {
-			style: 'rgba(255,255,255,0.25)',
+			style: 'rgba(255,255,255,0.5)',
 			show: true,
 			editor
 		});

@@ -729,6 +729,180 @@ module.exports = {
 					}
 				]
 			]
+		},
+		{
+			name: 'subweapon throw',
+			height: 32,
+			width: 24,
+			frames: [
+				[
+					{
+						name: 'simonWhipTop1',
+						x: 4,
+						y: 0
+					},
+					{
+						name: 'simonIdleBottom',
+						x: 2,
+						y: 2
+					}
+				],
+				[
+					{
+						name: 'simonWhipTop2',
+						x: 4,
+						y: 0
+					},
+					{
+						name: 'simonIdleBottom',
+						x: 2,
+						y: 2
+					}
+				],
+				[
+					{
+						name: 'simonHand',
+						x: 0,
+						y: 1
+					},
+					{
+						name: 'simonWhipTop3',
+						x: 2,
+						y: 0
+					},
+					{
+						name: 'simonIdleBottom',
+						x: 2,
+						y: 2
+					}
+				]
+			]
+		},
+		{
+			name: 'subweapon throw (down stairs)',
+			height: 32,
+			width: 24,
+			frames: [
+				[
+					{
+						name: 'simonWhipTop1',
+						x: 4,
+						y: 0
+					},
+					{
+						name: 'simonStairsDamageLeg',
+						x: 2,
+						y: 2
+					},
+					{
+						name: 'simonCrouchBackLeg',
+						x: 4,
+						y: 2
+					},
+					{
+						name: 'simonCrouchEmpty2',
+						x: 4,
+						y: 3
+					}
+				],
+				[
+					{
+						name: 'simonWhipTop2',
+						x: 4,
+						y: 0
+					},
+					{
+						name: 'simonStairsDamageLeg',
+						x: 2,
+						y: 2
+					},
+					{
+						name: 'simonCrouchBackLeg',
+						x: 4,
+						y: 2
+					},
+					{
+						name: 'simonCrouchEmpty2',
+						x: 4,
+						y: 3
+					}
+				],
+				[
+					{
+						name: 'simonHand',
+						x: 0,
+						y: 1
+					},
+					{
+						name: 'simonWhipTop3',
+						x: 2,
+						y: 0
+					},
+					{
+						name: 'simonStairsDamageLeg',
+						x: 2,
+						y: 2
+					},
+					{
+						name: 'simonCrouchBackLeg',
+						x: 4,
+						y: 2
+					},
+					{
+						name: 'simonCrouchEmpty2',
+						x: 4,
+						y: 3
+					}
+				]
+			]
+		},
+		{
+			name: 'subweapon throw (up stairs)',
+			height: 32,
+			width: 24,
+			frames: [
+				[
+					{
+						name: 'simonWhipTop1',
+						x: 4,
+						y: 0
+					},
+					{
+						name: 'simonStairWalkUpLegs',
+						x: 2,
+						y: 2
+					}
+				],
+				[
+					{
+						name: 'simonWhipTop2',
+						x: 4,
+						y: 0
+					},
+					{
+						name: 'simonStairWalkUpLegs',
+						x: 2,
+						y: 2
+					}
+				],
+				[
+					{
+						name: 'simonHand',
+						x: 0,
+						y: 1
+					},
+					{
+						name: 'simonWhipTop3',
+						x: 2,
+						y: 0
+					},
+					{
+						name: 'simonStairWalkUpLegs',
+						x: 2,
+						y: 2
+					}
+				]
+			]
 		}
 	],
 	colors: [

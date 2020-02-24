@@ -28,7 +28,18 @@ class States {
 			resizeCanvas.call(this, canvas, state.width, state.height, this.zoom);
 		});
 
-		setInterval(this.draw.bind(this), 1000 / this.fps);
+		this.updateFps(this.fps);
+	}
+
+	updateFps(fps) {
+		if (!$.isNumeric(fps)) {
+			fps = $('#fps').val();
+		}
+		this.fps = fps;
+		if (this.interval) {
+			clearInterval(this.interval);
+		}
+		this.interval = setInterval(this.draw.bind(this), 1000 / this.fps);
 	}
 
 	draw() {

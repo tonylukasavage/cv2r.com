@@ -1,6 +1,6 @@
 const { CHR } = require('./data');
 
-exports.loadChr = function loadChr(chrIndex, pixels, zoom) {
+exports.loadChr = function loadChr(tiles, chrIndex, pixels, zoom) {
 	const chrData = CHR[chrIndex];
 	pixels.length = 0;
 	chrData.data.forEach((paletteIndex, index) => {
@@ -9,7 +9,7 @@ exports.loadChr = function loadChr(chrIndex, pixels, zoom) {
 		pixels.push({
 			x: ((index % 8) + (layout >= 2 ? 8 : 0)) * zoom,
 			y: ((Math.floor((index % 64) / 8)) + (layout % 2 === 1 ? 8 : 0)) * zoom,
-			paletteIndex
+			paletteIndex: tiles ? tiles.pixels[chrIndex][index].paletteIndex : paletteIndex
 		});
 	});
 	return chrData;

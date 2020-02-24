@@ -13,7 +13,7 @@ class SpriteMaker {
 		this.colorPicker = new ColorPicker();
 
 		this.editor.on('pixel', this.tiles.updatePixel.bind(this.tiles));
-		this.tiles.on('click', this.editor.updateChr.bind(this.editor));
+		this.tiles.on('click', this.editor.updateChr.bind(this.editor, this.tiles));
 		this.colorPicker.on('update', this.draw.bind(this));
 
 		$('#fps').change(this.states.updateFps.bind(this.states));

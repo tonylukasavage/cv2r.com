@@ -20,7 +20,7 @@ class Tiles extends EventEmitter {
 
 			const pixels = [];
 			pixels.name = chr.name;
-			loadChr(index, pixels, this.zoom);
+			loadChr(null, index, pixels, this.zoom);
 			this.pixels.push(pixels);
 
 			pixels.canvas = canvas;

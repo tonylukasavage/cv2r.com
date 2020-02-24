@@ -32,7 +32,7 @@ class Editor extends EventEmitter {
 		});
 
 		// load default CHR data into editor and draw
-		this.updateChr(this.chrIndex);
+		this.updateChr(null, this.chrIndex);
 	}
 
 	draw() {
@@ -68,9 +68,9 @@ class Editor extends EventEmitter {
 		this.emit('pixel', { chrIndex, paletteIndex, pixelIndex });
 	}
 
-	updateChr(chrIndex) {
+	updateChr(tiles, chrIndex) {
 		this.chrIndex = chrIndex;
-		const { width, height } = loadChr(chrIndex, this.pixels, this.zoom);
+		const { width, height } = loadChr(tiles, chrIndex, this.pixels, this.zoom);
 		resizeCanvas.call(this, this.canvas, width, height, this.zoom);
 		this.grid = new Grid(this);
 		this.dividers = new Dividers(this);

@@ -21,6 +21,7 @@ class Editor extends EventEmitter {
 		// add drawing events for editor canvas
 		canvas.addEventListener('click', this.drawPixel.bind(this), false);
 		canvas.addEventListener('mouseup', () => this.mousedown = false);
+		canvas.addEventListener('mouseout', () => this.mousedown = false);
 		canvas.addEventListener('mousedown', ev => {
 			this.mousedown = true;
 			this.drawPixel(ev);
@@ -51,6 +52,9 @@ class Editor extends EventEmitter {
 		const rect = this.canvas.getBoundingClientRect();
 		const x = ev.clientX - rect.left;
 		const y = ev.clientY - rect.top;
+		if (x < 0 || x > chrData.width * this.zoom) { return; }
+		if (y < 0 || y > chrData.height * this.zoom) { return; }
+		
 		const xScale = Math.floor(x / this.zoom);
 		const yScale = Math.floor(y / this.zoom);
 		let pixelIndex = (yScale * chrData.width) + xScale;
@@ -63,6 +67,7 @@ class Editor extends EventEmitter {
 		}
 
 		const paletteIndex = getPaletteIndex();
+		console.log({x, y, pixelIndex });
 		this.pixels[pixelIndex].paletteIndex = paletteIndex;
 		this.draw();
 		this.emit('pixel', { chrIndex, paletteIndex, pixelIndex });

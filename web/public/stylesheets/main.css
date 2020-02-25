@@ -302,6 +302,7 @@ td.item img {
 .editor-canvas {
   height: 256px;
   width: 128px;
+  cursor: url('../img/pencil.png') 0 24, default;
 }
 
 .tile-canvas {

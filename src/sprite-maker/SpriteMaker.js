@@ -8,7 +8,7 @@ class SpriteMaker {
 	constructor() {
 		this.editor = new Editor();
 		this.tiles = new Tiles();
-		this.states = new States(this.tiles);
+		this.states = new States(this.tiles, this.editor.chrIndex);
 		this.palette = new Palette();
 		this.colorPicker = new ColorPicker();
 

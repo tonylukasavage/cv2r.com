@@ -2,7 +2,7 @@ const { CHR, palette, states } = require('./data');
 const { resizeCanvas } = require('./utils');
 
 class States {
-	constructor(tiles) {
+	constructor(tiles, chrIndex) {
 		Object.assign(this, {
 			animations: [],
 			zoom: 3,
@@ -29,6 +29,7 @@ class States {
 		});
 
 		this.updateFps(this.fps);
+		this.showAffected(chrIndex);
 	}
 
 	updateFps(fps) {
@@ -39,7 +40,9 @@ class States {
 		if (this.interval) {
 			clearInterval(this.interval);
 		}
-		this.interval = setInterval(this.draw.bind(this), 1000 / this.fps);
+		if (fps > 0) {
+			this.interval = setInterval(this.draw.bind(this), 1000 / this.fps);
+		}
 	}
 
 	showAffected(chrIndex) {

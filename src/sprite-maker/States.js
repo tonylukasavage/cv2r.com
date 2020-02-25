@@ -1,4 +1,4 @@
-const { palette, states } = require('./data');
+const { CHR, palette, states } = require('./data');
 const { resizeCanvas } = require('./utils');
 
 class States {
@@ -12,7 +12,7 @@ class States {
 		states.forEach((state, index) => {
 			const canvas = $('<canvas></canvas>');
 			canvas.addClass('state-canvas');
-			canvas.data('sid', index);
+			canvas.attr('data-sid', index);
 			$('#states').append(canvas);
 			state.canvas = canvas;
 			state.ctx = canvas[0].getContext('2d');
@@ -40,6 +40,19 @@ class States {
 			clearInterval(this.interval);
 		}
 		this.interval = setInterval(this.draw.bind(this), 1000 / this.fps);
+	}
+
+	showAffected(chrIndex) {
+		const chrName = CHR[chrIndex].name;
+		states.forEach((state, index) => {
+			const found = state.frames.find(frame => frame.find(f => f.name === chrName));
+			const stateCanvas = $('canvas[data-sid="' + index + '"]');
+			if (found) {
+				stateCanvas.css('display', '');
+			} else {
+				stateCanvas.css('display', 'none');
+			}
+		});
 	}
 
 	draw() {

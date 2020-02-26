@@ -1,9 +1,11 @@
 const { palette } = require('./data');
 
 const template = `
-<div class="palette-button">
-	<div class="palette-button-corner">
-		<div class="palette-button-index">1</div>
+<div class="palette-button-selection">
+	<div class="palette-button">
+		<div class="palette-button-corner">
+			<div class="palette-button-index">1</div>
+		</div>
 	</div>
 </div>
 `;
@@ -11,19 +13,22 @@ const template = `
 class Palette {
 	constructor() {
 		palette.forEach((p, index) => {
-			const button = $(template);
+			const fullButton = $(template);
+			const button = fullButton.find('.palette-button');
+
 			if (index === 0) {
-				button.addClass('palette-button-selected');
+				fullButton.addClass('palette-button-selected');
 			}
 			button.css('background-color', '#' + p.hex);
 			button.data('pi', index);
 			button.find('.palette-button-index').text(index === 0 ? 'X' : index);
-			$('#palette-container').append(button);
+			$('#palette-container').append(fullButton);
 
 			button.click(function() {
-				var self = this;
-				$('.palette-button').each(function() {
-					if (this === self) {
+				const pi = $(this).data('pi');
+				$('.palette-button-selection').each(function() {
+					const pb = $(this).find('.palette-button');
+					if (pi === pb.data('pi')) {
 						$(this).addClass('palette-button-selected');
 					} else {
 						$(this).removeClass('palette-button-selected');

@@ -29,7 +29,7 @@ exports.resizeCanvas = function resizeCanvas(canvas, width, height, zoom) {
 };
 
 exports.getPaletteIndex = function getPaletteIndex() {
-	return parseInt($('.palette-button-selected').first().data('pi'), 10);
+	return parseInt($('.palette-button-selected').first().find('.palette-button').data('pi'), 10);
 };
 
 exports.rgb2hex = function rgb2hex(rgb){

@@ -15,7 +15,7 @@ class ColorPicker extends EventEmitter {
 			$('#cp-row-' + (rowIndex + 1)).append(button);
 
 			button.click(function() {
-				var paletteButton = $('.palette-button-selected').first();
+				var paletteButton = $('.palette-button-selected').first().find('.palette-button');
 				var bgc = $(this).css('background-color');
 				if (bgc.indexOf('rgb') === 0) {
 					bgc = rgb2hex(bgc);

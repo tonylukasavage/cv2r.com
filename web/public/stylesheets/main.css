@@ -277,9 +277,28 @@ td.item img {
 	color: gray;
 }
 
+#palette-container {
+  margin-top: 1em;
+}
+
 .palette-button {
   height: 40px;
   width: 40px;
+  margin-top: 1em;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+.palette-button-corner {
+  height: 16px;
+  width: 16px;
+  background-color: #000;
+  text-align: center;
+}
+
+.palette-button-index {
+  color:white; 
+  font-size:12px;
 }
 
 .palette-button:focus {
@@ -305,6 +324,11 @@ td.item img {
   cursor: url('../img/pencil.png') 0 24, default;
 }
 
+#editor-container {
+  display: flex;
+  justify-content: center;
+}
+
 .tile-canvas {
   height: 64px;
   width: 64px;
@@ -319,6 +343,8 @@ td.item img {
 }
 
 .color-picker-container {
-  margin-left:14px; 
-  width:640px;
+  margin-top: 2em;
+  width: 320px;
+  padding: 0;
+  margin: 2em auto;
 }

@@ -20,6 +20,12 @@ class SpriteMaker {
 		this.colorPicker.on('update', this.draw.bind(this));
 
 		$('#fps').change(this.states.updateFps.bind(this.states));
+
+		const states = this.states;
+		$('#animateToggle').change(function() {
+			states.animate = $(this).prop('checked');
+			states.updateFps(states.fps);
+		});
 	}
 
 	draw() {

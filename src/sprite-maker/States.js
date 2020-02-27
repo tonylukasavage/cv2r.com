@@ -6,7 +6,8 @@ class States {
 		Object.assign(this, {
 			animations: [],
 			zoom: 3,
-			fps: 3
+			fps: 3,
+			animate: true
 		});
 
 		states.forEach((state, index) => {
@@ -40,7 +41,7 @@ class States {
 		if (this.interval) {
 			clearInterval(this.interval);
 		}
-		if (fps > 0) {
+		if (this.animate && fps > 0) {
 			this.interval = setInterval(this.draw.bind(this), 1000 / this.fps);
 		}
 	}

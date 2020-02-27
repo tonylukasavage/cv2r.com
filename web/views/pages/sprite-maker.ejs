@@ -22,11 +22,12 @@
         <p>You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted as a pull request to the cv2r project.</p>
         </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5 container info-box shadow">
 
+          <div class="sprite-maker-header">Pixel Editor</div>
           <div class="row">
-            <div id="editor-container" class="col-md-8"></div>
-            <div id="palette-container" class="col-sm-4"></div>
+            <div id="editor-container" class="col-md-9"></div>
+            <div id="palette-container" class="col-md-3"></div>
           </div>
 
           <div class="color-picker-container row">
@@ -37,19 +38,36 @@
           </div>
 
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
 
-          <div>Simon's Tiles</div>
-          <div id="tiles"></div>
-
-          <div>Sprite & Animation Preview</div>
-          <div>
-            <label for="fps">animation speed</label>
-            <input type="range" class="custom-range" value="3" min="1" max="10" step="1" id="fps"></input>
-            <!-- <span>FPS: </span>
-            <input type="text" id="fps" value="3"> -->
+          <div class="container info-box shadow">
+            <div class="sprite-maker-header">Tile Selector</div>
+            <div id="tiles"></div>
           </div>
-          <div id="states"></div>
+
+          <div class="container info-box shadow">
+            <div class="sprite-maker-header">Sprites and Animations</div> 
+            <div id="states"></div>
+            <hr>
+            <table style="width:100%">
+              <tbody>
+                <tr>
+                  <td style="width:25%">animation speed</td>
+                  <td colspan="3"><input type="range" class="custom-range" value="3" min="1" max="10" step="1" id="fps"></input></td>
+                </tr>
+                <tr>
+                  <td>animate</td>
+                  <td><input type="checkbox" data-toggle="toggle" checked id="stopAnimation" data-offstyle="danger"></td>
+                  <td>only show affected sprites</td>
+                  <td><input type="checkbox" data-toggle="toggle" checked id="stopAnimation" data-offstyle="danger"></td>
+                </tr>
+                <tr>
+                  <td>hide transparent pixels</td>
+                  <td><input type="checkbox" data-toggle="toggle" id="stopAnimation" data-offstyle="danger"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
         </div>
       </div>

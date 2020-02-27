@@ -277,6 +277,12 @@ td.item img {
 	color: gray;
 }
 
+.sprite-maker-header {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 #palette-container {
   margin-top: 1em;
 }

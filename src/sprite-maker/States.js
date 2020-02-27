@@ -7,7 +7,8 @@ class States {
 			animations: [],
 			zoom: 3,
 			fps: 3,
-			animate: true
+			animate: true,
+			onlyShowAffected: true
 		});
 
 		states.forEach((state, index) => {
@@ -49,7 +50,7 @@ class States {
 	showAffected(chrIndex) {
 		const chrName = CHR[chrIndex].name;
 		states.forEach((state, index) => {
-			const found = state.frames.find(frame => frame.find(f => f.name === chrName));
+			const found = !this.onlyShowAffected || state.frames.find(frame => frame.find(f => f.name === chrName));
 			const stateCanvas = $('canvas[data-sid="' + index + '"]');
 			if (found) {
 				stateCanvas.css('display', '');

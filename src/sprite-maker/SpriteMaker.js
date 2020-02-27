@@ -22,9 +22,15 @@ class SpriteMaker {
 		$('#fps').change(this.states.updateFps.bind(this.states));
 
 		const states = this.states;
+		const editor = this.editor;
 		$('#animateToggle').change(function() {
 			states.animate = $(this).prop('checked');
 			states.updateFps(states.fps);
+		});
+		$('#affectedToggle').change(function() {
+			console.log($(this).prop('checked'), editor.chrIndex);
+			states.onlyShowAffected = $(this).prop('checked');
+			states.showAffected(editor.chrIndex);
 		});
 	}
 

@@ -17,10 +17,11 @@
 
   <div class="jumbotron text-center">
     <div class="container info-box shadow">
-      <div class="row">
-        <h3>Sprite Maker</h3>
-        <p>You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted as a pull request to the cv2r project.</p>
-        </div>
+      <h3>Sprite Maker</h3>
+      <div class="row" style="margin-bottom:10px;">
+        <div class="col-lg-10">You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted to the cv2r project.</div>
+        <div class="col-sm-2"><button id="sprite-patch" type="button" class="btn-lg btn-primary" style="border: 2px solid black;">Create Patch</button></div>
+      </div>
       <div class="row">
         <div class="col-md-5 container info-box shadow">
 
@@ -56,13 +57,13 @@
                   <td colspan="3"><input type="range" class="custom-range" value="3" min="1" max="10" step="1" id="fps"></input></td>
                 </tr>
                 <tr>
-                  <td>animate</td>
+                  <td>animation</td>
                   <td><input type="checkbox" data-toggle="toggle" checked id="animateToggle" data-offstyle="danger"></td>
-                  <td>only show sprites<br>affected by current tile</td>
+                  <td>only show sprites<br>affected by editor tile</td>
                   <td><input type="checkbox" data-toggle="toggle" checked id="affectedToggle" data-offstyle="danger"></td>
                 </tr>
                 <tr>
-                  <td>hide transparent pixels</td>
+                  <td>background transparency</td>
                   <td><input type="checkbox" data-toggle="toggle" id="transparentToggle" data-offstyle="danger"></td>
                 </tr>
               </tbody>

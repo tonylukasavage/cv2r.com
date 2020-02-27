@@ -6,31 +6,35 @@ const States = require('./States');
 
 class SpriteMaker {
 	constructor() {
-		this.editor = new Editor();
-		this.tiles = new Tiles();
-		this.states = new States(this.tiles, this.editor.chrIndex);
+		const editor = this.editor = new Editor();
+		const tiles = this.tiles = new Tiles();
+		const states = this.states = new States(this.tiles, this.editor.chrIndex);
 		this.palette = new Palette();
 		this.colorPicker = new ColorPicker();
 
-		this.editor.on('pixel', this.tiles.updatePixel.bind(this.tiles));
-		this.tiles.on('click', chrIndex => {
-			this.editor.updateChr(this.tiles, chrIndex);
-			this.states.showAffected(chrIndex);
+		editor.on('pixel', tiles.updatePixel.bind(tiles));
+		tiles.on('click', chrIndex => {
+			editor.updateChr(tiles, chrIndex);
+			states.showAffected(chrIndex);
 		});
 		this.colorPicker.on('update', this.draw.bind(this));
 
 		$('#fps').change(this.states.updateFps.bind(this.states));
-
-		const states = this.states;
-		const editor = this.editor;
 		$('#animateToggle').change(function() {
 			states.animate = $(this).prop('checked');
 			states.updateFps(states.fps);
 		});
 		$('#affectedToggle').change(function() {
-			console.log($(this).prop('checked'), editor.chrIndex);
 			states.onlyShowAffected = $(this).prop('checked');
 			states.showAffected(editor.chrIndex);
+		});
+		$('#transparentToggle').change(function() {
+			states.backgroundTransparency = $(this).prop('checked');
+			states.draw();
+		});
+
+		$('#sprite-patch').click(function() {
+			alert('foo');
 		});
 	}
 

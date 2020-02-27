@@ -8,7 +8,8 @@ class States {
 			zoom: 3,
 			fps: 3,
 			animate: true,
-			onlyShowAffected: true
+			onlyShowAffected: true,
+			backgroundTransparency: false
 		});
 
 		states.forEach((state, index) => {
@@ -68,7 +69,7 @@ class States {
 			const frame = state.frames[state.frameCount];
 			frame.forEach(part => {
 				part.pixels.forEach(p => {
-					ctx.fillStyle = '#' + palette[p.paletteIndex].hex;
+					ctx.fillStyle = p.paletteIndex === 0 && this.backgroundTransparency ? 'rgba(0,0,0,0)' : '#' + palette[p.paletteIndex].hex;
 					ctx.fillRect(
 						p.x + (part.x > 0 ? 4 * part.x * this.zoom : 0), 
 						p.y + (part.y > 0 ? 8 * part.y * this.zoom : 0), 

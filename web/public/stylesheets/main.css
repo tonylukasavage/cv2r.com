@@ -277,17 +277,49 @@ td.item img {
 	color: gray;
 }
 
+.sprite-maker-header {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#palette-container {
+  margin-top: 1em;
+}
+
+.palette-button-selection {
+  height: 48px;
+  width: 48px;
+  margin-bottom: 0.5em;
+}
+
+.palette-button-selected {
+  border: 4px solid #007bff;
+  border-radius: 4px;
+}
+
 .palette-button {
   height: 40px;
   width: 40px;
+  margin-top: 1em auto;
+  cursor: pointer;
+  border: 2px solid black;
+}
+
+.palette-button-corner {
+  height: 16px;
+  width: 16px;
+  background-color: #000;
+  text-align: center;
+}
+
+.palette-button-index {
+  color:white; 
+  font-size:12px;
 }
 
 .palette-button:focus {
   outline: 0;
-}
-
-.palette-button-selected {
-  border: 2px solid rgba(0,0,0,0.75)
 }
 
 .picker-button {
@@ -302,19 +334,29 @@ td.item img {
 .editor-canvas {
   height: 256px;
   width: 128px;
-  background-color: #888;
+  cursor: url('../img/pencil.png') 0 24, default;
+}
+
+#editor-container {
+  display: flex;
+  justify-content: center;
 }
 
 .tile-canvas {
   height: 64px;
   width: 64px;
-  background-color: #888;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .state-canvas {
   height: 128px;
   width: 64px;
-  background-color: #88888800;
   margin-right: 10px;
+}
+
+.color-picker-container {
+  width: 320px;
+  padding: 0;
+  margin: 2em auto;
 }

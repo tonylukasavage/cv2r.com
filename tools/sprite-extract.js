@@ -3,21 +3,6 @@ const SPRITE_SIZE = 8;
 const SPRITE_BYTES = 16;
 const JS_PATH = './src/sprite-maker/data.js';
 
-const rom = process.argv[2];
-if (!rom) {
-	console.error('must provide a rom file');
-	process.exit(1);
-}
-const buf = fs.readFileSync(rom);
-
-function toBinaryArray(uint) {
-	let bin = uint.toString(2);
-	while (bin.length < 8) {
-		bin = '0' + bin;
-	}
-	return bin.split('').map(b => parseInt(b, 10));
-}
-
 const states = [
 	{
 		name: 'idle',
@@ -495,6 +480,21 @@ const palette = [
 	{ hex: 'A81000', index: 0x06 },
 	{ hex: 'FCFCFC', index: 0x30 }
 ];
+
+const rom = process.argv[2];
+if (!rom) {
+	console.error('must provide a rom file');
+	process.exit(1);
+}
+const buf = fs.readFileSync(rom);
+
+function toBinaryArray(uint) {
+	let bin = uint.toString(2);
+	while (bin.length < 8) {
+		bin = '0' + bin;
+	}
+	return bin.split('').map(b => parseInt(b, 10));
+}
 
 CHR.forEach(chr => {
 	const chr8x8 = [];

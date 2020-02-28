@@ -34,7 +34,7 @@ class SpriteMaker {
 		});
 
 		$('#sprite-patch').click(function() {
-			alert('foo');
+			tiles.export();
 		});
 	}
 

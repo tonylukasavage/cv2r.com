@@ -21,6 +21,7 @@ class Tiles extends EventEmitter {
 			const pixels = [];
 			pixels.name = chr.name;
 			pixels.offset = chr.offset;
+			pixels.layout = chr.layout;
 			loadChr(null, index, pixels, this.zoom);
 			this.pixels.push(pixels);
 
@@ -47,21 +48,33 @@ class Tiles extends EventEmitter {
 	}
 
 	export() {
+		const chrPixelLength = 8 * 8;
 		const spritePatches = [];
 
-		this.pixels.forEach(pixels => {	
+		this.pixels.forEach(pixels => {
 			const bytes = [];
 			const { offset } = pixels;
-			let byte1 = '', byte2 = '';
-			
-			pixels.forEach((pixel, index) => {
-				const { paletteIndex } = pixel;
-				byte1 += paletteIndex % 2;
-				byte2 += paletteIndex > 1 ? 1 : 0;
-				if (index % 8 === 7) {
-					bytes.push(parseInt(byte1, 2), parseInt(byte2, 2));
-					byte1 = '';
-					byte2 = '';
+			let pixelCount = 0;
+
+			pixels.layout.forEach(layout => {
+				const pixelOffset = layout * 16;
+				let byte1 = '', byte2 = '';
+				let byteIndex = 0;
+
+				for (let i = 0; i < chrPixelLength; i++) {
+					const { paletteIndex } = pixels[pixelCount++];
+					byte1 += paletteIndex % 2;
+					byte2 += paletteIndex > 1 ? 1 : 0;
+					if (i % 8 === 7) {
+						bytes[byteIndex + pixelOffset] = parseInt(byte1, 2);
+						bytes[byteIndex + pixelOffset + 8] = parseInt(byte2, 2);
+						byteIndex++;
+						if (byteIndex % 8 === 0) {
+							byteIndex += 8;
+						}
+						byte1 = '';
+						byte2 = '';
+					}
 				}
 			});
 			spritePatches.push({ offset, bytes });

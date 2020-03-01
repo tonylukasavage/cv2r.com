@@ -23,7 +23,7 @@ class ColorPicker extends EventEmitter {
 				var paletteIndex = parseInt(paletteButton.data('pi'), 10);
 				paletteButton.css('background-color', '#' + bgc);
 				palette[paletteIndex].hex = bgc;
-				palette[paletteIndex].index = parseInt($(this).attr('data-pi'), 10);
+				palette[paletteIndex].index = parseInt($(this).data('pi'), 10);
 
 				self.emit('update');
 			});

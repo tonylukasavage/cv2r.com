@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const EventEmitter = require('events');
 const { CHR, palette } = require('./data');
 const { loadChr, resizeCanvas } = require('./utils');
@@ -80,14 +81,20 @@ class Tiles extends EventEmitter {
 			spritePatches.push({ offset, bytes });
 		});
 
-		const patch = 'const spritePatches = ' + JSON.stringify(spritePatches, null, 2) + patchTemplate;
+		//const patch = 'const spritePatches = ' + JSON.stringify(spritePatches, null, 2) + patchTemplate;
+
+		const patch = _.template(patchTemplate)({
+			spritePatches: JSON.stringify(spritePatches, null, 2),
+			palette: palette.slice(1).map(p => p.index).join(',')
+		});
 		console.log(patch);
+		console.log(palette);
 	}
 }
 
 module.exports = Tiles;
 
-const patchTemplate = `;
+const patchTemplate = `const spritePatches = <%= spritePatches %>;
 
 const offsets = [ 0, 0x2000, 0x4000, 0x6000, 0x8000, 0x9000, 0xB000, 0x17000 ];
 const finalSpritePatch = [];
@@ -103,11 +110,7 @@ for (let i = 0; i < offsets.length; i++) {
 // palette
 finalSpritePatch.push({
 	offset: 117439,
-	bytes: [
-		15,
-		6,
-		48
-	]
+	bytes: [<%= palette %>]
 });
 
 module.exports = {

@@ -105,6 +105,7 @@ class SpriteMaker {
 				spritePatches.push({ offset, bytes });
 			});
 
+			console.log(data.palette);
 			const patch = _.template(patchTemplate)({
 				spritePatches: JSON.stringify(spritePatches, null, 2),
 				palette: data.palette.slice(1).map(p => p.index).join(',')

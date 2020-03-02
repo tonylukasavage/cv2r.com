@@ -67,7 +67,6 @@ class Editor extends EventEmitter {
 		}
 
 		const paletteIndex = getPaletteIndex();
-		console.log({x, y, pixelIndex });
 		this.pixels[pixelIndex].paletteIndex = paletteIndex;
 		this.draw();
 		this.emit('pixel', { chrIndex, paletteIndex, pixelIndex });

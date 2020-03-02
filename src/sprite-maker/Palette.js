@@ -1,3 +1,4 @@
+const EventEmitter = require('events');
 const { palette } = require('./data');
 
 const template = `
@@ -10,8 +11,11 @@ const template = `
 </div>
 `;
 
-class Palette {
+const undoButtonTemplate = '<button id="undo-button">UNDO</button>';
+
+class Palette extends EventEmitter {
 	constructor() {
+		super();
 		palette.forEach((p, index) => {
 			const fullButton = $(template);
 			const button = fullButton.find('.palette-button');
@@ -35,6 +39,12 @@ class Palette {
 					}
 				});
 			});
+		});
+
+		const undoButton = $(undoButtonTemplate);
+		$('#palette-container').append(undoButton);
+		undoButton.click(() => {
+			this.emit('undo');
 		});
 	}
 }

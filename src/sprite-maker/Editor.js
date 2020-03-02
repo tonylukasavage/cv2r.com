@@ -9,6 +9,8 @@ class Editor extends EventEmitter {
 		this.zoom = 16;
 		this.mousedown = false;
 		this.pixels = [];
+		this.undoBuffer = [];
+		this.undoMax = 128;
 
 		// create canvas for editor
 		const canvas = document.createElement('canvas');
@@ -19,7 +21,7 @@ class Editor extends EventEmitter {
 		this.ctx = canvas.getContext('2d');
 
 		// add drawing events for editor canvas
-		canvas.addEventListener('click', this.drawPixel.bind(this), false);
+		//canvas.addEventListener('click', this.drawPixel.bind(this), false);
 		canvas.addEventListener('mouseup', () => this.mousedown = false);
 		canvas.addEventListener('mouseout', () => this.mousedown = false);
 		canvas.addEventListener('mousedown', ev => {
@@ -47,6 +49,7 @@ class Editor extends EventEmitter {
 	}
 
 	drawPixel(ev) {
+		console.log('drawpixel');
 		const { chrIndex } = this;
 		const chrData = CHR[this.chrIndex];
 		const rect = this.canvas.getBoundingClientRect();
@@ -67,9 +70,20 @@ class Editor extends EventEmitter {
 		}
 
 		const paletteIndex = getPaletteIndex();
+		if (this.undoBuffer.length < this.undoMax && this.pixels[pixelIndex].paletteIndex !== paletteIndex) {
+			this.undoBuffer.push({ pixelIndex, paletteIndex: this.pixels[pixelIndex].paletteIndex });
+		}
 		this.pixels[pixelIndex].paletteIndex = paletteIndex;
 		this.draw();
 		this.emit('pixel', { chrIndex, paletteIndex, pixelIndex });
+	}
+
+	undo() {
+		if (this.undoBuffer.length < 1) { return; }
+		const { pixelIndex, paletteIndex } = this.undoBuffer.pop();
+		this.pixels[pixelIndex].paletteIndex = paletteIndex;
+		this.draw();
+		this.emit('pixel', { chrIndex: this.chrIndex, paletteIndex, pixelIndex });
 	}
 
 	updateChr(tiles, chrIndex) {

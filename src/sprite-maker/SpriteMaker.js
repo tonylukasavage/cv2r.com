@@ -19,8 +19,10 @@ class SpriteMaker {
 		tiles.on('click', chrIndex => {
 			editor.updateChr(tiles, chrIndex);
 			states.showAffected(chrIndex);
+			editor.undoBuffer.length = 0;
 		});
 		this.colorPicker.on('update', this.draw.bind(this));
+		this.palette.on('undo', editor.undo.bind(editor));
 
 		$('#fps').change(this.states.updateFps.bind(this.states));
 		$('#animateToggle').change(function() {
@@ -146,7 +148,6 @@ for (let i = 0; i < offsets.length; i++) {
 	});
 }
 
-// palette
 finalSpritePatch.push({
 	offset: 117439,
 	bytes: [<%= palette %>]

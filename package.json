@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "extract": "node ./tools/sprite-extract.js ../cv2r/cv2.nes",
-    "build": "npm run extract && npm run browserify",
+
     "browserify": "./node_modules/.bin/browserify ./src/sprite-maker/SpriteMaker.js -o ./web/public/js/SpriteMaker.js",
     "watchify": "./node_modules/.bin/watchify ./src/sprite-maker/SpriteMaker.js -d -o ./web/public/js/SpriteMaker.js -v",
     "start": "node server.js",

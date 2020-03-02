@@ -11,7 +11,7 @@
     "build": "npm run extract && npm run browserify",
     "browserify": "./node_modules/.bin/browserify ./src/sprite-maker/SpriteMaker.js -o ./web/public/js/SpriteMaker.js",
     "watchify": "./node_modules/.bin/watchify ./src/sprite-maker/SpriteMaker.js -d -o ./web/public/js/SpriteMaker.js -v",
-    "start": "npm run build && heroku local web",
+    "start": "node server.js",
     "test": "node test.js"
   },
   "dependencies": {

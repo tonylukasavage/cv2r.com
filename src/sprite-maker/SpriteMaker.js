@@ -8,6 +8,7 @@ const States = require('./States');
 
 class SpriteMaker {
 	constructor() {
+		const self = this;
 		const editor = this.editor = new Editor();
 		const tiles = this.tiles = new Tiles();
 		const states = this.states = new States(this.tiles, this.editor.chrIndex);
@@ -33,6 +34,40 @@ class SpriteMaker {
 		$('#transparentToggle').change(function() {
 			states.backgroundTransparency = $(this).prop('checked');
 			states.draw();
+		});
+
+		$('#sprite-save').click(function() {
+			const content = {
+				tiles: tiles.pixels,
+				palette: data.palette
+			};
+			downloadFile(JSON.stringify(content, null, 2), 'sprite-maker.json');
+		});
+
+		$('#sprite-load').click(function() {
+			$('#sprite-load-file').trigger('click');
+		});
+
+		$('#sprite-load-file').change(function() {
+			const file = this.files[0];
+			var reader = new FileReader();
+			reader.onload = function() {
+				const json = JSON.parse(this.result);
+				json.tiles.forEach((t, i) => {
+					tiles.pixels[i].forEach((pixel, j) => {
+						pixel.x = json.tiles[i][j].x;
+						pixel.y = json.tiles[i][j].y;
+						pixel.paletteIndex = json.tiles[i][j].paletteIndex;
+					});
+				});
+				json.palette.forEach((p, i) => {
+					data.palette[i].hex = p.hex;
+					data.palette[i].index = p.hex;
+				});
+				self.draw();
+				editor.updateChr(tiles, 0);
+			};
+			reader.readAsText(file);
 		});
 
 		$('#sprite-patch').click(function() {
@@ -72,7 +107,8 @@ class SpriteMaker {
 				spritePatches: JSON.stringify(spritePatches, null, 2),
 				palette: data.palette.slice(1).map(p => p.index).join(',')
 			});
-			console.log(patch);
+
+			downloadFile(patch, 'test-sprite.js');
 		});
 	}
 
@@ -84,6 +120,18 @@ class SpriteMaker {
 }
 
 window.SpriteMaker = SpriteMaker;
+
+function downloadFile(content, filename) {
+	const blob = new Blob([content]);
+	const link = document.createElement('a');
+	const url = URL.createObjectURL(blob);
+	link.setAttribute('href', url);
+	link.setAttribute('download', filename);
+	link.style.visibility = 'hidden';
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}
 
 const patchTemplate = `const spritePatches = <%= spritePatches %>;
 

@@ -13,6 +13,8 @@ const template = `
 
 const undoButtonTemplate = '<button id="undo-button">UNDO</button>';
 
+const clearButtonTemplate = '<button id="clear-button">CLEAR</button>';
+
 class Palette extends EventEmitter {
 	constructor() {
 		super();
@@ -45,6 +47,23 @@ class Palette extends EventEmitter {
 		$('#palette-container').append(undoButton);
 		undoButton.click(() => {
 			this.emit('undo');
+		});
+
+		const clearButton = $(clearButtonTemplate);
+		$('#palette-container').append(clearButton);
+		clearButton.click(() => {
+			this.emit('clear');
+		});
+	}
+
+	load(loadPalette) {
+		loadPalette.forEach((p, i) => Object.assign(palette[i], p));
+		this.draw();
+	}
+
+	draw() {
+		$('.palette-button').each(function(index, value) {
+			$(value).css('background-color', '#' + palette[index].hex);
 		});
 	}
 }

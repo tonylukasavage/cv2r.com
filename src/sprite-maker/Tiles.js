@@ -34,8 +34,24 @@ class Tiles extends EventEmitter {
 		this.draw();
 	}
 
+	clear(index) {
+		this.pixels[index].forEach(pixel => {
+			pixel.paletteIndex = 0;
+		});
+		this.draw();
+	}
+
 	updatePixel({ chrIndex, paletteIndex, pixelIndex }) {
 		this.pixels[chrIndex][pixelIndex].paletteIndex = paletteIndex;
+		this.draw();
+	}
+
+	load(loadTiles) {
+		loadTiles.forEach((t, i) => {
+			this.pixels[i].forEach((pixel, j) => {
+				Object.assign(pixel, loadTiles[i][j]);
+			});
+		});
 		this.draw();
 	}
 

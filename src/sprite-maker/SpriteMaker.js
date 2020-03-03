@@ -8,11 +8,10 @@ const States = require('./States');
 
 class SpriteMaker {
 	constructor() {
-		const self = this;
 		const editor = this.editor = new Editor();
 		const tiles = this.tiles = new Tiles();
 		const states = this.states = new States(this.tiles, this.editor.chrIndex);
-		this.palette = new Palette();
+		const palette = this.palette = new Palette();
 		this.colorPicker = new ColorPicker();
 
 		editor.on('pixel', tiles.updatePixel.bind(tiles));
@@ -23,6 +22,10 @@ class SpriteMaker {
 		});
 		this.colorPicker.on('update', this.draw.bind(this));
 		this.palette.on('undo', editor.undo.bind(editor));
+		this.palette.on('clear', () => {
+			editor.clear();
+			tiles.clear(editor.chrIndex);
+		});
 
 		$('#fps').change(this.states.updateFps.bind(this.states));
 		$('#animateToggle').change(function() {
@@ -55,19 +58,9 @@ class SpriteMaker {
 			var reader = new FileReader();
 			reader.onload = function() {
 				const json = JSON.parse(this.result);
-				json.tiles.forEach((t, i) => {
-					tiles.pixels[i].forEach((pixel, j) => {
-						pixel.x = json.tiles[i][j].x;
-						pixel.y = json.tiles[i][j].y;
-						pixel.paletteIndex = json.tiles[i][j].paletteIndex;
-					});
-				});
-				json.palette.forEach((p, i) => {
-					data.palette[i].hex = p.hex;
-					data.palette[i].index = p.hex;
-				});
-				self.draw();
-				editor.updateChr(tiles, 0);
+				palette.load(json.palette);
+				tiles.load(json.tiles);
+				editor.load(tiles);
 			};
 			reader.readAsText(file);
 		});

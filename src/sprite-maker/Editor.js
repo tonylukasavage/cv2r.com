@@ -86,6 +86,19 @@ class Editor extends EventEmitter {
 		this.emit('pixel', { chrIndex: this.chrIndex, paletteIndex, pixelIndex });
 	}
 
+	clear() {
+		this.pixels.forEach(pixel => {
+			pixel.paletteIndex = 0;
+			pixel.hex = palette[0].hex;
+		});
+		this.draw();
+	}
+
+	load(tiles) {
+		this.updateChr(tiles, 0);
+		this.draw();
+	}
+
 	updateChr(tiles, chrIndex) {
 		this.chrIndex = chrIndex;
 		const { width, height } = loadChr(tiles, chrIndex, this.pixels, this.zoom);

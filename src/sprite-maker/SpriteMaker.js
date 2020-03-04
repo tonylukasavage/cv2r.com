@@ -27,6 +27,14 @@ class SpriteMaker {
 			tiles.clear(editor.chrIndex);
 		});
 
+		$('#patch-name').keyup(function() {
+			const idVal = $(this).val()
+				.toLowerCase()
+				.replace(/\s+/g, '-')
+				.replace(/[^a-z0-9\-]/g, '');
+			$('#patch-id').val(idVal);	
+		});
+
 		$('#fps').change(this.states.updateFps.bind(this.states));
 		$('#animateToggle').change(function() {
 			states.animate = $(this).prop('checked');
@@ -98,7 +106,6 @@ class SpriteMaker {
 				spritePatches.push({ offset, bytes });
 			});
 
-			console.log(data.palette);
 			const patch = _.template(patchTemplate)({
 				spritePatches: JSON.stringify(spritePatches, null, 2),
 				palette: data.palette.slice(1).map(p => p.index).join(',')

@@ -6,7 +6,7 @@ class Editor extends EventEmitter {
 	constructor() {
 		super();
 		this.chrIndex = 0;
-		this.zoom = 16;
+		this.zoom = 32;
 		this.mousedown = false;
 		this.pixels = [];
 		this.undoBuffer = [];

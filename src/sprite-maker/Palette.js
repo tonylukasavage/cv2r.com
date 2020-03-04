@@ -43,17 +43,17 @@ class Palette extends EventEmitter {
 			});
 		});
 
-		const undoButton = $(undoButtonTemplate);
-		$('#palette-container').append(undoButton);
-		undoButton.click(() => {
-			this.emit('undo');
-		});
+		// const undoButton = $(undoButtonTemplate);
+		// $('#palette-container').append(undoButton);
+		// undoButton.click(() => {
+		// 	this.emit('undo');
+		// });
 
-		const clearButton = $(clearButtonTemplate);
-		$('#palette-container').append(clearButton);
-		clearButton.click(() => {
-			this.emit('clear');
-		});
+		// const clearButton = $(clearButtonTemplate);
+		// $('#palette-container').append(clearButton);
+		// clearButton.click(() => {
+		// 	this.emit('clear');
+		// });
 	}
 
 	load(loadPalette) {

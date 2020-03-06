@@ -5,7 +5,7 @@ class States {
 	constructor(tiles, chrIndex) {
 		Object.assign(this, {
 			animations: [],
-			zoom: 4,
+			zoom: 3,
 			fps: 3,
 			animate: true,
 			onlyShowAffected: true,

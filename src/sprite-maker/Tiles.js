@@ -7,7 +7,7 @@ class Tiles extends EventEmitter {
 	constructor() {
 		super();
 		this.pixels = [];
-		this.zoom = 4;
+		this.zoom = 3;
 
 		const self = this;
 		CHR.forEach((chr, index) => {

@@ -13,25 +13,29 @@ class Editor extends EventEmitter {
 		this.undoMax = 128;
 
 		// create canvas for editor
-		const canvas = document.createElement('canvas');
-		canvas.className = 'editor-canvas';
-		canvas.id = 'editor-canvas';
-		$('#editor-container').append(canvas);
-		this.canvas = canvas;
+		const canvas = this.canvas = $('#editor-canvas')[0];
 		this.ctx = canvas.getContext('2d');
+		const overlay = this.overlay = $('#editor-canvas-overlay')[0];
+		this.overlayCtx = overlay.getContext('2d');
 
-		// add drawing events for editor canvas
-		//canvas.addEventListener('click', this.drawPixel.bind(this), false);
-		canvas.addEventListener('mouseup', () => this.mousedown = false);
-		canvas.addEventListener('mouseout', () => this.mousedown = false);
-		canvas.addEventListener('mousedown', ev => {
-			this.mousedown = true;
-			this.drawPixel(ev);
-		});
-		canvas.addEventListener('mousemove', ev => {
+		// add drawing events for overlay canvas
+		overlay.addEventListener('mousemove', ev => {
+			this.drawOverlayPixel(ev);
 			if (this.mousedown) {
 				this.drawPixel(ev);
 			}
+		});
+		overlay.addEventListener('mouseout', () => {
+			const chrData = CHR[this.chrIndex];
+			this.overlayCtx.clearRect(0, 0, chrData.width * this.zoom, chrData.height * this.zoom);	
+			this.mousedown = false;
+		});
+
+		// add drawing events for editor canvas
+		overlay.addEventListener('mouseup', () => this.mousedown = false);
+		overlay.addEventListener('mousedown', ev => {
+			this.mousedown = true;
+			this.drawPixel(ev);
 		});
 
 		// load default CHR data into editor and draw
@@ -48,8 +52,22 @@ class Editor extends EventEmitter {
 		this.dividers.draw();
 	}
 
+	drawOverlayPixel(ev) {
+		const { chrIndex, zoom, overlay, overlayCtx } = this;
+		const chrData = CHR[chrIndex];
+		const rect = overlay.getBoundingClientRect();
+		const x = ev.clientX - rect.left;
+		const y = ev.clientY - rect.top;
+		if (x < 0 || x > chrData.width * zoom) { return; }
+		if (y < 0 || y > chrData.height * zoom) { return; }
+		const xAdj = Math.floor(x / zoom) * zoom;
+		const yAdj = Math.floor(y / zoom) * zoom;
+		overlayCtx.clearRect(0, 0, chrData.width * zoom, chrData.height * zoom);
+		overlayCtx.fillStyle = '#' + palette[getPaletteIndex()].hex;
+		overlayCtx.fillRect(xAdj, yAdj, zoom, zoom);
+	}
+
 	drawPixel(ev) {
-		console.log('drawpixel');
 		const { chrIndex } = this;
 		const chrData = CHR[this.chrIndex];
 		const rect = this.canvas.getBoundingClientRect();
@@ -103,6 +121,7 @@ class Editor extends EventEmitter {
 		this.chrIndex = chrIndex;
 		const { width, height } = loadChr(tiles, chrIndex, this.pixels, this.zoom);
 		resizeCanvas.call(this, this.canvas, width, height, this.zoom);
+		resizeCanvas.call(this, this.overlay, width, height, this.zoom);
 		this.grid = new Grid(this);
 		this.dividers = new Dividers(this);
 		this.draw();

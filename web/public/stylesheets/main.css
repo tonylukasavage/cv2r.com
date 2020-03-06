@@ -336,6 +336,10 @@ td.item img {
   height: 256px;
   width: 128px;
   cursor: url('../img/pencil.png') 0 24, default;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
 }
 
 #editor-container {

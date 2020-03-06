@@ -39,15 +39,11 @@
           <div class="sm-panel">
             <div class="sm-panel-header">Editor</div>
             <div class="row">
-              <div id="editor-container" class="col-12"></div>
+              <div id="editor-container" class="col-12" style="position: relative;">
+                <canvas id="editor-canvas" class="editor-canvas"></canvas>
+                <canvas id="editor-canvas-overlay" class="editor-canvas" style="z-index: 1;"></cavnas>
+              </div>
             </div>
-
-            <!-- <div class="color-picker-container row">
-              <div id="cp-row-1" class="row"></div>
-              <div id="cp-row-2" class="row"></div>
-              <div id="cp-row-3" class="row"></div>
-              <div id="cp-row-4" class="row"></div>
-            </div> -->
           </div>
         </div>
 
@@ -106,71 +102,6 @@
           </div>
         </div>
 
-        <!-- <div class="col-md-5 container info-box shadow">
-
-          <div class="sprite-maker-header">Pixel Editor</div>
-          <div class="row">
-            <div id="editor-container" class="col-md-9"></div>
-            <div id="palette-container" class="col-md-3"></div>
-          </div>
-
-          <div class="color-picker-container row">
-            <div id="cp-row-1" class="row"></div>
-            <div id="cp-row-2" class="row"></div>
-            <div id="cp-row-3" class="row"></div>
-            <div id="cp-row-4" class="row"></div>
-          </div>
-
-        </div>
-        <div class="col-md-7">
-
-          <div class="container info-box shadow">
-            <div class="sprite-maker-header">Patch Info</div>
-            <form class="needs-validation" novalidate>
-              <div class="form-group">
-                <label for="patch-name">Name</label>
-                <input type="text" class="form-control" id="patch-name">
-                <label for="patch-name">ID</label>
-                <input type="text" class="form-control" id="patch-id" disabled>
-                <label for="patch-name">Author</label>
-                <input type="text" class="form-control" id="patch-author">
-                <label for="patch-name">Description</label>
-                <input type="text" class="form-control" id="patch-description">
-
-              </div>
-            </form>
-          </div>
-
-          <div class="container info-box shadow">
-            <div class="sprite-maker-header">Tile Selector</div>
-            <div id="tiles"></div>
-          </div>
-
-          <div class="container info-box shadow">
-            <div class="sprite-maker-header">Sprites and Animations</div> 
-            <div id="states"></div>
-            <hr>
-            <table style="width:100%">
-              <tbody>
-                <tr>
-                  <td style="width:25%">animation speed</td>
-                  <td colspan="3"><input type="range" class="custom-range" value="3" min="1" max="10" step="1" id="fps"></input></td>
-                </tr>
-                <tr>
-                  <td>animation</td>
-                  <td><input type="checkbox" data-toggle="toggle" checked id="animateToggle" data-offstyle="danger"></td>
-                  <td>only show sprites<br>affected by editor tile</td>
-                  <td><input type="checkbox" data-toggle="toggle" checked id="affectedToggle" data-offstyle="danger"></td>
-                </tr>
-                <tr>
-                  <td>background transparency</td>
-                  <td><input type="checkbox" data-toggle="toggle" id="transparentToggle" data-offstyle="danger"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div> -->
       </div>
     </div>
   </div>

@@ -16,7 +16,7 @@ class SpriteMaker {
 
 		editor.on('pixel', ev => {
 			tiles.updatePixel(ev);
-			states.draw();
+			states.draw(true);
 		});
 		tiles.on('click', chrIndex => {
 			editor.updateChr(tiles, chrIndex);

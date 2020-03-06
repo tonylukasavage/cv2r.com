@@ -50,12 +50,14 @@ class States {
 
 	updateAnimate(animate) {
 		this.animate = animate;
-		states.forEach(state => {
-			state.frameCount--;
-			if (state.frameCount < 0) {
-				state.frameCount = state.frames.length - 1;
-			}
-		});
+		if (!this.animate) {
+			states.forEach(state => {
+				state.frameCount--;
+				if (state.frameCount < 0) {
+					state.frameCount = state.frames.length - 1;
+				}
+			});
+		}
 	}
 
 	showAffected(chrIndex) {
@@ -71,7 +73,7 @@ class States {
 		});
 	}
 
-	draw() {
+	draw(skipFrameCount) {
 		states.forEach(state => {
 			const { ctx } = state;
 			ctx.clearRect(0, 0, state.width * this.zoom, state.height * this.zoom);
@@ -88,7 +90,7 @@ class States {
 					);
 				});
 			});
-			if (this.animate) {
+			if (this.animate && !skipFrameCount) {
 				state.frameCount++;
 				if (state.frameCount >= state.frames.length) {
 					state.frameCount = 0;

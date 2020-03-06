@@ -48,6 +48,16 @@ class States {
 		}
 	}
 
+	updateAnimate(animate) {
+		this.animate = animate;
+		states.forEach(state => {
+			state.frameCount--;
+			if (state.frameCount < 0) {
+				state.frameCount = state.frames.length - 1;
+			}
+		});
+	}
+
 	showAffected(chrIndex) {
 		const chrName = CHR[chrIndex].name;
 		states.forEach((state, index) => {
@@ -78,9 +88,11 @@ class States {
 					);
 				});
 			});
-			state.frameCount++;
-			if (state.frameCount >= state.frames.length) {
-				state.frameCount = 0;
+			if (this.animate) {
+				state.frameCount++;
+				if (state.frameCount >= state.frames.length) {
+					state.frameCount = 0;
+				}
 			}
 		});
 	}

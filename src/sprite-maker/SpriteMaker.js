@@ -14,7 +14,10 @@ class SpriteMaker {
 		const palette = this.palette = new Palette();
 		this.colorPicker = new ColorPicker();
 
-		editor.on('pixel', tiles.updatePixel.bind(tiles));
+		editor.on('pixel', ev => {
+			tiles.updatePixel(ev);
+			states.draw();
+		});
 		tiles.on('click', chrIndex => {
 			editor.updateChr(tiles, chrIndex);
 			states.showAffected(chrIndex);
@@ -37,7 +40,7 @@ class SpriteMaker {
 
 		$('#fps').change(this.states.updateFps.bind(this.states));
 		$('#animateToggle').change(function() {
-			states.animate = $(this).prop('checked');
+			states.updateAnimate($(this).prop('checked'));
 			states.updateFps(states.fps);
 		});
 		$('#affectedToggle').change(function() {

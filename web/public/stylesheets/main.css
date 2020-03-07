@@ -284,13 +284,14 @@ td.item img {
 }
 
 #palette-container {
-  margin-top: 1em;
+  margin-top: 0.5em;
+  display: flex;
+  justify-content: space-evenly
 }
 
 .palette-button-selection {
   height: 48px;
   width: 48px;
-  margin-bottom: 0.5em;
 }
 
 .palette-button-selected {
@@ -335,18 +336,37 @@ td.item img {
   height: 256px;
   width: 128px;
   cursor: url('../img/pencil.png') 0 24, default;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  margin-left: 1em;
 }
 
 #editor-container {
   display: flex;
-  justify-content: center;
+  justify-content: left;
+}
+
+#tiles {
+  padding: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly
 }
 
 .tile-canvas {
   height: 64px;
   width: 64px;
-  margin-right: 10px;
+  margin-right: 0.25em;
+  margin-bottom: 0.25em;
   cursor: pointer;
+  border: 1px solid black;
+  box-shadow: 2px 2px rgba(0,0,0,0.25)
+}
+
+#states {
+  padding: 0.25em;
 }
 
 .state-canvas {
@@ -358,5 +378,48 @@ td.item img {
 .color-picker-container {
   width: 320px;
   padding: 0;
-  margin: 2em auto;
+  margin: 0.5em;
+  margin-top: 0;
+}
+
+.sm-panel {
+  border: solid 2px;
+  background-color: white;
+  padding: 0;
+  margin-bottom: 1em;
+}
+
+.sm-panel-header {
+  height: 1.4em;
+  width: 100%;
+  background-color: rgb(30, 52, 77);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.75em;
+
+}
+
+#patch-info {
+  padding-top: 1em;
+  padding-left: 1em;
+}
+
+#patch-info label {
+  width: 80px;
+  overflow: auto;
+  justify-content: start;
+  align-items: start;
+}
+
+.action-buttons {
+  padding-bottom: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-buttons button {
+  margin-right: 0.25em;
 }

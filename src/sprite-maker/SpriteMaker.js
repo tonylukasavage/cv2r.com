@@ -14,7 +14,10 @@ class SpriteMaker {
 		const palette = this.palette = new Palette();
 		this.colorPicker = new ColorPicker();
 
-		editor.on('pixel', tiles.updatePixel.bind(tiles));
+		editor.on('pixel', ev => {
+			tiles.updatePixel(ev);
+			states.draw(true);
+		});
 		tiles.on('click', chrIndex => {
 			editor.updateChr(tiles, chrIndex);
 			states.showAffected(chrIndex);
@@ -37,7 +40,7 @@ class SpriteMaker {
 
 		$('#fps').change(this.states.updateFps.bind(this.states));
 		$('#animateToggle').change(function() {
-			states.animate = $(this).prop('checked');
+			states.updateAnimate($(this).prop('checked'));
 			states.updateFps(states.fps);
 		});
 		$('#affectedToggle').change(function() {
@@ -50,11 +53,17 @@ class SpriteMaker {
 		});
 
 		$('#sprite-save').click(function() {
-			const content = {
+			const result = validateDownload();
+			if (result.errors && result.errors.length) {
+				return alert(result.errors.join('\n'));
+			}
+			delete result.errors;
+
+			const content = Object.assign({
 				tiles: tiles.pixels,
 				palette: data.palette
-			};
-			downloadFile(JSON.stringify(content, null, 2), 'sprite-maker.json');
+			}, result);
+			downloadFile(JSON.stringify(content, null, 2), result.id + '.json');
 		});
 
 		$('#sprite-load').click(function() {
@@ -69,11 +78,24 @@ class SpriteMaker {
 				palette.load(json.palette);
 				tiles.load(json.tiles);
 				editor.load(tiles);
+				$('#patch-name').val(json.name || '');
+				$('#patch-id').val(json.id || '');
+				$('#patch-author').val(json.author || '');
+				$('#patch-notes').val(json.notes || '');
 			};
 			reader.readAsText(file);
 		});
 
 		$('#sprite-patch').click(function() {
+			const result = validateDownload();
+			if (result.errors && result.errors.length) {
+				return alert(result.errors.join('\n'));
+			}
+			delete result.errors;
+			result.name = result.name.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+			result.author = result.author.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+			result.notes = result.notes.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+
 			const chrPixelLength = 64;
 			const spritePatches = [];
 
@@ -106,12 +128,12 @@ class SpriteMaker {
 				spritePatches.push({ offset, bytes });
 			});
 
-			const patch = _.template(patchTemplate)({
-				spritePatches: JSON.stringify(spritePatches, null, 2),
+			const patch = _.template(patchTemplate)(Object.assign({
+				spritePatches: JSON.stringify(spritePatches, null, '\t').replace(/"(offset|bytes)"/g, '$1'),
 				palette: data.palette.slice(1).map(p => p.index).join(',')
-			});
+			}, result));
 
-			downloadFile(patch, 'test-sprite.js');
+			downloadFile(patch, result.id + '.js');
 		});
 	}
 
@@ -123,6 +145,30 @@ class SpriteMaker {
 }
 
 window.SpriteMaker = SpriteMaker;
+
+function validateDownload() {
+	const errors = [];
+
+	const name = $('#patch-name').val();
+	if (!name) { errors.push('must provide patch name'); }
+	else if (name.length > 64) { errors.push('patch name must be 64 characters or less'); }
+	
+	const id = $('#patch-id').val();
+	if (!id) { errors.push('must provide a patch id (via providing a name)'); }
+	else if (!/^[a-z0-9\-]+$/.test(id)) { errors.push('patch id can consist of only lowercase letters, numbers, and dashes');  }
+
+	const author = $('#patch-author').val();
+	if (author && author.length > 64) {
+		errors.push('patch author must be 64 characters or less');
+	}
+
+	const notes = $('#patch-notes').val();
+	if (notes && notes.length > 1024) {
+		errors.push('patch notes must be 1024 characters or less');
+	}
+
+	return { name, id, author, notes, errors };
+}
 
 function downloadFile(content, filename) {
 	const blob = new Blob([content]);
@@ -155,9 +201,10 @@ finalSpritePatch.push({
 });
 
 module.exports = {
-	id: 'test-sprite',
-	name: 'Test Sprite',
-	description: 'cv2r.com Sprite Maker test sprite',
+	id: '<%= id %>',
+	name: '<%= name %>',
+	description: '<%= notes %>',
+	author: '<%= author %>',
 	patch: finalSpritePatch
 };
 `;

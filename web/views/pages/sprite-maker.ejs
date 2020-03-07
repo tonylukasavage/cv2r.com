@@ -17,17 +17,8 @@
 
   <div class="jumbotron text-center">
     <div class="container info-box shadow">
-      <h3>Sprite Maker</h3>
-      <div class="row" style="margin-bottom:10px;">
-        <div class="col-lg-8">You can use the simple tool below to make all the modifications necessary to update Simon's sprite. You will then be able to export it as a patch that can be submitted to the cv2r project.</div>
-        <div class="col-sm-4">
-          <button id="sprite-save" type="button" class="btn-sm btn-info" style="border: 2px solid black;">SAVE</button>
-          <button id="sprite-load" type="button" class="btn-sm btn-info" style="border: 2px solid black;">LOAD</button>
-          <input id="sprite-load-file" type="file" name="name" accept=".json" style="display: none;"/>
-          <button id="sprite-patch" type="button" class="btn-lg btn-primary" style="border: 2px solid black;">Create Patch</button>
-        </div>
-      </div>
-      <div class="row">
+      <h3 style="width:100%; text-align:center;">Sprite Maker</h3>
+      <div class="row" style="height:520px;">
         <div class="col-sm-2" style="padding:0 0.25em;">
           <div class="sm-panel"> 
             <div class="sm-panel-header">Tiles</div>
@@ -36,18 +27,16 @@
         </div>
 
         <div class="col-md-6 container">
-          <div class="sm-panel">
-            <div class="sm-panel-header">Editor</div>
-            <div class="row">
-              <div id="editor-container" class="col-12" style="position: relative;">
-                <canvas id="editor-canvas" class="editor-canvas"></canvas>
-                <canvas id="editor-canvas-overlay" class="editor-canvas" style="z-index: 1;"></cavnas>
-              </div>
+          <div class="row">
+            <div id="editor-container" class="col-12" style="position: relative;">
+              <canvas id="editor-canvas" class="editor-canvas"></canvas>
+              <canvas id="editor-canvas-overlay" class="editor-canvas" style="z-index: 1;"></cavnas>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
+
           <div class="sm-panel" style="min-width: 340px;">
             <div class="sm-panel-header">Palette</div>
             <div id="palette-container"></div>
@@ -58,50 +47,72 @@
               <div id="cp-row-4" class="col-12" style="padding:0; height:20px;"></div>
             </div>
           </div>
-          <!-- <div class="sm-panel">
-            <div class="sm-panel-header">Patch Info</div>
-            <form class="needs-validation" novalidate>
-              <div class="form-group" style="padding:0.25em 1em;">
-                <label for="patch-name">Name</label>
-                <input type="text" class="form-control" id="patch-name">
-                <label for="patch-name">ID</label>
-                <input type="text" class="form-control" id="patch-id" disabled>
-                <label for="patch-name">Author</label>
-                <input type="text" class="form-control" id="patch-author">
-                <label for="patch-name">Description</label>
-                <input type="text" class="form-control" id="patch-description">
-
-              </div>
-            </form>
-          </div> -->
 
           <div class="sm-panel">
-            <div class="sm-panel-header">Preview</div> 
-            <div id="states"></div>
-            <hr>
-            <table>
-              <tbody>
-                <tr>
-                  <td style="width:50%">FPS</td>
-                  <td style="width:50%"><input type="range" class="custom-range" value="3" min="1" max="10" step="1" id="fps"></input></td>
-                </tr>
-                <tr>
-                  <td>animation</td>
-                  <td><input type="checkbox" data-toggle="toggle" checked id="animateToggle" data-offstyle="danger"></td>
-                </tr>
-                <tr>
-                  <td>transparency</td>
-                  <td><input type="checkbox" data-toggle="toggle" id="transparentToggle" data-offstyle="danger"></td>
-                </tr>
-                <tr>
-                  <td>show all</td>
-                  <td><input type="checkbox" data-toggle="toggle" checked id="affectedToggle" data-offstyle="danger"></td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="sm-panel-header">Patch Info</div>
+            <form id="patch-info" class="needs-validation" novalidate>
+              <div class="form-group form-inline">
+                <label for="patch-name">Name</label>
+                <input type="text" class="form-control" id="patch-name">
+              </div>
+              <div class="form-group form-inline">
+                <label for="patch-name">ID</label>
+                <input type="text" class="form-control" id="patch-id" disabled>
+              </div>
+              <div class="form-group form-inline">
+                <label for="patch-name">Author</label>
+                <input type="text" class="form-control" id="patch-author">
+              </div>
+              <div class="form-group form-inline">
+                <label for="patch-name">Notes</label>
+                <input type="text" class="form-control" id="patch-notes">
+              </div>
+            </form>
+
+            <div class="action-buttons">
+              <button id="sprite-save" type="button" class="btn-sm btn-secondary" style="border: 2px solid black;">SAVE</button>
+              <button id="sprite-load" type="button" class="btn-sm btn-secondary" style="border: 2px solid black;">LOAD</button>
+              <input id="sprite-load-file" type="file" name="name" accept=".json" style="display: none;"/>
+              <button id="sprite-patch" type="button" class="btn-sm btn-success" style="border: 2px solid black;">Create Patch</button>
+            </div>
           </div>
         </div>
 
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="sm-panel">
+            <div class="sm-panel-header">Preview</div> 
+            <div class="row">
+              <div class="col-8">
+                <div id="states"></div>
+              </div>
+
+              <div class="col-4" style="border-left: 1px solid black;">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td style="width:50%">FPS</td>
+                      <td style="width:50%"><input type="range" class="custom-range" value="3" min="1" max="10" step="1" id="fps"></input></td>
+                    </tr>
+                    <tr>
+                      <td>animation</td>
+                      <td><input type="checkbox" data-toggle="toggle" checked id="animateToggle" data-offstyle="danger"></td>
+                    </tr>
+                    <tr>
+                      <td>transparency</td>
+                      <td><input type="checkbox" data-toggle="toggle" id="transparentToggle" data-offstyle="danger"></td>
+                    </tr>
+                    <tr>
+                      <td>show all</td>
+                      <td><input type="checkbox" data-toggle="toggle" checked id="affectedToggle" data-offstyle="danger"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

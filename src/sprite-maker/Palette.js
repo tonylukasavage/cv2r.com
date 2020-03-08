@@ -13,7 +13,7 @@ const template = `
 
 const undoButtonTemplate = '<button id="undo-button">UNDO</button>';
 
-const clearButtonTemplate = '<button id="clear-button">CLEAR</button>';
+const clearButtonTemplate = '<button id="clear-button" class="btn-sm btn-danger">CLEAR</button>';
 
 class Palette extends EventEmitter {
 	constructor() {
@@ -49,11 +49,11 @@ class Palette extends EventEmitter {
 		// 	this.emit('undo');
 		// });
 
-		// const clearButton = $(clearButtonTemplate);
-		// $('#palette-container').append(clearButton);
-		// clearButton.click(() => {
-		// 	this.emit('clear');
-		// });
+		const clearButton = $(clearButtonTemplate);
+		$('#palette-container').append(clearButton);
+		clearButton.click(() => {
+			this.emit('clear');
+		});
 	}
 
 	load(loadPalette) {

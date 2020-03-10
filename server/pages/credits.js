@@ -1,5 +1,5 @@
 module.exports = function(app) {
-  app.get('/credits', (req, res) => res.render('pages/credits', { crew }));
+	app.get('/credits', (req, res) => res.render('pages/credits', { crew }));
 };
 
 const crew = [

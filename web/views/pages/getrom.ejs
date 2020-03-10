@@ -261,7 +261,7 @@
 								<label for="simon">Simon's Sprite</label>
 								<select class="form-control custom-select is-valid" id="simon">
 									<% Object.keys(simon).forEach(function(key) { %>
-										<option value="<%= key %>" <%= key === 'simon-default' ? 'selected="selected"' : '' %></option><%= simon[key].name %></option>
+										<option value="<%= key %>" <%= key === 'simon' ? 'selected="selected"' : '' %></option><%= simon[key].name %></option>
 									<% }); %>
 								</select>
 								<small class="form-text text-muted simon-small">Choose a sprite to use for Simon.</small>

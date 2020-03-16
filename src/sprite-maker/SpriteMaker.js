@@ -1,10 +1,10 @@
-const _ = require('lodash');
 const data = require('./data');
 const ColorPicker = require('./ColorPicker');
 const Editor = require('./Editor');
 const Palette = require('./Palette');
 const Tiles = require('./Tiles');
 const States = require('./States');
+const { loadPatch } = require('./utils');
 
 class SpriteMaker {
 	constructor() {
@@ -24,8 +24,8 @@ class SpriteMaker {
 			editor.undoBuffer.length = 0;
 		});
 		this.colorPicker.on('update', this.draw.bind(this));
-		this.palette.on('undo', editor.undo.bind(editor));
-		this.palette.on('clear', () => {
+		palette.on('undo', editor.undo.bind(editor));
+		palette.on('clear', () => {
 			editor.clear();
 			tiles.clear(editor.chrIndex);
 		});
@@ -52,20 +52,6 @@ class SpriteMaker {
 			states.draw();
 		});
 
-		$('#sprite-save').click(function() {
-			const result = validateDownload();
-			if (result.errors && result.errors.length) {
-				return alert(result.errors.join('\n'));
-			}
-			delete result.errors;
-
-			const content = Object.assign({
-				tiles: tiles.pixels,
-				palette: data.palette
-			}, result);
-			downloadFile(JSON.stringify(content, null, 2), result.id + '.json');
-		});
-
 		$('#sprite-load').click(function() {
 			$('#sprite-load-file').trigger('click');
 		});
@@ -74,14 +60,31 @@ class SpriteMaker {
 			const file = this.files[0];
 			var reader = new FileReader();
 			reader.onload = function() {
-				const json = JSON.parse(this.result);
-				palette.load(json.palette);
-				tiles.load(json.tiles);
+				const { 
+					author = '',
+					id = '',
+					name = '',
+					notes = '',
+					tiles: patchTiles, 
+					palette,
+					spriteMaker
+				} = loadPatch(this.result);
+
+				// make sure this is a Sprite Maker generated patch
+				if (!spriteMaker) {
+					return alert('Invalid patch file. Are you sure this patch was generated with Sprite Maker?');
+				}	
+
+				// load palette, tiles, and editor
+				data.palette.forEach((p, index) => Object.assign(p, palette[index]));
+				tiles.load(patchTiles);
 				editor.load(tiles);
-				$('#patch-name').val(json.name || '');
-				$('#patch-id').val(json.id || '');
-				$('#patch-author').val(json.author || '');
-				$('#patch-notes').val(json.notes || '');
+
+				// load the patch meta data
+				$('#patch-name').val(name);
+				$('#patch-id').val(id);
+				$('#patch-author').val(author);
+				$('#patch-notes').val(notes);
 			};
 			reader.readAsText(file);
 		});
@@ -99,7 +102,9 @@ class SpriteMaker {
 			const chrPixelLength = 64;
 			const spritePatches = [];
 
+			// convert all tile pixels into sprite bytes that cv2 can understand
 			tiles.pixels.forEach(pixels => {
+				//const tileBytes = [];
 				const bytes = [];
 				const { offset } = pixels;
 				let pixelCount = 0;
@@ -128,15 +133,33 @@ class SpriteMaker {
 				spritePatches.push({ offset, bytes });
 			});
 
-			const patch = _.template(patchTemplate)(Object.assign({
-				spritePatches: JSON.stringify(spritePatches, null, '\t').replace(/"(offset|bytes)"/g, '$1'),
-				palette: data.palette.slice(1).map(p => p.index).join(',')
-			}, result));
+			// update simon sprite on all sprite tables
+			const offsets = [ 0, 0x2000, 0x4000, 0x6000, 0x8000, 0x9000, 0xB000, 0x17000 ];
+			const finalSpritePatch = [];
+			for (let i = 0; i < offsets.length; i++) {
+				spritePatches.forEach(sp => {
+					finalSpritePatch.push({
+						offset: sp.offset + offsets[i],
+						bytes: sp.bytes.slice(0)
+					});
+				});
+			}
 
-			downloadFile(patch, result.id + '.js');
+			// update simon's palette
+			finalSpritePatch.push({
+				offset: 117439,
+				bytes: data.palette.slice(1).map(p => p.index)
+			});
+
+			// write the patch file and trigger download
+			const patch = JSON.stringify(Object.assign(result, {
+				spriteMaker: true,
+				patch: finalSpritePatch	
+			}), null, '\t');
+			downloadFile(patch, result.id + '.json');
 		});
 	}
-
+	
 	draw() {
 		this.editor.draw();
 		this.tiles.draw();

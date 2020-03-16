@@ -56,11 +56,6 @@ class Palette extends EventEmitter {
 		});
 	}
 
-	load(loadPalette) {
-		loadPalette.forEach((p, i) => Object.assign(palette[i], p));
-		this.draw();
-	}
-
 	draw() {
 		$('.palette-button').each(function(index, value) {
 			$(value).css('background-color', '#' + palette[index].hex);

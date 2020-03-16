@@ -5,6 +5,7 @@ const Palette = require('./Palette');
 const Tiles = require('./Tiles');
 const States = require('./States');
 const { loadPatch } = require('./utils');
+const JSZip = require('jszip');
 
 class SpriteMaker {
 	constructor() {
@@ -89,7 +90,7 @@ class SpriteMaker {
 			reader.readAsText(file);
 		});
 
-		$('#sprite-patch').click(function() {
+		$('#sprite-patch').click(async function() {
 			const result = validateDownload();
 			if (result.errors && result.errors.length) {
 				return alert(result.errors.join('\n'));
@@ -104,7 +105,6 @@ class SpriteMaker {
 
 			// convert all tile pixels into sprite bytes that cv2 can understand
 			tiles.pixels.forEach(pixels => {
-				//const tileBytes = [];
 				const bytes = [];
 				const { offset } = pixels;
 				let pixelCount = 0;
@@ -151,12 +151,52 @@ class SpriteMaker {
 				bytes: data.palette.slice(1).map(p => p.index)
 			});
 
-			// write the patch file and trigger download
+			// create preview image
+			const width = 64;
+			const previewZoom = 4;
+			const zoom = previewZoom / tiles.zoom;
+			const tempCanvas = $(`<canvas id="tempCanvas" width="${width}px" height="128px" style="width:${width}px;height:128px;">`);
+			const tempCtx = tempCanvas[0].getContext('2d');
+
+			// flip tiles horizontally, to face right
+			tempCtx.translate(width, 0);
+			tempCtx.scale(-1, 1);
+
+			// draw idle sprite on temp canvas
+			for (let i = 0; i < 2; i++) {
+				tiles.pixels[i].forEach(p => {
+					const pi = p.paletteIndex;
+					if (pi === 0) { return; }
+					tempCtx.fillStyle = '#' + data.palette[pi].hex;
+					tempCtx.fillRect(p.x * zoom, p.y * zoom + (width * i), previewZoom, previewZoom);
+				});
+			}
+			
+			// export temp canvas as png and convert to blob
+			const pngUrl = tempCanvas[0].toDataURL('image/png');
+			const pngData = (await fetch(pngUrl)).blob();
+
+			// write the patch file
 			const patch = JSON.stringify(Object.assign(result, {
 				spriteMaker: true,
 				patch: finalSpritePatch	
 			}), null, '\t');
-			downloadFile(patch, result.id + '.json');
+			
+			// create a zip file containing the patch file and preview sprite. For example,
+			// if the id of the sprite was "bsac", then the contents of the zip file would 
+			// look like this:
+			//
+			// bsac (folder)
+			// |-> index.js (patch file)
+			// |-> preview.png (preview image for cv2r.com)
+			const zip = new JSZip();
+			const folder = zip.folder(result.id);
+			folder.file('index.js', patch);
+			folder.file('preview.png', pngData, { base64: true });
+			zip.generateAsync({ type: 'blob' }).then(content => {
+				downloadFile(content, result.id + '.zip');
+				tempCanvas.remove();
+			});
 		});
 	}
 	

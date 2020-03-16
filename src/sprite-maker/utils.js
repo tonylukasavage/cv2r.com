@@ -48,7 +48,7 @@ exports.loadPatch = function loadPatch(patchContent) {
 
 	// iterate over unique set of CHR data to create Sprite Maker compatible patch data
 	// for each tile
-	for (let i = 0; i < 1; /* patch.length / NUM_OF_OFFSETS; */ i++) {
+	for (let i = 0; i < patch.length / NUM_OF_OFFSETS; i++) {
 		const tile = [];
 		const { layout } = CHR[i];
 		const bytes = [ [], [] ];

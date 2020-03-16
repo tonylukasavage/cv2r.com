@@ -204,30 +204,3 @@ function downloadFile(content, filename) {
 	link.click();
 	document.body.removeChild(link);
 }
-
-const patchTemplate = `const spritePatches = <%= spritePatches %>;
-
-const offsets = [ 0, 0x2000, 0x4000, 0x6000, 0x8000, 0x9000, 0xB000, 0x17000 ];
-const finalSpritePatch = [];
-for (let i = 0; i < offsets.length; i++) {
-	spritePatches.forEach(sp => {
-		finalSpritePatch.push({
-			offset: sp.offset + offsets[i],
-			bytes: sp.bytes.slice(0)
-		});
-	});
-}
-
-finalSpritePatch.push({
-	offset: 117439,
-	bytes: [<%= palette %>]
-});
-
-module.exports = {
-	id: '<%= id %>',
-	name: '<%= name %>',
-	description: '<%= notes %>',
-	author: '<%= author %>',
-	patch: finalSpritePatch
-};
-`;

@@ -27,8 +27,8 @@ exports.loadPatch = function loadPatch(patchContent) {
 
 	// parse simon sprite patch file
 	const patchJson = JSON.parse(patchContent);
-	const { id, name, notes, author, patch, spriteMaker } = patchJson;
-	const output = { tiles, palette, id, name, author, notes, spriteMaker };
+	const { id, name, description, author, patch, spriteMaker } = patchJson;
+	const output = { tiles, palette, id, name, author, description, spriteMaker };
 
 	// add the palette
 	const paletteBytes = patch.pop().bytes;

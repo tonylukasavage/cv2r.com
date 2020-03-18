@@ -65,7 +65,7 @@ class SpriteMaker {
 					author = '',
 					id = '',
 					name = '',
-					notes = '',
+					description = '',
 					tiles: patchTiles, 
 					palette,
 					spriteMaker
@@ -85,7 +85,7 @@ class SpriteMaker {
 				$('#patch-name').val(name);
 				$('#patch-id').val(id);
 				$('#patch-author').val(author);
-				$('#patch-notes').val(notes);
+				$('#patch-description').val(description);
 			};
 			reader.readAsText(file);
 		});
@@ -98,7 +98,7 @@ class SpriteMaker {
 			delete result.errors;
 			result.name = result.name.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
 			result.author = result.author.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
-			result.notes = result.notes.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+			result.description = result.description.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
 
 			const chrPixelLength = 64;
 			const spritePatches = [];
@@ -225,12 +225,12 @@ function validateDownload() {
 		errors.push('patch author must be 64 characters or less');
 	}
 
-	const notes = $('#patch-notes').val();
-	if (notes && notes.length > 1024) {
-		errors.push('patch notes must be 1024 characters or less');
+	const description = $('#patch-description').val();
+	if (description && description.length > 1024) {
+		errors.push('patch description must be 1024 characters or less');
 	}
 
-	return { name, id, author, notes, errors };
+	return { name, id, author, description, errors };
 }
 
 function downloadFile(content, filename) {

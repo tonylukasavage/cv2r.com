@@ -50,23 +50,15 @@
 
           <div class="sm-panel">
             <div class="sm-panel-header">Patch Info</div>
-            <form id="patch-info" class="needs-validation" novalidate>
-              <div class="form-group form-inline">
-                <label for="patch-name">Name</label>
-                <input type="text" class="form-control" id="patch-name">
-              </div>
-              <div class="form-group form-inline">
-                <label for="patch-name">ID</label>
-                <input type="text" class="form-control" id="patch-id" disabled>
-              </div>
-              <div class="form-group form-inline">
-                <label for="patch-name">Author</label>
-                <input type="text" class="form-control" id="patch-author">
-              </div>
-              <div class="form-group form-inline">
-                <label for="patch-name">Notes</label>
-                <input type="text" class="form-control" id="patch-notes">
-              </div>
+            <form id="patch-info">
+              <small for="patch-name">Name</small>
+              <input type="text" class="form-control" id="patch-name">
+              <small for="patch-id">ID</small>
+              <input type="text" class="form-control" id="patch-id" disabled>
+              <small for="patch-author">Author</small>
+              <input type="text" class="form-control" id="patch-author">
+              <small for="patch-description">Description</small>
+              <input type="text" class="form-control" id="patch-description">
             </form>
 
             <div class="action-buttons">

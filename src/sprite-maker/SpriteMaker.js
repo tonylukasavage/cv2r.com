@@ -59,8 +59,23 @@ class SpriteMaker {
 
 		$('#sprite-load-file').change(function() {
 			const file = this.files[0];
-			var reader = new FileReader();
-			reader.onload = function() {
+			const [ filename, ext ] = file.name.split('.');
+			const isJson = ext === 'json';
+			const isZip = ext === 'zip';
+
+			if (!isJson && !isZip) {
+				return alert(`Invalid sprite file "${file.name}". Must be a .zip or .json file.`);
+			}
+
+			const reader = new FileReader();
+			reader.onload = async function() {
+				let json = this.result;
+				if (isZip) {
+					const zip = new JSZip();
+					const zipFiles = await zip.loadAsync(this.result);
+					json = await zipFiles.file(filename + '/index.json').async('string');
+				}
+
 				const { 
 					author = '',
 					id = '',
@@ -69,11 +84,11 @@ class SpriteMaker {
 					tiles: patchTiles, 
 					palette,
 					spriteMaker
-				} = loadPatch(this.result);
+				} = loadPatch(json);
 
 				// make sure this is a Sprite Maker generated patch
 				if (!spriteMaker) {
-					return alert('Invalid patch file. Are you sure this patch was generated with Sprite Maker?');
+					return alert(`Invalid sprite file "${file.name}". Are you sure this file was generated with Sprite Maker?`);
 				}	
 
 				// load palette, tiles, and editor
@@ -87,7 +102,7 @@ class SpriteMaker {
 				$('#patch-author').val(author);
 				$('#patch-description').val(description);
 			};
-			reader.readAsText(file);
+			reader[isJson ? 'readAsText' : 'readAsArrayBuffer'](file);
 		});
 
 		$('#sprite-patch').click(async function() {
@@ -187,11 +202,11 @@ class SpriteMaker {
 			// look like this:
 			//
 			// bsac (folder)
-			// |-> index.js (patch file)
+			// |-> index.json (patch file)
 			// |-> preview.png (preview image for cv2r.com)
 			const zip = new JSZip();
 			const folder = zip.folder(result.id);
-			folder.file('index.js', patch);
+			folder.file('index.json', patch);
 			folder.file('preview.png', pngData, { base64: true });
 			zip.generateAsync({ type: 'blob' }).then(content => {
 				downloadFile(content, result.id + '.zip');

@@ -30,8 +30,18 @@ fs.readdirSync(dir.palette).forEach(file => {
 
 const simon = {};
 fs.readdirSync(dir.simon).forEach(file => {
-	const mod = require(path.join(dir.simon, file));
-	simon[file.replace(/\.js$/, '')] = _.pick(mod, [ 'name', 'description' ]);
+	const name = file.replace(/\.js$/, '');
+	const patchPath = path.join(dir.simon, file);
+
+	// copy preview images from cv2r to cv2r.com
+	if (fs.lstatSync(patchPath).isDirectory()) {
+		const preview = path.join(patchPath, name + '.png');
+		const public = path.join(__dirname, '..', '..', 'web', 'public', 'img', 'simon', name + '.png');
+		fs.copyFileSync(preview, public);
+	}
+
+	const mod = require(patchPath);
+	simon[name] = _.pick(mod, [ 'name', 'description' ]);
 });
 
 module.exports = function(app) {

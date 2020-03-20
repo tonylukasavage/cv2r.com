@@ -76,8 +76,6 @@ exports.loadPatch = function loadPatch(patchContent) {
 exports.resizeCanvas = function resizeCanvas(canvas, width, height, zoom) {
 	const $canvas= $(canvas);
 	this.zoom = zoom;
-	this.width = width;
-	this.height = height;
 	$canvas.attr('height', height * zoom);
 	$canvas.attr('width', width * zoom);
 	$canvas.css({

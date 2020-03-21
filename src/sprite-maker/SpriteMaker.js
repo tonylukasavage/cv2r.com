@@ -83,7 +83,7 @@ class SpriteMaker {
 					name = '',
 					description = '',
 					tiles: patchTiles, 
-					palette,
+					palette: patchPalette,
 					spriteMaker
 				} = loadPatch(json);
 
@@ -93,7 +93,8 @@ class SpriteMaker {
 				}	
 
 				// load palette, tiles, and editor
-				data.palette.forEach((p, index) => Object.assign(p, palette[index]));
+				data.palette.forEach((p, index) => Object.assign(p, patchPalette[index]));
+				palette.draw();
 				tiles.load(patchTiles);
 				editor.load(tiles);
 
@@ -208,7 +209,7 @@ class SpriteMaker {
 			const zip = new JSZip();
 			const folder = zip.folder(result.id);
 			folder.file('index.json', patch);
-			folder.file('preview.png', pngData, { base64: true });
+			folder.file(result.id + '.png', pngData, { base64: true });
 			zip.generateAsync({ type: 'blob' }).then(content => {
 				downloadFile(content, result.id + '.zip');
 				tempCanvas.remove();

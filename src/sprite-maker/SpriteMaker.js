@@ -73,7 +73,8 @@ class SpriteMaker {
 				if (isZip) {
 					const zip = new JSZip();
 					const zipFiles = await zip.loadAsync(this.result);
-					json = await zipFiles.file(filename + '/index.json').async('string');
+					const patchFile = zipFiles.file(Object.keys(zipFiles.files).find(k => k.endsWith('/index.json')));
+					json = await patchFile.async('string');
 				}
 
 				const { 

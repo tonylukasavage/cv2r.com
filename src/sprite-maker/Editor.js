@@ -26,7 +26,7 @@ class BaseCanvas extends EventEmitter {
 		
 		const coord = { x, y };
 		Object.assign(this.lastPixel, coord); 
-		
+
 		return coord;
 	}
 
@@ -41,8 +41,6 @@ class EditorCanvas extends BaseCanvas {
 		const chrData = CHR[chrIndex];
 		const coord = this.getCoord(ev, zoom);
 		if (!coord) { return; }
-
-		console.log('editor.drawPixel()');
 
 		// translate canvas coord to sprite pixel
 		let { x, y } = coord;
@@ -97,8 +95,6 @@ class OverlayCanvas extends BaseCanvas {
 		const chrData = CHR[chrIndex];
 		const coord = this.getCoord(ev);
 		if (!coord) { return; }
-
-		console.log('overlay.drawPixel()');
 
 		// draw cursor pixel
 		ctx.clearRect(0, 0, chrData.width * zoom, chrData.height * zoom);

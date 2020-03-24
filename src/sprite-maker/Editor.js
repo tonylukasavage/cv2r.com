@@ -8,11 +8,23 @@ class BaseCanvas extends EventEmitter {
 		this.editor = editor;
 		this.canvas = $(selector)[0];
 		this.ctx = this.canvas.getContext('2d');
-		this.lastPixel = { x: null, y: null };
+		this.lastPixel = { x: null, y: null, paletteIndex: null };
 	}
 
-	getCoord(ev, divisor = 1) {
-		const { canvas, editor: { chrIndex, zoom } } = this;
+	getPixelIndex(x, y) {
+		const chrData = CHR[this.editor.chrIndex];
+		let pixelIndex = (y * chrData.width) + x;
+		if (chrData.width > 8) {
+			let offset = 0;
+			if (x >= chrData.width / 2) { offset++; }
+			if (y >= chrData.height / 2) { offset++; }
+			pixelIndex = (64 * offset) + (y * 8) + (x % 8);
+		}
+		return pixelIndex;
+	}
+
+	getCoord(ev, divisor = 1, opts = {}) {
+		const { canvas, editor: { chrIndex, pixels, zoom } } = this;
 		const chrData = CHR[chrIndex];
 		const rect = canvas.getBoundingClientRect();
 		let x = ev.clientX - rect.left;
@@ -22,7 +34,9 @@ class BaseCanvas extends EventEmitter {
 		if (y < 0 || y > chrData.height * zoom) { return null; }
 		x = (Math.floor(x / zoom) * zoom) / divisor;
 		y = (Math.floor(y / zoom) * zoom) / divisor;
-		if (this.lastPixel.x === x && this.lastPixel.y === y) { return null; }
+		if (this.lastPixel.x === x && this.lastPixel.y === y && 
+			(!opts.checkPaletteIndex || (getPaletteIndex() === pixels[this.getPixelIndex(x, y)].paletteIndex))
+		) { return null; }
 		
 		const coord = { x, y };
 		Object.assign(this.lastPixel, coord); 
@@ -38,21 +52,12 @@ class BaseCanvas extends EventEmitter {
 class EditorCanvas extends BaseCanvas {
 	drawPixel(ev) {
 		const { chrIndex, pixels, undoBuffer, undoMax, zoom } = this.editor;
-		const chrData = CHR[chrIndex];
-		const coord = this.getCoord(ev, zoom);
+		const coord = this.getCoord(ev, zoom, { checkPaletteIndex: true });
 		if (!coord) { return; }
 
 		// translate canvas coord to sprite pixel
-		let { x, y } = coord;
-		let pixelIndex = (y * chrData.width) + x;
-		if (chrData.width > 8) {
-			let offset = 0;
-			if (x >= chrData.width / 2) { offset++; }
-			if (y >= chrData.height / 2) { offset++; }
-			pixelIndex = (64 * offset) + (y * 8) + (x % 8);
-		}
-
-		// update the editor pixels and trigger a draw for editor, tiles, and states
+		const { x, y } = coord;
+		const pixelIndex = this.getPixelIndex(x, y);
 		const paletteIndex = getPaletteIndex();
 		if (undoBuffer.length < undoMax && pixels[pixelIndex].paletteIndex !== paletteIndex) {
 			undoBuffer.push({ pixelIndex, paletteIndex: pixels[pixelIndex].paletteIndex });

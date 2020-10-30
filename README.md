@@ -20,7 +20,7 @@ Welcome to the codebase for the CV2R - Castlevania 2 Randomizer! This is the web
 ```
 git clone https://github.com/BloodSweatAndCode/cv2r.com.git
 cd cv2r.com
-npm install 
+npm install
 npm start
 open http://localhost:5000
 ```

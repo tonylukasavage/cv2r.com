@@ -1,8 +1,8 @@
 {
   "name": "Castlevania II: Simon's Quest Randomizer",
   "description": "Simon's Quest with itemizer, enemizer, and lots of other treats!",
-  "repository": "https://github.com/BloodSweatAndCode/cv2r.com",
-  "logo": "https://cdn.rawgit.com/BloodSweatAndCode/cv2r.com/master/web/public/img/simon.png",
+  "repository": "https://github.com/tonylukasavage/cv2r.com",
+  "logo": "https://cdn.rawgit.com/tonylukasavage/cv2r.com/master/web/public/img/simon.png",
   "keywords": ["retro","simons quest","castlevania","gaming","speedrun"],
   "image": "heroku/nodejs"
 }

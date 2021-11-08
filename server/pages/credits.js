@@ -4,7 +4,7 @@ module.exports = function(app) {
 
 const crew = [
 	{
-		name: 'BloodSweatAndCode',
+		name: 'BloodSweatAndCode (tonylukasavage)',
 		role: 'Creator',
 		social: [
 			{ name: 'twitch', 'link': 'https://www.twitch.tv/bloodsweatandcode' },

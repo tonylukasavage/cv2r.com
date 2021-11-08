@@ -4,7 +4,7 @@
 
 ## link: [cv2r.herokuapp.com](https://cv2r.herokuapp.com/)
 
-Welcome to the codebase for the CV2R - Castlevania 2 Randomizer! This is the website that is the pretty face for the underlying [cv2r cli](https://github.com/BloodSweatAndCode/cv2r) the is actually the brains of the randomizer ROM generation.
+Welcome to the codebase for the CV2R - Castlevania 2 Randomizer! This is the website that is the pretty face for the underlying [cv2r cli](https://github.com/tonylukasavage/cv2r) the is actually the brains of the randomizer ROM generation.
 
 ## discord: [https://discord.gg/tuGjwHy](https://discord.gg/tuGjwHy)
 
@@ -18,7 +18,7 @@ Welcome to the codebase for the CV2R - Castlevania 2 Randomizer! This is the web
 ### Instructions for running locally
 
 ```
-git clone https://github.com/BloodSweatAndCode/cv2r.com.git
+git clone https://github.com/tonylukasavage/cv2r.com.git
 cd cv2r.com
 npm install
 npm start

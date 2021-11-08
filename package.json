@@ -1,42 +1,42 @@
 {
-  "name": "cv2r.com",
-  "version": "1.6.1",
-  "description": "Castlevania 2 Randomizer",
-  "engines": {
-    "node": "10.x"
-  },
-  "main": "index.js",
-  "scripts": {
-    "extract": "node ./tools/sprite-extract.js ../cv2r/cv2.nes",
-    "browserify": "./node_modules/.bin/browserify ./src/sprite-maker/SpriteMaker.js -o ./web/public/js/SpriteMaker.js",
-    "watchify": "./node_modules/.bin/watchify ./src/sprite-maker/SpriteMaker.js -d -o ./web/public/js/SpriteMaker.js -v",
-    "start": "node server.js",
-    "test": "node test.js"
-  },
-  "dependencies": {
-    "cv2r": "github:bloodsweatandcode/cv2r#1.6.1",
-    "discord.js": "^11.5.1",
-    "ejs": "^2.5.6",
-    "express": "^4.15.2",
-    "jszip": "^3.2.2",
-    "lodash": "^4.17.15",
-    "request-promise": "^4.2.4"
-  },
-  "devDependencies": {
-    "browserify": "^16.5.0",
-    "eslint": "^6.8.0",
-    "request": "^2.88.0",
-    "tape": "^4.7.0",
-    "watchify": "^3.11.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
-  },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
-  "license": "MIT"
+    "name": "cv2r.com",
+    "version": "1.7.0",
+    "description": "Castlevania 2 Randomizer",
+    "engines": {
+        "node": "10.x"
+    },
+    "main": "index.js",
+    "scripts": {
+        "extract": "node ./tools/sprite-extract.js ../cv2r/cv2.nes",
+        "browserify": "./node_modules/.bin/browserify ./src/sprite-maker/SpriteMaker.js -o ./web/public/js/SpriteMaker.js",
+        "watchify": "./node_modules/.bin/watchify ./src/sprite-maker/SpriteMaker.js -d -o ./web/public/js/SpriteMaker.js -v",
+        "start": "node server.js",
+        "test": "node test.js"
+    },
+    "dependencies": {
+        "cv2r": "github:bloodsweatandcode/cv2r#1.7.0",
+        "discord.js": "^11.5.1",
+        "ejs": "^2.5.6",
+        "express": "^4.15.2",
+        "jszip": "^3.2.2",
+        "lodash": "^4.17.15",
+        "request-promise": "^4.2.4"
+    },
+    "devDependencies": {
+        "browserify": "^16.5.0",
+        "eslint": "^6.8.0",
+        "request": "^2.88.0",
+        "tape": "^4.7.0",
+        "watchify": "^3.11.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/heroku/node-js-getting-started"
+    },
+    "keywords": [
+        "node",
+        "heroku",
+        "express"
+    ],
+    "license": "MIT"
 }

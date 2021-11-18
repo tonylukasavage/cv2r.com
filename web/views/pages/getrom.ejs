@@ -1,352 +1,378 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<% include ../partials/header.ejs %>
-	<script>
-		var state = {};
+    <% include ../partials/header.ejs %>
+        <script>
+            var state = {};
 
-		function getSeed() {
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', '/seed', true);
-			xhr.onload = function () {
-				var dom = $('#seed');
-				dom[0].value = this.response;
-				dom.removeClass('is-invalid');
-				dom.addClass('is-valid');
-			};
-			xhr.send(null);
-		}
+            function getSeed() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/seed', true);
+                xhr.onload = function () {
+                    var dom = $('#seed');
+                    dom[0].value = this.response;
+                    dom.removeClass('is-invalid');
+                    dom.addClass('is-valid');
+                };
+                xhr.send(null);
+            }
 
-		function isValidSeed(seed) {
-			return seed && /^[a-zA-Z0-9]{8,}$/.test(seed);
-		}
+            function isValidSeed(seed) {
+                return seed && /^[a-zA-Z0-9]{8,}$/.test(seed);
+            }
 
-		function setValidity(elem, bool) {
-			elem
-				.removeClass(bool ? 'is-invalid' : 'is-valid')
-				.addClass(bool ? 'is-valid' : 'is-invalid');
-			return !!bool;
-		}
+            function setValidity(elem, bool) {
+                elem
+                    .removeClass(bool ? 'is-invalid' : 'is-valid')
+                    .addClass(bool ? 'is-valid' : 'is-invalid');
+                return !!bool;
+            }
 
-		function togglePatchList() {
-			var currentDifficulty = $('#difficulty').val();
+            function togglePatchList() {
+                var currentDifficulty = $('#difficulty').val();
 
-			$('#patch-list input[type="checkbox"]').each(function(e) {
-				var diffs = ($(this).attr('data-difficulty') || '').split(',');
-				var isCustom = currentDifficulty === 'custom';
-				var isIncluded = diffs.includes(currentDifficulty);
-				$(this).parent().css('display', isCustom || isIncluded ? 'block' : 'none');
-				if (isCustom) {
-					$(this).parent().css('padding-left', '2.75em');
-					$(this).siblings('label').removeClass('not-custom-difficulty');
-				} else {
-					$(this).parent().css('padding-left', '1.25em');
-					$(this).siblings('label').addClass('not-custom-difficulty');
-				}
-				this.checked = diffs.includes(currentDifficulty);
-			});
-		}
+                $('#patch-list input[type="checkbox"]').each(function (e) {
+                    var diffs = ($(this).attr('data-difficulty') || '').split(',');
+                    var isCustom = currentDifficulty === 'custom';
+                    var isIncluded = diffs.includes(currentDifficulty);
+                    $(this).parent().css('display', isCustom || isIncluded ? 'block' : 'none');
+                    if (isCustom) {
+                        $(this).parent().css('padding-left', '2.75em');
+                        $(this).siblings('label').removeClass('not-custom-difficulty');
+                    } else {
+                        $(this).parent().css('padding-left', '1.25em');
+                        $(this).siblings('label').addClass('not-custom-difficulty');
+                    }
+                    this.checked = diffs.includes(currentDifficulty);
+                });
+            }
 
-		function showPalettePreviews() {
-			var currentPalette = $('#palette').val();
-			$('.palette-preview img').each(function(index) {
-				$(this).attr('src', '/img/palette/' + currentPalette + '/' + (index + 1) + '.png');
-			});
-		}
+            function showPalettePreviews() {
+                var currentPalette = $('#palette').val();
+                $('.palette-preview img').each(function (index) {
+                    $(this).attr('src', '/img/palette/' + currentPalette + '/' + (index + 1) + '.png');
+                });
+            }
 
-		function showSimonPreviews() {
-			var currentSimon = $('#simon').val();
-			$('.simon-preview img').each(function(index) {
-				$(this).attr('src', '/img/simon/' + currentSimon + '.png');
-			});
-		}
+            function showSimonPreviews() {
+                var currentSimon = $('#simon').val();
+                $('.simon-preview img').each(function (index) {
+                    $(this).attr('src', '/img/simon/' + currentSimon + '.png');
+                });
+            }
 
-		$(document).ready(function() {
-			getSeed();
-			togglePatchList();
-			showPalettePreviews();
-			showSimonPreviews();
+            $(document).ready(function () {
+                getSeed();
+                togglePatchList();
+                showPalettePreviews();
+                showSimonPreviews();
 
-			var generateRomRef;
-			$('#confirmModal .btn-primary').click(function(e) {
-				generateRomRef();
-				$('#confirmModal').modal('hide');
-			});
+                var generateRomRef;
+                $('#confirmModal .btn-primary').click(function (e) {
+                    generateRomRef();
+                    $('#confirmModal').modal('hide');
+                });
 
-			$('#confirmModal').on('show.bs.modal', function(e) {
-				var modal = $(this);
-				modal.find('.modal-title').text('No Custom Patches');
-				modal.find('.modal-body p').text('You selected "custom" difficulty but enabled no patches. Are you sure you want to generate a randomized ROM using no optional patches?');
-			});
+                $('#confirmModal').on('show.bs.modal', function (e) {
+                    var modal = $(this);
+                    modal.find('.modal-title').text('No Custom Patches');
+                    modal.find('.modal-body p').text('You selected "custom" difficulty but enabled no patches. Are you sure you want to generate a randomized ROM using no optional patches?');
+                });
 
-			$('#palettePreviewModal').on('show.bs.modal', function (event) {
-				var image = $(event.relatedTarget);
-				var imageSrc = image.attr('src');
-				var modal = $(this)
-				modal.find('#palettePreviewImage').attr('src', imageSrc);
-			});
+                $('#palettePreviewModal').on('show.bs.modal', function (event) {
+                    var image = $(event.relatedTarget);
+                    var imageSrc = image.attr('src');
+                    var modal = $(this)
+                    modal.find('#palettePreviewImage').attr('src', imageSrc);
+                });
 
-			$('#palette').change(showPalettePreviews);
+                $('#palette').change(showPalettePreviews);
 
-			$('#simon').change(showSimonPreviews);
+                $('#simon').change(showSimonPreviews);
 
-			$('#difficulty').change(togglePatchList);
+                $('#difficulty').change(togglePatchList);
 
-			$('#logic').change(function() {
-				var selectedLogic = $(this).children('option:selected').val();
-				$('.logic-text').each(function() {
-          if ((new RegExp(selectedLogic + '$').test($(this).attr('id')))) {
-            $(this).removeClass('d-none');
-          } else {
-            $(this).addClass('d-none');
-          }
-        });
-        if (selectedLogic === 'diamondWarp') {
-        	$('#difficulty').val(selectedLogic);
-        	togglePatchList();
-        }
-			});
-			$('#logic').trigger('change');
+                $('#logic').change(function () {
+                    var selectedLogic = $(this).children('option:selected').val();
+                    $('.logic-text').each(function () {
+                        if ((new RegExp(selectedLogic + '$').test($(this).attr('id')))) {
+                            $(this).removeClass('d-none');
+                        } else {
+                            $(this).addClass('d-none');
+                        }
+                    });
+                    if (selectedLogic === 'diamondWarp') {
+                        $('#difficulty').val(selectedLogic);
+                        togglePatchList();
+                    }
+                });
+                $('#logic').trigger('change');
 
-			$('#romFile')[0].addEventListener('change', function() {
-				state = {};
+                $('#romFile')[0].addEventListener('change', function () {
+                    state = {};
 
-				var file = this.files[0];
-				$('#rom')[0].value = file.name;
+                    var file = this.files[0];
+                    $('#rom')[0].value = file.name;
 
-				var reader = new FileReader();
-				reader.onload = function() {
-					state.rom = new Uint8Array(this.result);
-					// TODO: add a header check
-					setValidity($('#rom'), true);
-				}
-				reader.readAsArrayBuffer(file);
-			}, false);
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        state.rom = new Uint8Array(this.result);
+                        // TODO: add a header check
+                        setValidity($('#rom'), true);
+                    }
+                    reader.readAsArrayBuffer(file);
+                }, false);
 
-			$('#seedButton')[0].addEventListener('click', getSeed, false);
+                $('#seedButton')[0].addEventListener('click', getSeed, false);
 
-			$('#seed')[0].addEventListener('keyup', function(evt) {
-				setValidity($('#seed'), isValidSeed(this.value));
-			});
+                $('#seed')[0].addEventListener('keyup', function (evt) {
+                    setValidity($('#seed'), isValidSeed(this.value));
+                });
 
-			$('#randomizeButton')[0].addEventListener('click', function() {
-				generateRomRef = generateRom;
+                $('#randomizeButton')[0].addEventListener('click', function () {
+                    generateRomRef = generateRom;
 
-				var fields = [ 'logic', 'rom', 'seed', 'palette', 'difficulty', 'simon' ];
-				var values = {};
-				var invalid = [];
+                    var fields = ['logic', 'rom', 'seed', 'palette', 'difficulty', 'simon'];
+                    var values = {};
+                    var invalid = [];
 
-				// validate all fields and set their values
-				fields.forEach(function(field) {
-					var $elem = $('#' + field);
-					var value = $elem[0].value;
-					setValidity($elem, field === 'seed' ? isValidSeed(value) : value) || invalid.push($elem);
-					values[field] = value;
-				});
+                    // validate all fields and set their values
+                    fields.forEach(function (field) {
+                        var $elem = $('#' + field);
+                        var value = $elem[0].value;
+                        setValidity($elem, field === 'seed' ? isValidSeed(value) : value) || invalid.push($elem);
+                        values[field] = value;
+                    });
 
-				// if any fields are invalid, abort rom generation and scroll to first invalid field
-				if (invalid.length) {
-					$('html, body').animate({
-						scrollTop: invalid[0].offset().top - 50
-					}, 500);
-					return;
-				}
-				delete values.rom;
+                    // if any fields are invalid, abort rom generation and scroll to first invalid field
+                    if (invalid.length) {
+                        $('html, body').animate({
+                            scrollTop: invalid[0].offset().top - 50
+                        }, 500);
+                        return;
+                    }
+                    delete values.rom;
 
-				// assemble patches
-				var patches = [];
-				if (values.difficulty === 'custom') {
-					$('[id^=check-patch-]').each(function(e) {
-						if ($(this)[0].checked) {
-							patches.push($(this).attr('id').replace(/^check-patch-/, ''));
-						}
-					});
-					values.patch = patches.join(',');
-					if (!patches.length) {
-						$('#confirmModal').modal('show');
-					}
-				}
+                    // assemble patches
+                    var patches = [];
+                    if (values.difficulty === 'custom') {
+                        $('[id^=check-patch-]').each(function (e) {
+                            if ($(this)[0].checked) {
+                                patches.push($(this).attr('id').replace(/^check-patch-/, ''));
+                            }
+                        });
+                        values.patch = patches.join(',');
+                        if (!patches.length) {
+                            $('#confirmModal').modal('show');
+                        }
+                    }
 
-				if (values.difficulty !== 'custom' || patches.length) {
-					generateRom();
-				}
+                    if (values.difficulty !== 'custom' || patches.length) {
+                        generateRom();
+                    }
 
-				function generateRom() {
-					var difficulty = values.difficulty;
-					if (difficulty === 'custom') {
-						delete values.difficulty;
-					}
+                    function generateRom() {
+                        var difficulty = values.difficulty;
+                        if (difficulty === 'custom') {
+                            delete values.difficulty;
+                        }
 
-					var xhr = new XMLHttpRequest();
-					xhr.open('POST', '/genrom', true);
-					xhr.onreadystatechange = function() {
-						if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-							var resp = JSON.parse(this.response);
-							console.log(resp.spoiler);
-							var finalRom = state.rom.slice();
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/genrom', true);
+                        xhr.onreadystatechange = function () {
+                            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                                var resp = JSON.parse(this.response);
+                                console.log(resp.spoiler);
+                                var finalRom = state.rom.slice();
 
-							resp.patch.forEach(entry => {
-								Object.keys(entry).forEach(offset => {
-									var bytes = entry[offset];
-									if (bytes[0] === 'copy') {
-										var len = bytes[1];
-										var dstOffset = bytes[2];
-										finalRom.copyWithin(dstOffset, offset, offset + len);
-									} else {
-										finalRom.set(entry[offset], parseInt(offset));
-									}
-								});
-							});
+                                resp.patch.forEach(entry => {
+                                    Object.keys(entry).forEach(offset => {
+                                        var bytes = entry[offset];
+                                        if (bytes[0] === 'copy') {
+                                            var len = bytes[1];
+                                            var dstOffset = bytes[2];
+                                            finalRom.copyWithin(dstOffset, offset, offset + len);
+                                        } else {
+                                            finalRom.set(entry[offset], parseInt(offset));
+                                        }
+                                    });
+                                });
 
-							const blob = new Blob([finalRom]);
-							const fileName = 'cv2r-' + resp.version + '-' + values.seed + '-' + difficulty + '.nes';
-							const link = document.createElement('a');
-							const url = URL.createObjectURL(blob);
-							link.setAttribute('href', url);
-							link.setAttribute('download', fileName);
-							link.style.visibility = 'hidden';
-							document.body.appendChild(link);
-							link.click();
-							document.body.removeChild(link);
-						}
-					};
-					xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-					xhr.send(JSON.stringify(values));
-				}
-				generateRomRef = generateRom;
-			}, false);
-		});
-	</script>
+                                const blob = new Blob([finalRom]);
+                                const fileName = 'cv2r-' + resp.version + '-' + values.seed + '-' + difficulty + '.nes';
+                                const link = document.createElement('a');
+                                const url = URL.createObjectURL(blob);
+                                link.setAttribute('href', url);
+                                link.setAttribute('download', fileName);
+                                link.style.visibility = 'hidden';
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            }
+                        };
+                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        xhr.send(JSON.stringify(values));
+                    }
+                    generateRomRef = generateRom;
+                }, false);
+            });
+        </script>
 </head>
 
 <body>
 
-	<% include ../partials/nav.ejs %>
+    <% include ../partials/nav.ejs %>
 
-<div class="jumbotron text-center">
-	<div class="container">
+        <div class="jumbotron text-center">
+            <div class="container">
 
-		<form class="needs-validation" novalidate>
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="form-group">
-						<label for="rom">Upload Castlevania 2 ROM</label>
-						<div class="input-group">
-							<input type="text" id="rom" class="form-control" readonly="">
-							<label class="input-group-btn">
-								<span class="btn btn-dark">Browse…
-									<input type="file" id="romFile" style="display: none;">
-								</span>
-							</label>
-							<div class="invalid-feedback">Must upload a valid ROM</div>
-						</div>
-						<small class="form-text text-muted">This should be "Castlevania II - Simon's Quest (USA).nes" ROM file</small>
-					</div>
-					<div class="form-group">
-						<label for="seed">Randomizer Seed</label>
-						<div class="input-group">
-							<input type="text" id="seed" class="form-control">
-							<label class="input-group-btn">
-								<span class="btn btn-dark">Generate Seed
-									<input type="button" id="seedButton" style="display: none;">
-								</span>
-							</label>
-							<div class="invalid-feedback">Must provide 8+ character seed consisting of uppercase letters, lowercase letters, and/or numbers</div>
-						</div>
-						<small class="form-text text-muted">Use this seed, generate a new one, or create your own alphanumeric seed. Some of my personal favorites have been "MyCatLovesWhiskey" and "SathdreshMadeMeDoIt".</small>
-					</div>
-					<div class="form-group">
-						<div class="row">
-							<div class="form-group col-lg-6">
-								<label for="simon">Simon's Sprite</label>
-								<select class="form-control custom-select is-valid" id="simon">
-									<% Object.keys(simon).forEach(function(key) { %>
-										<option value="<%= key %>" <%= key === 'simon' ? 'selected="selected"' : '' %></option><%= simon[key].name %></option>
-									<% }); %>
-								</select>
-								<small class="form-text text-muted simon-small">Choose a sprite to use for Simon.</small>
-							</div>
-							<div class="simon-preview col-lg-6" style="text-align:center;">
-								<img src=""/>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="form-group">
-							<label for="palette">Color Palette</label>
-							<select class="form-control custom-select is-valid" id="palette">
-								<% Object.keys(palettes).forEach(function(key) { %>
-									<option value="<%= key %>" <%= key === 'simons-quest' ? 'selected="selected"' : '' %></option><%= palettes[key].name %></option>
-								<% }); %>
-							</select>
-							<small class="form-text text-muted palette-small">Choose from a selection of color palettes for the game.</small>
-						</div>
-						<div class="palette-preview">
-							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
-							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
-							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
-							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
-							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
-							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
-							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
-							<img src="" data-toggle="modal" data-target="#palettePreviewModal"/>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="form-group">
-						<label for="logic">Randomization Logic</label>
-						<select class="form-control custom-select is-valid" id="logic">
-							<% logic.forEach(function(lt) { %>
-							<option value="<%= lt %>" <%= lt === 'standard' ? 'selected' : '' %>><%= lt.charAt(0).toUpperCase() + lt.slice(1) + ' Logic' %></option>
-							<% }); %>
-						</select>
-						<% Object.keys(logicText).forEach(function(key) { %>
-						<small id="logic-text-<%= key %>" class="form-text text-muted logic-text <%= key === 'standard' ? '' : 'd-none' %>"><%- logicText[key] %></small>
-						<% }); %>
-					</div>
+                <form class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="rom">Upload Castlevania 2 ROM</label>
+                                <div class="input-group">
+                                    <input type="text" id="rom" class="form-control" readonly="">
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-dark">Browse…
+                                            <input type="file" id="romFile" style="display: none;">
+                                        </span>
+                                    </label>
+                                    <div class="invalid-feedback">Must upload a valid ROM</div>
+                                </div>
+                                <small class="form-text text-muted">This should be "Castlevania II - Simon's Quest
+                                    (USA).nes" ROM file</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="seed">Randomizer Seed</label>
+                                <div class="input-group">
+                                    <input type="text" id="seed" class="form-control">
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-dark">Generate Seed
+                                            <input type="button" id="seedButton" style="display: none;">
+                                        </span>
+                                    </label>
+                                    <div class="invalid-feedback">Must provide 8+ character seed consisting of uppercase
+                                        letters, lowercase letters, and/or numbers</div>
+                                </div>
+                                <small class="form-text text-muted">Use this seed, generate a new one, or create your
+                                    own alphanumeric seed. Some of my personal favorites have been "MyCatLovesWhiskey"
+                                    and "SathdreshMadeMeDoIt".</small>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="simon">Simon's Sprite</label>
+                                        <select class="form-control custom-select is-valid" id="simon">
+                                            <option value="random">Random</option>
+                                            <% Object.keys(simon).forEach(function(key) { %>
+                                                <option value="<%= key %>" <%=key==='simon' ? 'selected="selected"' : ''
+                                                    %></option>
+                                                <%= simon[key].name %>
+                                                    </option>
+                                                    <% }); %>
+                                        </select>
+                                        <small class="form-text text-muted simon-small">Choose a sprite to use for
+                                            Simon.</small>
+                                    </div>
+                                    <div class="simon-preview col-lg-6" style="text-align:center;">
+                                        <img src="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="palette">Color Palette</label>
+                                    <select class="form-control custom-select is-valid" id="palette">
+                                        <% Object.keys(palettes).forEach(function(key) { %>
+                                            <option value="<%= key %>" <%=key==='simons-quest' ? 'selected="selected"'
+                                                : '' %></option>
+                                            <%= palettes[key].name %>
+                                                </option>
+                                                <% }); %>
+                                    </select>
+                                    <small class="form-text text-muted palette-small">Choose from a selection of color
+                                        palettes for the game.</small>
+                                </div>
+                                <div class="palette-preview">
+                                    <img src="" data-toggle="modal" data-target="#palettePreviewModal" />
+                                    <img src="" data-toggle="modal" data-target="#palettePreviewModal" />
+                                    <img src="" data-toggle="modal" data-target="#palettePreviewModal" />
+                                    <img src="" data-toggle="modal" data-target="#palettePreviewModal" />
+                                    <img src="" data-toggle="modal" data-target="#palettePreviewModal" />
+                                    <img src="" data-toggle="modal" data-target="#palettePreviewModal" />
+                                    <img src="" data-toggle="modal" data-target="#palettePreviewModal" />
+                                    <img src="" data-toggle="modal" data-target="#palettePreviewModal" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="logic">Randomization Logic</label>
+                                <select class="form-control custom-select is-valid" id="logic">
+                                    <% logic.forEach(function(lt) { %>
+                                        <option value="<%= lt %>" <%=lt==='standard' ? 'selected' : '' %>><%=
+                                                lt.charAt(0).toUpperCase() + lt.slice(1) + ' Logic' %>
+                                        </option>
+                                        <% }); %>
+                                </select>
+                                <% Object.keys(logicText).forEach(function(key) { %>
+                                    <small id="logic-text-<%= key %>"
+                                        class="form-text text-muted logic-text <%= key === 'standard' ? '' : 'd-none' %>">
+                                        <%- logicText[key] %>
+                                    </small>
+                                    <% }); %>
+                            </div>
 
-					<div class="form-group">
-						<label for="difficulty">Game Difficulty</label>
-						<select class="form-control custom-select is-valid" id="difficulty">
-							<option value="easy">Easy</option>
-							<option value="standard" selected="selected">Standard</option>
-							<option value="hard">Hard</option>
-							<option value="elite">Elite</option>
-							<option value="diamondWarp">Diamond Warp</option>
-							<option value="custom">Custom</option>
-						</select>
-						<small class="form-text text-muted">Choose a pre-defined difficulty setting, or choose "Custom" to select whatever patches you want.</small>
-					</div>
+                            <div class="form-group">
+                                <label for="difficulty">Game Difficulty</label>
+                                <select class="form-control custom-select is-valid" id="difficulty">
+                                    <option value="easy">Easy</option>
+                                    <option value="standard" selected="selected">Standard</option>
+                                    <option value="hard">Hard</option>
+                                    <option value="elite">Elite</option>
+                                    <option value="diamondWarp">Diamond Warp</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                                <small class="form-text text-muted">Choose a pre-defined difficulty setting, or choose
+                                    "Custom" to select whatever patches you want.</small>
+                            </div>
 
-					<div class="list-group" id="patch-list">
-						<% patches.forEach(function(patch) { %>
-						<div class="custom-control custom-switch list-group-item">
-							<input type="checkbox" class="custom-control-input" data-difficulty="<%= patch.difficulty.join(',') %>" id="check-patch-<%= patch.key %>">
-							<label class="custom-control-label" for="check-patch-<%= patch.key %>">
-								<%= patch.name %>
-							</label><br>
-							<small><%= patch.description %></small>
-						</div>
-						<% }); %>
-					</div>
-				</div>
-			</div>
-		</form>
-		<hr>
-		<button id="randomizeButton" class="btn btn-danger btn-xlarge">RANDOMIZE!</button>
-	</div>
-</div>
+                            <div class="list-group" id="patch-list">
+                                <% patches.forEach(function(patch) { %>
+                                    <div class="custom-control custom-switch list-group-item">
+                                        <input type="checkbox" class="custom-control-input"
+                                            data-difficulty="<%= patch.difficulty.join(',') %>"
+                                            id="check-patch-<%= patch.key %>">
+                                        <label class="custom-control-label" for="check-patch-<%= patch.key %>">
+                                            <%= patch.name %>
+                                        </label><br>
+                                        <small>
+                                            <%= patch.description %>
+                                        </small>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <button id="randomizeButton" class="btn btn-danger btn-xlarge">RANDOMIZE!</button>
+            </div>
+        </div>
 
-<div class="modal fade" id="palettePreviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-body" style="padding:0">
-				<img id="palettePreviewImage" src="" style="width:512px;image-rendering:pixelated;"/>
-			</div>
-		</div>
-	</div>
-</div>
-<% include ../partials/confirm-modal.ejs %>
+        <div class="modal fade" id="palettePreviewModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body" style="padding:0">
+                        <img id="palettePreviewImage" src="" style="width:512px;image-rendering:pixelated;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% include ../partials/confirm-modal.ejs %>
 </body>
+
 </html>

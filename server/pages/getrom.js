@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
@@ -8,12 +9,12 @@ const { difficulty, dir, logic, version } = require('cv2r');
 const patches = [];
 fs.readdirSync(dir.patch).forEach(file => {
 	const mod = require(path.join(dir.patch, file));
-	const modObj = _.pick(mod, [ 'id', 'name', 'description' ]);
+	const modObj = _.pick(mod, ['id', 'name', 'description']);
 	modObj.key = modObj.id;
 	modObj.difficulty = [];
 	patches.push(modObj);
 });
-patches.sort((a,b) => a.name > b.name);
+patches.sort((a, b) => a.name > b.name);
 
 Object.keys(difficulty).forEach(diff => {
 	difficulty[diff].patches.forEach(patch => {
@@ -25,7 +26,7 @@ Object.keys(difficulty).forEach(diff => {
 const palettes = {};
 fs.readdirSync(dir.palette).forEach(file => {
 	const mod = require(path.join(dir.palette, file));
-	palettes[file.replace(/\.js$/, '')] = _.pick(mod, [ 'name', 'description' ]);
+	palettes[file.replace(/\.js$/, '')] = _.pick(mod, ['name', 'description']);
 });
 
 const simon = {};
@@ -41,10 +42,10 @@ fs.readdirSync(dir.simon).forEach(file => {
 	}
 
 	const mod = require(patchPath);
-	simon[name] = _.pick(mod, [ 'name', 'description' ]);
+	simon[name] = _.pick(mod, ['name', 'description']);
 });
 
-module.exports = function(app) {
+module.exports = function (app) {
 	app
 		.get('/getrom', (req, res) => {
 			const logicText = {
@@ -63,7 +64,7 @@ module.exports = function(app) {
 
 			// determine whether this is a pre-defined difficulty or custom patch list
 			const { difficulty, patch } = req.body;
-			const reqArgs = [ 'seed', 'logic', 'palette', 'simon' ];
+			const reqArgs = ['seed', 'logic', 'palette', 'simon'];
 			if (!difficulty) {
 				if (patch) {
 					reqArgs.push('patch');
@@ -73,9 +74,9 @@ module.exports = function(app) {
 			}
 
 			// execute cv2r
-			const args = reqArgs.reduce((a,c) => a + `--${c} "${req.body[c]}" `, '');
+			const args = reqArgs.reduce((a, c) => a + `--${c} "${req.body[c]}" `, '');
 			console.log(`${bin} --json ${args}`);
-			exec(`${bin} --json ${args}`, function(err, stdout, stderr) {
+			exec(`${bin} --json ${args}`, function (err, stdout, stderr) {
 				if (err) {
 					console.error(err, stdout, stderr);
 					res.status(500).send(err.stack);

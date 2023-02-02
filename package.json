@@ -18,7 +18,7 @@
         "discord.js": "^11.5.1",
         "ejs": "^2.5.6",
         "express": "^4.15.2",
-        "jszip": "^3.2.2",
+        "jszip": "^3.8.0",
         "lodash": "^4.17.15",
         "request-promise": "^4.2.4"
     },
